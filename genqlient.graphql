@@ -1,0 +1,37 @@
+query GetPublicRepos($after: String) {
+  search(type: REPOSITORY, query: "is:public stars:>=50", first: 100, after: $after) {
+    pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      startCursor
+    }
+
+    edges {
+      node {
+        ... on Repository {
+          id
+          description
+          forkCount
+          homepageUrl
+          name
+          nameWithOwner
+          url
+          stargazerCount
+          updatedAt
+
+          languages(first: 5, orderBy: { field: SIZE, direction: DESC}) {
+            edges {
+              node {
+                id
+                name
+                color
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
