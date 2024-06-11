@@ -27,6 +27,16 @@ fetching 100 points (10_000 repositories) == ~300 seconds
 since we fetch via limiting the max star count, the first entry is always the
 last entry from the previous run
 
+12th June 2024
+
+| iteration | star count |
+| 300 | 1694 |
+| 400 | 1310|
+| 500 | 1057 |
+| 600 | 904 |
+| 700 | 803 |
+| 800 | 728 |
+
 ## Roadmap
 
 MVP Alpha
