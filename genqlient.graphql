@@ -1,7 +1,6 @@
-query GetPublicRepos($after: String!, $query: String!, $perPage: Int!) {
-  search(type: REPOSITORY, query: $query, first: $perPage, after: $after) {
+query GetPublicRepos($query: String!, $limit: Int!) {
+  search(type: REPOSITORY, query: $query, first: $limit) {
     pageInfo {
-      endCursor
       hasNextPage
     }
 
@@ -9,13 +8,13 @@ query GetPublicRepos($after: String!, $query: String!, $perPage: Int!) {
       node {
         ... on Repository {
           id
+          stargazerCount
           description
           forkCount
           homepageUrl
           name
           nameWithOwner
           url
-          stargazerCount
           updatedAt
 
           languages(first: 5, orderBy: { field: SIZE, direction: DESC}) {

@@ -21,10 +21,10 @@ func NewAPILoader(ctx context.Context, apiKey string) *APILoader {
 	return &APILoader{ctx: ctx, apiKey: apiKey}
 }
 
-func (l *APILoader) LoadRepos(cursor string, maxStarCount int) ([]GitHubRepo, *PageInfo, error) {
+func (l *APILoader) LoadRepos(maxStarCount int) ([]GitHubRepo, *PageInfo, error) {
 	client := GetApiClient(l.apiKey)
 
-	resp, err := generated.GetPublicRepos(l.ctx, client, cursor, fmt.Sprintf("is:public stars:%d..%d", minStarCount, maxStarCount), perPage)
+	resp, err := generated.GetPublicRepos(l.ctx, client, fmt.Sprintf("is:public stars:%d..%d", minStarCount, maxStarCount), perPage)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -43,13 +43,8 @@ func (l *APILoader) LoadRepos(cursor string, maxStarCount int) ([]GitHubRepo, *P
 		}
 	}
 
-	nextCursor := resp.Search.PageInfo.EndCursor
-	if !resp.Search.PageInfo.HasNextPage {
-		nextCursor = ""
-	}
-
 	pageInfo := &PageInfo{
-		NextCursor: nextCursor,
+		NextMaxStarCount: repos[len(repos)-1].StarCount,
 	}
 
 	return repos, pageInfo, nil

@@ -12,9 +12,9 @@ type GitHubRepo struct {
 }
 
 type PageInfo struct {
-	NextCursor string
+	NextMaxStarCount int
 }
 
 type DataLoader interface {
-	LoadRepos(cursor string, maxStarCount int) ([]GitHubRepo, *PageInfo, error)
+	LoadRepos(maxStarCount int) ([]GitHubRepo, *PageInfo, error)
 }

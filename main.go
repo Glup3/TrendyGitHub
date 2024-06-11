@@ -34,17 +34,14 @@ func main() {
 		dataLoader = loader.NewAPILoader(ctx, configs.GitHubToken)
 	}
 
-	// TODO: also load max star count from db
-	maxStarCount := 6001 // count: 9
-
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 100; i++ {
 		settings, err := database.LoadSettings(db, ctx)
 		if err != nil {
 			log.Fatalf("%v", err)
 		}
 
-		fmt.Println("fetching cursor", settings.CursorValue)
-		repos, pageInfo, err := dataLoader.LoadRepos(settings.CursorValue, maxStarCount)
+		fmt.Println("fetching for max star count", settings.CurrentMaxStarCount)
+		repos, pageInfo, err := dataLoader.LoadRepos(settings.CurrentMaxStarCount)
 		if err != nil {
 			log.Fatalf("fetching repositories failed: %v", err)
 		}
@@ -55,7 +52,7 @@ func main() {
 			log.Fatalf("%v", err)
 		}
 
-		err = database.UpdateCursor(db, ctx, settings.ID, pageInfo.NextCursor)
+		err = database.UpdateCurrentMaxStarCount(db, ctx, settings.ID, pageInfo.NextMaxStarCount)
 		if err != nil {
 			log.Fatalf("%v", err)
 		}

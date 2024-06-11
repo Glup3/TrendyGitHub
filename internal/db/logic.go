@@ -11,8 +11,8 @@ import (
 type repoId = int32
 
 type Settings struct {
-	CursorValue string
-	ID          int
+	CurrentMaxStarCount int
+	ID                  int
 }
 
 type RepoInput struct {
@@ -29,7 +29,7 @@ func LoadSettings(db *Database, ctx context.Context) (Settings, error) {
 	var settings Settings
 
 	selectBuilder := sq.StatementBuilder.PlaceholderFormat(sq.Dollar).
-		Select("id", "cursor_value").
+		Select("id", "current_max_star_count").
 		From("settings").
 		Limit(1)
 
@@ -38,7 +38,7 @@ func LoadSettings(db *Database, ctx context.Context) (Settings, error) {
 		return settings, fmt.Errorf("error building SQL: %v", err)
 	}
 
-	err = db.pool.QueryRow(ctx, sql, args...).Scan(&settings.ID, &settings.CursorValue)
+	err = db.pool.QueryRow(ctx, sql, args...).Scan(&settings.ID, &settings.CurrentMaxStarCount)
 	if err != nil {
 		return settings, fmt.Errorf("error loading settings: %v", err)
 	}
@@ -79,10 +79,10 @@ func UpsertRepositories(db *Database, ctx context.Context, repos []RepoInput) ([
 	return ids, nil
 }
 
-func UpdateCursor(db *Database, ctx context.Context, settingsID int, nextCursor string) error {
+func UpdateCurrentMaxStarCount(db *Database, ctx context.Context, settingsID int, newMaxStarCount int) error {
 	updateBuilder := sq.StatementBuilder.PlaceholderFormat(sq.Dollar).
 		Update("settings").
-		Set("cursor_value", nextCursor).
+		Set("current_max_star_count", newMaxStarCount).
 		Where(sq.Eq{"id": settingsID})
 
 	sql, args, err := updateBuilder.ToSql()
@@ -92,7 +92,7 @@ func UpdateCursor(db *Database, ctx context.Context, settingsID int, nextCursor 
 
 	commandTag, err := db.pool.Exec(ctx, sql, args...)
 	if err != nil {
-		return fmt.Errorf("error executing update cursor SQL: %v", err)
+		return fmt.Errorf("error updating current max star count in SQL: %v", err)
 	}
 
 	if commandTag.RowsAffected() == 0 {

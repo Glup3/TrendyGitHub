@@ -1,6 +1,6 @@
 CREATE TABLE settings (
     id SERIAL PRIMARY KEY,
-    cursor_value TEXT NOT NULL
+    current_max_star_count INT NOT NULL
 );
 
-INSERT INTO settings(cursor_value) VALUES ('');
+INSERT INTO settings(current_max_star_count) VALUES (1000000);

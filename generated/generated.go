@@ -208,6 +208,8 @@ type GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNode
 	Typename string `json:"__typename"`
 	// The Node ID of the Repository object
 	Id string `json:"id"`
+	// Returns a count of how many stargazers there are on this object
+	StargazerCount int `json:"stargazerCount"`
 	// The description of the repository.
 	Description string `json:"description"`
 	// Returns how many forks there are of this repository in the whole network.
@@ -220,8 +222,6 @@ type GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNode
 	NameWithOwner string `json:"nameWithOwner"`
 	// The HTTP URL for this repository
 	Url string `json:"url"`
-	// Returns a count of how many stargazers there are on this object
-	StargazerCount int `json:"stargazerCount"`
 	// Identifies the date and time when the object was last updated.
 	UpdatedAt time.Time `json:"updatedAt"`
 	// A list containing a breakdown of the language composition of the repository.
@@ -236,6 +236,11 @@ func (v *GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdge
 // GetId returns GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepository.Id, and is useful for accessing the field via an interface.
 func (v *GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepository) GetId() string {
 	return v.Id
+}
+
+// GetStargazerCount returns GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepository.StargazerCount, and is useful for accessing the field via an interface.
+func (v *GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepository) GetStargazerCount() int {
+	return v.StargazerCount
 }
 
 // GetDescription returns GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepository.Description, and is useful for accessing the field via an interface.
@@ -266,11 +271,6 @@ func (v *GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdge
 // GetUrl returns GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepository.Url, and is useful for accessing the field via an interface.
 func (v *GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepository) GetUrl() string {
 	return v.Url
-}
-
-// GetStargazerCount returns GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepository.StargazerCount, and is useful for accessing the field via an interface.
-func (v *GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepository) GetStargazerCount() int {
-	return v.StargazerCount
 }
 
 // GetUpdatedAt returns GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepository.UpdatedAt, and is useful for accessing the field via an interface.
@@ -502,15 +502,8 @@ func (v *GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdge
 //
 // Information about pagination in a connection.
 type GetPublicReposSearchSearchResultItemConnectionPageInfo struct {
-	// When paginating forwards, the cursor to continue.
-	EndCursor string `json:"endCursor"`
 	// When paginating forwards, are there more items?
 	HasNextPage bool `json:"hasNextPage"`
-}
-
-// GetEndCursor returns GetPublicReposSearchSearchResultItemConnectionPageInfo.EndCursor, and is useful for accessing the field via an interface.
-func (v *GetPublicReposSearchSearchResultItemConnectionPageInfo) GetEndCursor() string {
-	return v.EndCursor
 }
 
 // GetHasNextPage returns GetPublicReposSearchSearchResultItemConnectionPageInfo.HasNextPage, and is useful for accessing the field via an interface.
@@ -520,26 +513,21 @@ func (v *GetPublicReposSearchSearchResultItemConnectionPageInfo) GetHasNextPage(
 
 // __GetPublicReposInput is used internally by genqlient
 type __GetPublicReposInput struct {
-	After   string `json:"after"`
-	Query   string `json:"query"`
-	PerPage int    `json:"perPage"`
+	Query string `json:"query"`
+	Limit int    `json:"limit"`
 }
-
-// GetAfter returns __GetPublicReposInput.After, and is useful for accessing the field via an interface.
-func (v *__GetPublicReposInput) GetAfter() string { return v.After }
 
 // GetQuery returns __GetPublicReposInput.Query, and is useful for accessing the field via an interface.
 func (v *__GetPublicReposInput) GetQuery() string { return v.Query }
 
-// GetPerPage returns __GetPublicReposInput.PerPage, and is useful for accessing the field via an interface.
-func (v *__GetPublicReposInput) GetPerPage() int { return v.PerPage }
+// GetLimit returns __GetPublicReposInput.Limit, and is useful for accessing the field via an interface.
+func (v *__GetPublicReposInput) GetLimit() int { return v.Limit }
 
 // The query or mutation executed by GetPublicRepos.
 const GetPublicRepos_Operation = `
-query GetPublicRepos ($after: String!, $query: String!, $perPage: Int!) {
-	search(type: REPOSITORY, query: $query, first: $perPage, after: $after) {
+query GetPublicRepos ($query: String!, $limit: Int!) {
+	search(type: REPOSITORY, query: $query, first: $limit) {
 		pageInfo {
-			endCursor
 			hasNextPage
 		}
 		edges {
@@ -547,13 +535,13 @@ query GetPublicRepos ($after: String!, $query: String!, $perPage: Int!) {
 				__typename
 				... on Repository {
 					id
+					stargazerCount
 					description
 					forkCount
 					homepageUrl
 					name
 					nameWithOwner
 					url
-					stargazerCount
 					updatedAt
 					languages(first: 5, orderBy: {field:SIZE,direction:DESC}) {
 						edges {
@@ -572,17 +560,15 @@ query GetPublicRepos ($after: String!, $query: String!, $perPage: Int!) {
 func GetPublicRepos(
 	ctx_ context.Context,
 	client_ graphql.Client,
-	after string,
 	query string,
-	perPage int,
+	limit int,
 ) (*GetPublicReposResponse, error) {
 	req_ := &graphql.Request{
 		OpName: "GetPublicRepos",
 		Query:  GetPublicRepos_Operation,
 		Variables: &__GetPublicReposInput{
-			After:   after,
-			Query:   query,
-			PerPage: perPage,
+			Query: query,
+			Limit: limit,
 		},
 	}
 	var err_ error
