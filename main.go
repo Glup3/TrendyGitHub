@@ -8,9 +8,8 @@ import (
 	"os"
 
 	"github.com/Khan/genqlient/graphql"
-	sq "github.com/Masterminds/squirrel"
 	"github.com/glup3/TrendyGitHub/generated"
-	"github.com/jackc/pgx/v4/pgxpool"
+	database "github.com/glup3/TrendyGitHub/internal/db"
 	"github.com/joho/godotenv"
 )
 
@@ -25,11 +24,6 @@ type GitHubRepository struct {
 	forksCount    int
 }
 
-type Settings struct {
-	CursorValue string
-	ID          int
-}
-
 type authedTransport struct {
 	wrapped http.RoundTripper
 	key     string
@@ -41,39 +35,33 @@ func (t *authedTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 }
 
 func main() {
-	var err error
-	defer func() {
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-	}()
+	ctx := context.Background()
 
-	err = godotenv.Load()
+	err := godotenv.Load()
 	if err != nil {
-		err = fmt.Errorf("loading .env file failed: %v", err)
-		return
+		log.Fatalf("loading .env file failed: %v", err)
 	}
 
 	key := os.Getenv("GITHUB_TOKEN")
 	if key == "" {
-		err = fmt.Errorf("must set GITHUB_TOKEN=<github token>")
-		return
+		log.Fatalf("must set GITHUB_TOKEN=<github token>")
 	}
 
 	connStr := os.Getenv("DATABASE_URL")
 	if connStr == "" {
-		err = fmt.Errorf("DATABASE_URL not set")
-		return
+		log.Fatalf("DATABASE_URL not set")
 	}
 
-	fmt.Println("Connecting to database...")
-
-	pool, err := pgxpool.Connect(context.Background(), connStr)
+	db, err := database.NewDatabase(ctx, connStr)
 	if err != nil {
 		log.Fatalf("Unable to connect to database: %v", err)
 	}
-	defer pool.Close()
+	defer db.Close()
+
+	err = db.Ping(ctx)
+	if err != nil {
+		log.Fatalf("Unable to ping database: %v", err)
+	}
 
 	httpClient := http.Client{
 		Transport: &authedTransport{
@@ -83,82 +71,44 @@ func main() {
 	}
 	graphqlClient := graphql.NewClient("https://api.github.com/graphql", &httpClient)
 
-	// Build the select query using Squirrel
-	selectBuilder := sq.StatementBuilder.PlaceholderFormat(sq.Dollar).
-		Select("id", "cursor_value").
-		From("settings").
-		Limit(1)
-
-	// Execute the query
-	sql, args, err := selectBuilder.ToSql()
+	settings, err := database.LoadSettings(db, ctx)
 	if err != nil {
-		log.Fatalf("Error building SQL: %v", err)
+		log.Fatalf("%v", err)
 	}
 
-	fmt.Println("Loading settings...")
-
-	var settings Settings
-	err = pool.QueryRow(context.Background(), sql, args...).Scan(&settings.ID, &settings.CursorValue)
-	if err != nil {
-		log.Fatalf("Error querying settings: %v", err)
-	}
-
-	fmt.Println("Loading repos...")
-
-	var repoResp *generated.GetPublicReposResponse
-
-	repoResp, err = generated.GetPublicRepos(context.Background(), graphqlClient, settings.CursorValue)
+	resp, err := generated.GetPublicRepos(context.Background(), graphqlClient, settings.CursorValue)
 	if err != nil {
 		return
 	}
 
-	upsertBuilder := sq.Insert("repositories").Columns("github_id", "name", "url", "name_with_owner", "star_count", "fork_count", "languages")
-
-	for _, edge := range repoResp.Search.Edges {
-		repo, ok := edge.Node.(*generated.GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepository)
-		if !ok {
-			// ignore error
-			continue
+	repos := make([]database.RepoInput, len(resp.Search.Edges))
+	for i, edge := range resp.Search.Edges {
+		repo, _ := edge.Node.(*generated.GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepository)
+		repos[i] = database.RepoInput{
+			GithubId:      repo.Id,
+			Name:          repo.Name,
+			Url:           repo.Url,
+			NameWithOwner: repo.NameWithOwner,
+			StarCount:     repo.StargazerCount,
+			ForkCount:     repo.ForkCount,
+			Languages:     mapLanguages(repo.Languages.Edges),
 		}
-
-		upsertBuilder = upsertBuilder.Values(repo.Id, repo.Name, repo.Url, repo.NameWithOwner, repo.StargazerCount, repo.ForkCount, mapLanguages(repo.Languages.Edges))
-		// Suffix("ON CONFLICT (github_id) DO UPDATE SET star_count = EXCLUDED.star_count, fork_count = EXCLUDED.fork_count, languages = EXCLUDED.languages;")
 	}
 
-	sql, args, err = upsertBuilder.PlaceholderFormat(sq.Dollar).ToSql()
+	ids, err := database.UpsertRepositories(db, ctx, repos)
 	if err != nil {
-		log.Fatalf("Error building SQL: %v", err)
+		log.Fatalf("%v", err)
 	}
+	fmt.Println(ids)
 
-	fmt.Println("Inserting repos...")
-
-	// Execute the UPSERT query
-	_, err = pool.Exec(context.Background(), sql, args...)
-	if err != nil {
-		log.Fatalf("Error performing UPSERT: %v", err)
-	}
-
-	nextCursor := repoResp.Search.PageInfo.EndCursor
-	if !repoResp.Search.PageInfo.HasNextPage {
+	nextCursor := resp.Search.PageInfo.EndCursor
+	if !resp.Search.PageInfo.HasNextPage {
 		nextCursor = ""
 	}
 
-	updateBuilder := sq.StatementBuilder.PlaceholderFormat(sq.Dollar).
-		Update("settings").
-		Set("cursor_value", nextCursor).
-		Where(sq.Eq{"id": settings.ID})
-
-	// Execute the query
-	sql, args, err = updateBuilder.ToSql()
+	err = database.UpdateCursor(db, ctx, settings.ID, nextCursor)
 	if err != nil {
-		log.Fatalf("Error building SQL: %v", err)
-	}
-
-	fmt.Println("Updating cursor...")
-
-	_, err = pool.Exec(context.Background(), sql, args...)
-	if err != nil {
-		log.Fatalf("Error updating cursor value: %v", err)
+		log.Fatalf("%v", err)
 	}
 
 	fmt.Println("Done")
