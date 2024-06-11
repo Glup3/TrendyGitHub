@@ -30,6 +30,7 @@ last entry from the previous run
 12th June 2024
 
 | iteration | star count |
+|-----------|------------|
 | 300 | 1694 |
 | 400 | 1310|
 | 500 | 1057 |
