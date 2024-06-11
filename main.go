@@ -5,12 +5,11 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/Khan/genqlient/graphql"
 	"github.com/glup3/TrendyGitHub/generated"
+	config "github.com/glup3/TrendyGitHub/internal"
 	database "github.com/glup3/TrendyGitHub/internal/db"
-	"github.com/joho/godotenv"
 )
 
 type GitHubRepository struct {
@@ -37,22 +36,12 @@ func (t *authedTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 func main() {
 	ctx := context.Background()
 
-	err := godotenv.Load()
+	config, err := config.LoadConfig()
 	if err != nil {
-		log.Fatalf("loading .env file failed: %v", err)
+		log.Fatalf("Error loading configuration: %v", err)
 	}
 
-	key := os.Getenv("GITHUB_TOKEN")
-	if key == "" {
-		log.Fatalf("must set GITHUB_TOKEN=<github token>")
-	}
-
-	connStr := os.Getenv("DATABASE_URL")
-	if connStr == "" {
-		log.Fatalf("DATABASE_URL not set")
-	}
-
-	db, err := database.NewDatabase(ctx, connStr)
+	db, err := database.NewDatabase(ctx, config.DatabaseURL)
 	if err != nil {
 		log.Fatalf("Unable to connect to database: %v", err)
 	}
@@ -65,7 +54,7 @@ func main() {
 
 	httpClient := http.Client{
 		Transport: &authedTransport{
-			key:     key,
+			key:     config.GitHubToken,
 			wrapped: http.DefaultTransport,
 		},
 	}
