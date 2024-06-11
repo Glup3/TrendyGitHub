@@ -52,10 +52,10 @@ func UpsertRepositories(db *Database, ctx context.Context, repos []RepoInput) ([
 
 	for _, repo := range repos {
 		upsertBuilder = upsertBuilder.Values(repo.GithubId, repo.Name, repo.Url, repo.NameWithOwner, repo.StarCount, repo.ForkCount, repo.Languages)
-		// Suffix("ON CONFLICT (github_id) DO UPDATE SET star_count = EXCLUDED.star_count, fork_count = EXCLUDED.fork_count, languages = EXCLUDED.languages;")
 	}
 
 	sql, args, err := upsertBuilder.
+		Suffix("ON CONFLICT (github_id) DO UPDATE SET star_count = EXCLUDED.star_count, fork_count = EXCLUDED.fork_count, languages = EXCLUDED.languages").
 		Suffix("RETURNING id").
 		PlaceholderFormat(sq.Dollar).
 		ToSql()

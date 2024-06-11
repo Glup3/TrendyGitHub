@@ -29,32 +29,34 @@ func main() {
 		log.Fatalf("Unable to ping database: %v", err)
 	}
 
-	settings, err := database.LoadSettings(db, ctx)
-	if err != nil {
-		log.Fatalf("%v", err)
-	}
-
 	var dataLoader loader.DataLoader
-
 	if true {
 		dataLoader = loader.NewAPILoader(ctx, configs.GitHubToken)
 	}
 
-	repos, pageInfo, err := dataLoader.LoadRepos(settings.CursorValue)
-	if err != nil {
-		log.Fatalf("fetching repositories failed: %v", err)
-	}
+	for i := 0; i < 10; i++ {
+		settings, err := database.LoadSettings(db, ctx)
+		if err != nil {
+			log.Fatalf("%v", err)
+		}
 
-	inputs := config.MapGitHubReposToInputs(repos)
-	ids, err := database.UpsertRepositories(db, ctx, inputs)
-	if err != nil {
-		log.Fatalf("%v", err)
-	}
-	fmt.Println(ids)
+		fmt.Println("fetching cursor", settings.CursorValue)
+		repos, pageInfo, err := dataLoader.LoadRepos(settings.CursorValue)
+		if err != nil {
+			log.Fatalf("fetching repositories failed: %v", err)
+		}
 
-	err = database.UpdateCursor(db, ctx, settings.ID, pageInfo.NextCursor)
-	if err != nil {
-		log.Fatalf("%v", err)
+		inputs := config.MapGitHubReposToInputs(repos)
+		ids, err := database.UpsertRepositories(db, ctx, inputs)
+		if err != nil {
+			log.Fatalf("%v", err)
+		}
+		fmt.Println(ids)
+
+		err = database.UpdateCursor(db, ctx, settings.ID, pageInfo.NextCursor)
+		if err != nil {
+			log.Fatalf("%v", err)
+		}
 	}
 
 	fmt.Println("Done")
