@@ -16,5 +16,5 @@ type PageInfo struct {
 }
 
 type DataLoader interface {
-	LoadRepos(cursor string) ([]GitHubRepo, *PageInfo, error)
+	LoadRepos(cursor string, maxStarCount int) ([]GitHubRepo, *PageInfo, error)
 }

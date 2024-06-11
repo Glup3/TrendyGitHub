@@ -1,10 +1,8 @@
-query GetPublicRepos($after: String) {
-  search(type: REPOSITORY, query: "is:public stars:>=50", first: 100, after: $after) {
+query GetPublicRepos($after: String!, $query: String!, $perPage: Int!) {
+  search(type: REPOSITORY, query: $query, first: $perPage, after: $after) {
     pageInfo {
       endCursor
       hasNextPage
-      hasPreviousPage
-      startCursor
     }
 
     edges {
@@ -23,9 +21,7 @@ query GetPublicRepos($after: String) {
           languages(first: 5, orderBy: { field: SIZE, direction: DESC}) {
             edges {
               node {
-                id
                 name
-                color
               }
             }
           }

@@ -2,8 +2,14 @@ package loader
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/glup3/TrendyGitHub/generated"
+)
+
+const (
+	minStarCount = 50
+	perPage      = 100
 )
 
 type APILoader struct {
@@ -15,10 +21,10 @@ func NewAPILoader(ctx context.Context, apiKey string) *APILoader {
 	return &APILoader{ctx: ctx, apiKey: apiKey}
 }
 
-func (l *APILoader) LoadRepos(cursor string) ([]GitHubRepo, *PageInfo, error) {
+func (l *APILoader) LoadRepos(cursor string, maxStarCount int) ([]GitHubRepo, *PageInfo, error) {
 	client := GetApiClient(l.apiKey)
 
-	resp, err := generated.GetPublicRepos(l.ctx, client, cursor)
+	resp, err := generated.GetPublicRepos(l.ctx, client, cursor, fmt.Sprintf("is:public stars:%d..%d", minStarCount, maxStarCount), perPage)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -50,8 +50,11 @@ func UpsertRepositories(db *Database, ctx context.Context, repos []RepoInput) ([
 	upsertBuilder := sq.Insert("repositories").
 		Columns("github_id", "name", "url", "name_with_owner", "star_count", "fork_count", "languages")
 
-	for _, repo := range repos {
+	for i, repo := range repos {
 		upsertBuilder = upsertBuilder.Values(repo.GithubId, repo.Name, repo.Url, repo.NameWithOwner, repo.StarCount, repo.ForkCount, repo.Languages)
+		if i == len(repos)-1 {
+			fmt.Println("last repo star count", repo.StarCount)
+		}
 	}
 
 	sql, args, err := upsertBuilder.

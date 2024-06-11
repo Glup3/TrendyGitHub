@@ -315,27 +315,13 @@ func (v *GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdge
 //
 // Represents a given language found in repositories.
 type GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryLanguagesLanguageConnectionEdgesLanguageEdgeNodeLanguage struct {
-	// The Node ID of the Language object
-	Id string `json:"id"`
 	// The name of the current language.
 	Name string `json:"name"`
-	// The color defined for the current language.
-	Color string `json:"color"`
-}
-
-// GetId returns GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryLanguagesLanguageConnectionEdgesLanguageEdgeNodeLanguage.Id, and is useful for accessing the field via an interface.
-func (v *GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryLanguagesLanguageConnectionEdgesLanguageEdgeNodeLanguage) GetId() string {
-	return v.Id
 }
 
 // GetName returns GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryLanguagesLanguageConnectionEdgesLanguageEdgeNodeLanguage.Name, and is useful for accessing the field via an interface.
 func (v *GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryLanguagesLanguageConnectionEdgesLanguageEdgeNodeLanguage) GetName() string {
 	return v.Name
-}
-
-// GetColor returns GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryLanguagesLanguageConnectionEdgesLanguageEdgeNodeLanguage.Color, and is useful for accessing the field via an interface.
-func (v *GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryLanguagesLanguageConnectionEdgesLanguageEdgeNodeLanguage) GetColor() string {
-	return v.Color
 }
 
 // GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeSearchResultItem includes the requested fields of the GraphQL interface SearchResultItem.
@@ -520,10 +506,6 @@ type GetPublicReposSearchSearchResultItemConnectionPageInfo struct {
 	EndCursor string `json:"endCursor"`
 	// When paginating forwards, are there more items?
 	HasNextPage bool `json:"hasNextPage"`
-	// When paginating backwards, are there more items?
-	HasPreviousPage bool `json:"hasPreviousPage"`
-	// When paginating backwards, the cursor to continue.
-	StartCursor string `json:"startCursor"`
 }
 
 // GetEndCursor returns GetPublicReposSearchSearchResultItemConnectionPageInfo.EndCursor, and is useful for accessing the field via an interface.
@@ -536,33 +518,29 @@ func (v *GetPublicReposSearchSearchResultItemConnectionPageInfo) GetHasNextPage(
 	return v.HasNextPage
 }
 
-// GetHasPreviousPage returns GetPublicReposSearchSearchResultItemConnectionPageInfo.HasPreviousPage, and is useful for accessing the field via an interface.
-func (v *GetPublicReposSearchSearchResultItemConnectionPageInfo) GetHasPreviousPage() bool {
-	return v.HasPreviousPage
-}
-
-// GetStartCursor returns GetPublicReposSearchSearchResultItemConnectionPageInfo.StartCursor, and is useful for accessing the field via an interface.
-func (v *GetPublicReposSearchSearchResultItemConnectionPageInfo) GetStartCursor() string {
-	return v.StartCursor
-}
-
 // __GetPublicReposInput is used internally by genqlient
 type __GetPublicReposInput struct {
-	After string `json:"after"`
+	After   string `json:"after"`
+	Query   string `json:"query"`
+	PerPage int    `json:"perPage"`
 }
 
 // GetAfter returns __GetPublicReposInput.After, and is useful for accessing the field via an interface.
 func (v *__GetPublicReposInput) GetAfter() string { return v.After }
 
+// GetQuery returns __GetPublicReposInput.Query, and is useful for accessing the field via an interface.
+func (v *__GetPublicReposInput) GetQuery() string { return v.Query }
+
+// GetPerPage returns __GetPublicReposInput.PerPage, and is useful for accessing the field via an interface.
+func (v *__GetPublicReposInput) GetPerPage() int { return v.PerPage }
+
 // The query or mutation executed by GetPublicRepos.
 const GetPublicRepos_Operation = `
-query GetPublicRepos ($after: String) {
-	search(type: REPOSITORY, query: "is:public stars:>=50", first: 100, after: $after) {
+query GetPublicRepos ($after: String!, $query: String!, $perPage: Int!) {
+	search(type: REPOSITORY, query: $query, first: $perPage, after: $after) {
 		pageInfo {
 			endCursor
 			hasNextPage
-			hasPreviousPage
-			startCursor
 		}
 		edges {
 			node {
@@ -580,9 +558,7 @@ query GetPublicRepos ($after: String) {
 					languages(first: 5, orderBy: {field:SIZE,direction:DESC}) {
 						edges {
 							node {
-								id
 								name
-								color
 							}
 						}
 					}
@@ -597,12 +573,16 @@ func GetPublicRepos(
 	ctx_ context.Context,
 	client_ graphql.Client,
 	after string,
+	query string,
+	perPage int,
 ) (*GetPublicReposResponse, error) {
 	req_ := &graphql.Request{
 		OpName: "GetPublicRepos",
 		Query:  GetPublicRepos_Operation,
 		Variables: &__GetPublicReposInput{
-			After: after,
+			After:   after,
+			Query:   query,
+			PerPage: perPage,
 		},
 	}
 	var err_ error
