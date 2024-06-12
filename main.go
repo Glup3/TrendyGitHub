@@ -30,27 +30,39 @@ func main() {
 	}
 
 	var dataLoader loader.DataLoader
+	cursors := []string{
+		"Y3Vyc29yOjEwMA==", "Y3Vyc29yOjIwMA==", "Y3Vyc29yOjMwMA==",
+		"Y3Vyc29yOjQwMA==", "Y3Vyc29yOjUwMA==", "Y3Vyc29yOjYwMA==",
+		"Y3Vyc29yOjcwMA==", "Y3Vyc29yOjgwMA==", "Y3Vyc29yOjkwMA==", "",
+	}
+
+	// TODO: make it possible via settings to toggle between file loaders
 	if true {
 		dataLoader = loader.NewAPILoader(ctx, configs.GitHubToken)
 	}
 
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 10; i++ {
 		settings, err := database.LoadSettings(db, ctx)
 		if err != nil {
 			log.Fatalf("%v", err)
 		}
 
 		fmt.Println("fetching for max star count", settings.CurrentMaxStarCount)
-		repos, pageInfo, err := dataLoader.LoadRepos(settings.CurrentMaxStarCount)
+		repos, pageInfo, err := dataLoader.LoadMultipleRepos(settings.CurrentMaxStarCount, cursors)
 		if err != nil {
-			log.Fatalf("fetching repositories failed: %v", err)
+			// TODO: detecting 403 rate limit errors
+			log.Printf("Some fetches failed: %v", err)
 		}
 
 		inputs := config.MapGitHubReposToInputs(repos)
-		_, err = database.UpsertRepositories(db, ctx, inputs)
+		ids, err := database.UpsertRepositories(db, ctx, inputs)
 		if err != nil {
 			log.Fatalf("%v", err)
 		}
+
+		fmt.Println("upserted", len(ids), "repositories")
+		fmt.Println("max star count now is", pageInfo.NextMaxStarCount)
+		fmt.Println()
 
 		err = database.UpdateCurrentMaxStarCount(db, ctx, settings.ID, pageInfo.NextMaxStarCount)
 		if err != nil {

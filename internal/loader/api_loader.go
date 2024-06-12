@@ -3,6 +3,7 @@ package loader
 import (
 	"context"
 	"fmt"
+	"sync"
 
 	"github.com/glup3/TrendyGitHub/generated"
 )
@@ -21,10 +22,10 @@ func NewAPILoader(ctx context.Context, apiKey string) *APILoader {
 	return &APILoader{ctx: ctx, apiKey: apiKey}
 }
 
-func (l *APILoader) LoadRepos(maxStarCount int) ([]GitHubRepo, *PageInfo, error) {
+func (l *APILoader) LoadRepos(maxStarCount int, cursor string) ([]GitHubRepo, *PageInfo, error) {
 	client := GetApiClient(l.apiKey)
 
-	resp, err := generated.GetPublicRepos(l.ctx, client, fmt.Sprintf("is:public stars:%d..%d", minStarCount, maxStarCount), perPage)
+	resp, err := generated.GetPublicRepos(l.ctx, client, fmt.Sprintf("is:public stars:%d..%d", minStarCount, maxStarCount), perPage, cursor)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -58,4 +59,60 @@ func mapLanguages(edges []generated.GetPublicReposSearchSearchResultItemConnecti
 	}
 
 	return languages
+}
+
+func (l *APILoader) LoadMultipleRepos(maxStarCount int, cursors []string) ([]GitHubRepo, *PageInfo, error) {
+	var wg sync.WaitGroup
+	repoChan := make(chan []GitHubRepo, len(cursors))
+	pageInfoChan := make(chan *PageInfo, len(cursors))
+	errChan := make(chan error, len(cursors))
+
+	loadReposWorker := func(cursor string) {
+		defer wg.Done()
+		repos, pageInfo, err := l.LoadRepos(maxStarCount, cursor)
+		if err != nil {
+			errChan <- err
+			return
+		}
+		repoChan <- repos
+		pageInfoChan <- pageInfo
+	}
+
+	for _, cursor := range cursors {
+		wg.Add(1)
+		go loadReposWorker(cursor)
+	}
+
+	wg.Wait()
+	close(repoChan)
+	close(pageInfoChan)
+	close(errChan)
+
+	var allRepos []GitHubRepo
+	smallestNextMaxStarCount := maxStarCount
+	var allErrors []error
+
+	for repos := range repoChan {
+		allRepos = append(allRepos, repos...)
+	}
+
+	for pageInfo := range pageInfoChan {
+		if pageInfo.NextMaxStarCount < smallestNextMaxStarCount {
+			smallestNextMaxStarCount = pageInfo.NextMaxStarCount
+		}
+	}
+
+	for err := range errChan {
+		allErrors = append(allErrors, err)
+	}
+
+	pageInfo := &PageInfo{
+		NextMaxStarCount: smallestNextMaxStarCount,
+	}
+
+	if len(allErrors) > 0 {
+		return allRepos, pageInfo, fmt.Errorf("some fetches failed: %v", allErrors)
+	}
+
+	return allRepos, pageInfo, nil
 }

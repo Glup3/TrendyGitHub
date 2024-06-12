@@ -1,9 +1,5 @@
-query GetPublicRepos($query: String!, $limit: Int!) {
-  search(type: REPOSITORY, query: $query, first: $limit) {
-    pageInfo {
-      hasNextPage
-    }
-
+query GetPublicRepos($query: String!, $limit: Int!, $cursor: String!) {
+  search(type: REPOSITORY, query: $query, first: $limit, after: $cursor) {
     edges {
       node {
         ... on Repository {

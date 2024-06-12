@@ -29,15 +29,8 @@ func (v *GetPublicReposResponse) GetSearch() GetPublicReposSearchSearchResultIte
 // of matches, a maximum of 1,000 results will be available across all types,
 // potentially split across many pages.
 type GetPublicReposSearchSearchResultItemConnection struct {
-	// Information to aid in pagination.
-	PageInfo GetPublicReposSearchSearchResultItemConnectionPageInfo `json:"pageInfo"`
 	// A list of edges.
 	Edges []GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdge `json:"edges"`
-}
-
-// GetPageInfo returns GetPublicReposSearchSearchResultItemConnection.PageInfo, and is useful for accessing the field via an interface.
-func (v *GetPublicReposSearchSearchResultItemConnection) GetPageInfo() GetPublicReposSearchSearchResultItemConnectionPageInfo {
-	return v.PageInfo
 }
 
 // GetEdges returns GetPublicReposSearchSearchResultItemConnection.Edges, and is useful for accessing the field via an interface.
@@ -497,24 +490,11 @@ func (v *GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdge
 	return v.Typename
 }
 
-// GetPublicReposSearchSearchResultItemConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
-// The GraphQL type's documentation follows.
-//
-// Information about pagination in a connection.
-type GetPublicReposSearchSearchResultItemConnectionPageInfo struct {
-	// When paginating forwards, are there more items?
-	HasNextPage bool `json:"hasNextPage"`
-}
-
-// GetHasNextPage returns GetPublicReposSearchSearchResultItemConnectionPageInfo.HasNextPage, and is useful for accessing the field via an interface.
-func (v *GetPublicReposSearchSearchResultItemConnectionPageInfo) GetHasNextPage() bool {
-	return v.HasNextPage
-}
-
 // __GetPublicReposInput is used internally by genqlient
 type __GetPublicReposInput struct {
-	Query string `json:"query"`
-	Limit int    `json:"limit"`
+	Query  string `json:"query"`
+	Limit  int    `json:"limit"`
+	Cursor string `json:"cursor"`
 }
 
 // GetQuery returns __GetPublicReposInput.Query, and is useful for accessing the field via an interface.
@@ -523,13 +503,13 @@ func (v *__GetPublicReposInput) GetQuery() string { return v.Query }
 // GetLimit returns __GetPublicReposInput.Limit, and is useful for accessing the field via an interface.
 func (v *__GetPublicReposInput) GetLimit() int { return v.Limit }
 
+// GetCursor returns __GetPublicReposInput.Cursor, and is useful for accessing the field via an interface.
+func (v *__GetPublicReposInput) GetCursor() string { return v.Cursor }
+
 // The query or mutation executed by GetPublicRepos.
 const GetPublicRepos_Operation = `
-query GetPublicRepos ($query: String!, $limit: Int!) {
-	search(type: REPOSITORY, query: $query, first: $limit) {
-		pageInfo {
-			hasNextPage
-		}
+query GetPublicRepos ($query: String!, $limit: Int!, $cursor: String!) {
+	search(type: REPOSITORY, query: $query, first: $limit, after: $cursor) {
 		edges {
 			node {
 				__typename
@@ -562,13 +542,15 @@ func GetPublicRepos(
 	client_ graphql.Client,
 	query string,
 	limit int,
+	cursor string,
 ) (*GetPublicReposResponse, error) {
 	req_ := &graphql.Request{
 		OpName: "GetPublicRepos",
 		Query:  GetPublicRepos_Operation,
 		Variables: &__GetPublicReposInput{
-			Query: query,
-			Limit: limit,
+			Query:  query,
+			Limit:  limit,
+			Cursor: cursor,
 		},
 	}
 	var err_ error
