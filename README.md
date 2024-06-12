@@ -16,6 +16,10 @@ source .env
 
 ## Notes
 
+*NEW*
+After increasing speed by 10x, I am getting secondary rate limited at about
+66 requests in 1 minute against the same endpoint
+
 Primary rate limit: 5000 points / hour
 
 Secondary rate limit: 2000 points burst for 1 minute

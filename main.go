@@ -41,7 +41,7 @@ func main() {
 		dataLoader = loader.NewAPILoader(ctx, configs.GitHubToken)
 	}
 
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 6; i++ {
 		settings, err := database.LoadSettings(db, ctx)
 		if err != nil {
 			log.Fatalf("%v", err)
