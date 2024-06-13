@@ -13,10 +13,7 @@ type Config struct {
 }
 
 func LoadConfig() (*Config, error) {
-	err := godotenv.Load()
-	if err != nil {
-		return nil, fmt.Errorf("loading .env file failed: %v", err)
-	}
+	_ = godotenv.Load()
 
 	gitHubToken := os.Getenv("GITHUB_TOKEN")
 	if gitHubToken == "" {

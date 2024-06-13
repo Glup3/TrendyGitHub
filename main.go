@@ -44,10 +44,15 @@ func main() {
 
 	unitCount := 0
 
-	for i := 0; i < 6*5; i++ {
+	for {
 		settings, err := database.LoadSettings(db, ctx)
 		if err != nil {
 			log.Fatalf("%v", err)
+		}
+
+		if settings.CurrentMaxStarCount <= settings.MinStarCount {
+			fmt.Println("Reached the end - no more data loading")
+			break
 		}
 
 		if unitCount < 60 {

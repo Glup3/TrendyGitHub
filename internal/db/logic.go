@@ -12,6 +12,7 @@ type repoId = int32
 
 type Settings struct {
 	CurrentMaxStarCount int
+	MinStarCount        int
 	ID                  int
 }
 
@@ -29,7 +30,7 @@ func LoadSettings(db *Database, ctx context.Context) (Settings, error) {
 	var settings Settings
 
 	selectBuilder := sq.StatementBuilder.PlaceholderFormat(sq.Dollar).
-		Select("id", "current_max_star_count").
+		Select("id", "current_max_star_count", "min_star_count").
 		From("settings").
 		Limit(1)
 
@@ -38,7 +39,7 @@ func LoadSettings(db *Database, ctx context.Context) (Settings, error) {
 		return settings, fmt.Errorf("error building SQL: %v", err)
 	}
 
-	err = db.pool.QueryRow(ctx, sql, args...).Scan(&settings.ID, &settings.CurrentMaxStarCount)
+	err = db.pool.QueryRow(ctx, sql, args...).Scan(&settings.ID, &settings.CurrentMaxStarCount, &settings.MinStarCount)
 	if err != nil {
 		return settings, fmt.Errorf("error loading settings: %v", err)
 	}
