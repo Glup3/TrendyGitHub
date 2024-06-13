@@ -44,7 +44,7 @@ func main() {
 
 	unitCount := 0
 
-	for i := 0; i < 20; i++ {
+	for i := 0; i < 6*5; i++ {
 		settings, err := database.LoadSettings(db, ctx)
 		if err != nil {
 			log.Fatalf("%v", err)
@@ -54,7 +54,7 @@ func main() {
 			unitCount += 10
 		} else {
 			fmt.Println("waiting out secondary rate limit...")
-			time.Sleep(20 * time.Second)
+			time.Sleep(40 * time.Second)
 			unitCount = 0
 		}
 
@@ -62,9 +62,11 @@ func main() {
 
 		fmt.Println("fetching for max star count", settings.CurrentMaxStarCount)
 		repos, pageInfo, err := dataLoader.LoadMultipleRepos(settings.CurrentMaxStarCount, cursors)
+		hasLoadError := false
 		if err != nil {
 			// TODO: detecting 403 rate limit errors
 			log.Printf("Some fetches failed: %v", err)
+			hasLoadError = true
 		}
 
 		inputs := config.MapGitHubReposToInputs(repos)
@@ -74,6 +76,13 @@ func main() {
 		}
 
 		fmt.Println("upserted", len(ids), "repositories")
+
+		if hasLoadError {
+			fmt.Println("skipping update max star count because of errors")
+			fmt.Println("stopping data loading")
+			break
+		}
+
 		fmt.Println("max star count now is", pageInfo.NextMaxStarCount)
 		fmt.Println()
 
