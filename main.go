@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"time"
 
 	config "github.com/glup3/TrendyGitHub/internal"
 	database "github.com/glup3/TrendyGitHub/internal/db"
@@ -41,11 +42,23 @@ func main() {
 		dataLoader = loader.NewAPILoader(ctx, configs.GitHubToken)
 	}
 
-	for i := 0; i < 6; i++ {
+	unitCount := 0
+
+	for i := 0; i < 20; i++ {
 		settings, err := database.LoadSettings(db, ctx)
 		if err != nil {
 			log.Fatalf("%v", err)
 		}
+
+		if unitCount < 60 {
+			unitCount += 10
+		} else {
+			fmt.Println("waiting out secondary rate limit...")
+			time.Sleep(20 * time.Second)
+			unitCount = 0
+		}
+
+		fmt.Println("unitCount is", unitCount)
 
 		fmt.Println("fetching for max star count", settings.CurrentMaxStarCount)
 		repos, pageInfo, err := dataLoader.LoadMultipleRepos(settings.CurrentMaxStarCount, cursors)
