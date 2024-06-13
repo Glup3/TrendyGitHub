@@ -11,6 +11,8 @@ import (
 	"github.com/glup3/TrendyGitHub/internal/loader"
 )
 
+const timeout_seconds = 40
+
 func main() {
 	ctx := context.Background()
 
@@ -58,12 +60,10 @@ func main() {
 		if unitCount < 60 {
 			unitCount += 10
 		} else {
-			fmt.Println("waiting out secondary rate limit...")
-			time.Sleep(40 * time.Second)
+			fmt.Println("waiting out", timeout_seconds, "secondary rate limit...")
+			time.Sleep(timeout_seconds * time.Second)
 			unitCount = 0
 		}
-
-		fmt.Println("unitCount is", unitCount)
 
 		fmt.Println("fetching for max star count", settings.CurrentMaxStarCount)
 		repos, pageInfo, err := dataLoader.LoadMultipleRepos(settings.CurrentMaxStarCount, cursors)
@@ -85,6 +85,11 @@ func main() {
 		if hasLoadError {
 			fmt.Println("skipping update max star count because of errors")
 			fmt.Println("stopping data loading")
+			break
+		}
+
+		if settings.CurrentMaxStarCount == pageInfo.NextMaxStarCount {
+			fmt.Println("WARNING: there are more than 1000 repos in this star range - aborting", pageInfo.NextMaxStarCount)
 			break
 		}
 
