@@ -52,10 +52,12 @@ func (l *APILoader) LoadRepos(maxStarCount int, cursor string) ([]GitHubRepo, *P
 }
 
 func mapLanguages(edges []generated.GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryLanguagesLanguageConnectionEdgesLanguageEdge) []string {
-	languages := make([]string, 5)
+	languages := []string{}
 
-	for i, edge := range edges {
-		languages[i] = edge.Node.Name
+	for _, edge := range edges {
+		if len(edge.Node.Name) > 0 {
+			languages = append(languages, edge.Node.Name)
+		}
 	}
 
 	return languages

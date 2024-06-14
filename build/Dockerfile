@@ -6,9 +6,9 @@ COPY go.mod go.sum ./
 RUN go mod download && go mod verify
 
 COPY . .
-RUN go build -v -o /usr/local/bin/tgh-loader
+RUN go build -v -o /usr/local/bin/tgh ./cmd/cli
 
 RUN rm -rf /usr/src/app/*
 
-RUN echo '0 * * * * /usr/bin/flock -n /tmp/go_program.lock /usr/local/bin/tgh-loader >/proc/1/fd/1 2>/proc/1/fd/2' > /etc/crontabs/root
+RUN echo '0 * * * * /usr/bin/flock -n /tmp/go_program.lock /usr/local/bin/tgh >/proc/1/fd/1 2>/proc/1/fd/2' > /etc/crontabs/root
 CMD ["crond", "-f", "-d", "8"]
