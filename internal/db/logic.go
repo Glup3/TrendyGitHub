@@ -21,13 +21,14 @@ type Settings struct {
 }
 
 type RepoInput struct {
-	GithubId      string
-	Name          string
-	Url           string
-	NameWithOwner string
-	Languages     []string
-	StarCount     int
-	ForkCount     int
+	GithubId        string
+	Name            string
+	Url             string
+	NameWithOwner   string
+	PrimaryLanguage string
+	Languages       []string
+	StarCount       int
+	ForkCount       int
 }
 
 func LoadSettings(db *Database, ctx context.Context) (Settings, error) {
@@ -79,6 +80,7 @@ func UpsertRepositories(db *Database, ctx context.Context, repos []RepoInput) ([
 			"star_count",
 			"fork_count",
 			"languages",
+			"primary_language",
 		)
 
 	for _, repo := range repos {
@@ -90,6 +92,7 @@ func UpsertRepositories(db *Database, ctx context.Context, repos []RepoInput) ([
 			repo.StarCount,
 			repo.ForkCount,
 			repo.Languages,
+			repo.PrimaryLanguage,
 		)
 	}
 
@@ -99,6 +102,7 @@ func UpsertRepositories(db *Database, ctx context.Context, repos []RepoInput) ([
 			DO UPDATE SET
 				star_count = EXCLUDED.star_count,
 				fork_count = EXCLUDED.fork_count,
+        primary_language = EXCLUDED.primary_language,
 				languages = EXCLUDED.languages
 		`).
 		Suffix("RETURNING id").

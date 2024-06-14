@@ -21,8 +21,11 @@ query GetPublicRepos($query: String!, $limit: Int!, $cursor: String!) {
           nameWithOwner
           url
           updatedAt
+          primaryLanguage {
+            name
+          }
 
-          languages(first: 5, orderBy: { field: SIZE, direction: DESC}) {
+          languages(first: 100, orderBy: { field: SIZE, direction: DESC }) {
             edges {
               node {
                 name

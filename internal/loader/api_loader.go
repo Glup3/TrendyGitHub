@@ -34,13 +34,14 @@ func (l *APILoader) LoadRepos(maxStarCount int, cursor string) ([]GitHubRepo, *P
 	for i, edge := range resp.Search.Edges {
 		repo, _ := edge.Node.(*generated.GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepository)
 		repos[i] = GitHubRepo{
-			Id:            repo.Id,
-			Name:          repo.Name,
-			Url:           repo.Url,
-			NameWithOwner: repo.NameWithOwner,
-			StarCount:     repo.StargazerCount,
-			ForkCount:     repo.ForkCount,
-			Languages:     mapLanguages(repo.Languages.Edges),
+			Id:              repo.Id,
+			Name:            repo.Name,
+			Url:             repo.Url,
+			NameWithOwner:   repo.NameWithOwner,
+			StarCount:       repo.StargazerCount,
+			ForkCount:       repo.ForkCount,
+			PrimaryLanguage: repo.PrimaryLanguage.Name,
+			Languages:       mapLanguages(repo.Languages.Edges),
 		}
 	}
 

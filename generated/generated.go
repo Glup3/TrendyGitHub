@@ -259,6 +259,8 @@ type GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNode
 	Url string `json:"url"`
 	// Identifies the date and time when the object was last updated.
 	UpdatedAt time.Time `json:"updatedAt"`
+	// The primary language of the repository's code.
+	PrimaryLanguage GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryPrimaryLanguage `json:"primaryLanguage"`
 	// A list containing a breakdown of the language composition of the repository.
 	Languages GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryLanguagesLanguageConnection `json:"languages"`
 }
@@ -313,6 +315,11 @@ func (v *GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdge
 	return v.UpdatedAt
 }
 
+// GetPrimaryLanguage returns GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepository.PrimaryLanguage, and is useful for accessing the field via an interface.
+func (v *GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepository) GetPrimaryLanguage() GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryPrimaryLanguage {
+	return v.PrimaryLanguage
+}
+
 // GetLanguages returns GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepository.Languages, and is useful for accessing the field via an interface.
 func (v *GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepository) GetLanguages() GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryLanguagesLanguageConnection {
 	return v.Languages
@@ -356,6 +363,20 @@ type GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNode
 
 // GetName returns GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryLanguagesLanguageConnectionEdgesLanguageEdgeNodeLanguage.Name, and is useful for accessing the field via an interface.
 func (v *GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryLanguagesLanguageConnectionEdgesLanguageEdgeNodeLanguage) GetName() string {
+	return v.Name
+}
+
+// GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryPrimaryLanguage includes the requested fields of the GraphQL type Language.
+// The GraphQL type's documentation follows.
+//
+// Represents a given language found in repositories.
+type GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryPrimaryLanguage struct {
+	// The name of the current language.
+	Name string `json:"name"`
+}
+
+// GetName returns GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryPrimaryLanguage.Name, and is useful for accessing the field via an interface.
+func (v *GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryPrimaryLanguage) GetName() string {
 	return v.Name
 }
 
@@ -573,7 +594,10 @@ query GetPublicRepos ($query: String!, $limit: Int!, $cursor: String!) {
 					nameWithOwner
 					url
 					updatedAt
-					languages(first: 5, orderBy: {field:SIZE,direction:DESC}) {
+					primaryLanguage {
+						name
+					}
+					languages(first: 100, orderBy: {field:SIZE,direction:DESC}) {
 						edges {
 							node {
 								name
