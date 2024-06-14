@@ -7,13 +7,14 @@ import (
 
 func MapGitHubRepoToInput(repo loader.GitHubRepo) database.RepoInput {
 	return database.RepoInput{
-		GithubId:      repo.Id,
-		Name:          repo.Name,
-		Url:           repo.Url,
-		NameWithOwner: repo.NameWithOwner,
-		Languages:     repo.Languages,
-		StarCount:     repo.StarCount,
-		ForkCount:     repo.ForkCount,
+		GithubId:        repo.Id,
+		Name:            repo.Name,
+		Url:             repo.Url,
+		NameWithOwner:   repo.NameWithOwner,
+		Languages:       repo.Languages,
+		StarCount:       repo.StarCount,
+		ForkCount:       repo.ForkCount,
+		PrimaryLanguage: repo.PrimaryLanguage,
 	}
 }
 
