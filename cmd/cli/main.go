@@ -64,6 +64,7 @@ func main() {
 			log.Printf("Some fetches failed: %v", err)
 			hasLoadError = true
 		}
+		unitCount += pageInfo.UnitCosts
 
 		inputs := config.MapGitHubReposToInputs(repos)
 		ids, err := database.UpsertRepositories(db, ctx, inputs)
