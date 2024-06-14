@@ -45,6 +45,11 @@ func main() {
 			log.Fatalf("%v", err)
 		}
 
+		if !settings.IsEnabled {
+			fmt.Println("Data loading is disabled")
+			break
+		}
+
 		if settings.CurrentMaxStarCount <= settings.MinStarCount {
 			fmt.Println("Reached the end - no more data loading")
 			break

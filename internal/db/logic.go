@@ -17,6 +17,7 @@ type Settings struct {
 	TimeoutSecondsPrevent  int
 	TimeoutSecondsExceeded int
 	TimeoutMaxUnits        int
+	IsEnabled              bool
 }
 
 type RepoInput struct {
@@ -32,8 +33,17 @@ type RepoInput struct {
 func LoadSettings(db *Database, ctx context.Context) (Settings, error) {
 	var settings Settings
 
-	selectBuilder := sq.StatementBuilder.PlaceholderFormat(sq.Dollar).
-		Select("id", "current_max_star_count", "min_star_count", "timeout_seconds_prevent", "timeout_seconds_exceeded", "timeout_max_units").
+	selectBuilder := sq.StatementBuilder.
+		PlaceholderFormat(sq.Dollar).
+		Select(
+			"id",
+			"current_max_star_count",
+			"min_star_count",
+			"timeout_seconds_prevent",
+			"timeout_seconds_exceeded",
+			"timeout_max_units",
+			"enabled",
+		).
 		From("settings").
 		Limit(1)
 
@@ -43,7 +53,15 @@ func LoadSettings(db *Database, ctx context.Context) (Settings, error) {
 	}
 
 	err = db.pool.QueryRow(ctx, sql, args...).
-		Scan(&settings.ID, &settings.CurrentMaxStarCount, &settings.MinStarCount, &settings.TimeoutSecondsPrevent, &settings.TimeoutSecondsExceeded, &settings.TimeoutMaxUnits)
+		Scan(
+			&settings.ID,
+			&settings.CurrentMaxStarCount,
+			&settings.MinStarCount,
+			&settings.TimeoutSecondsPrevent,
+			&settings.TimeoutSecondsExceeded,
+			&settings.TimeoutMaxUnits,
+			&settings.IsEnabled,
+		)
 	if err != nil {
 		return settings, fmt.Errorf("error loading settings: %v", err)
 	}
@@ -53,14 +71,36 @@ func LoadSettings(db *Database, ctx context.Context) (Settings, error) {
 
 func UpsertRepositories(db *Database, ctx context.Context, repos []RepoInput) ([]repoId, error) {
 	upsertBuilder := sq.Insert("repositories").
-		Columns("github_id", "name", "url", "name_with_owner", "star_count", "fork_count", "languages")
+		Columns(
+			"github_id",
+			"name",
+			"url",
+			"name_with_owner",
+			"star_count",
+			"fork_count",
+			"languages",
+		)
 
 	for _, repo := range repos {
-		upsertBuilder = upsertBuilder.Values(repo.GithubId, repo.Name, repo.Url, repo.NameWithOwner, repo.StarCount, repo.ForkCount, repo.Languages)
+		upsertBuilder = upsertBuilder.Values(
+			repo.GithubId,
+			repo.Name,
+			repo.Url,
+			repo.NameWithOwner,
+			repo.StarCount,
+			repo.ForkCount,
+			repo.Languages,
+		)
 	}
 
 	sql, args, err := upsertBuilder.
-		Suffix("ON CONFLICT (github_id) DO UPDATE SET star_count = EXCLUDED.star_count, fork_count = EXCLUDED.fork_count, languages = EXCLUDED.languages").
+		Suffix(`
+			ON CONFLICT (github_id)
+			DO UPDATE SET
+				star_count = EXCLUDED.star_count,
+				fork_count = EXCLUDED.fork_count,
+				languages = EXCLUDED.languages
+		`).
 		Suffix("RETURNING id").
 		PlaceholderFormat(sq.Dollar).
 		ToSql()
