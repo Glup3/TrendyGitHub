@@ -13,6 +13,7 @@ type GitHubRepo struct {
 
 type PageInfo struct {
 	NextMaxStarCount int
+	UnitCosts        int
 }
 
 type DataLoader interface {

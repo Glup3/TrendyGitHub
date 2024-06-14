@@ -11,9 +11,12 @@ import (
 type repoId = int32
 
 type Settings struct {
-	CurrentMaxStarCount int
-	MinStarCount        int
-	ID                  int
+	ID                     int
+	CurrentMaxStarCount    int
+	MinStarCount           int
+	TimeoutSecondsPrevent  int
+	TimeoutSecondsExceeded int
+	TimeoutMaxUnits        int
 }
 
 type RepoInput struct {
@@ -30,7 +33,7 @@ func LoadSettings(db *Database, ctx context.Context) (Settings, error) {
 	var settings Settings
 
 	selectBuilder := sq.StatementBuilder.PlaceholderFormat(sq.Dollar).
-		Select("id", "current_max_star_count", "min_star_count").
+		Select("id", "current_max_star_count", "min_star_count", "timeout_seconds_prevent", "timeout_seconds_exceeded", "timeout_max_units").
 		From("settings").
 		Limit(1)
 
@@ -39,7 +42,8 @@ func LoadSettings(db *Database, ctx context.Context) (Settings, error) {
 		return settings, fmt.Errorf("error building SQL: %v", err)
 	}
 
-	err = db.pool.QueryRow(ctx, sql, args...).Scan(&settings.ID, &settings.CurrentMaxStarCount, &settings.MinStarCount)
+	err = db.pool.QueryRow(ctx, sql, args...).
+		Scan(&settings.ID, &settings.CurrentMaxStarCount, &settings.MinStarCount, &settings.TimeoutSecondsPrevent, &settings.TimeoutSecondsExceeded, &settings.TimeoutMaxUnits)
 	if err != nil {
 		return settings, fmt.Errorf("error loading settings: %v", err)
 	}

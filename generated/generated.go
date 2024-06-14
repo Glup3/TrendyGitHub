@@ -11,11 +11,53 @@ import (
 	"github.com/Khan/genqlient/graphql"
 )
 
+// GetPublicReposRateLimit includes the requested fields of the GraphQL type RateLimit.
+// The GraphQL type's documentation follows.
+//
+// Represents the client's rate limit.
+type GetPublicReposRateLimit struct {
+	// The maximum number of points the client is permitted to consume in a 60 minute window.
+	Limit int `json:"limit"`
+	// The number of points remaining in the current rate limit window.
+	Remaining int `json:"remaining"`
+	// The number of points used in the current rate limit window.
+	Used int `json:"used"`
+	// The time at which the current rate limit window resets in UTC epoch seconds.
+	ResetAt time.Time `json:"resetAt"`
+	// The point cost for the current query counting against the rate limit.
+	Cost int `json:"cost"`
+	// The maximum number of nodes this query may return
+	NodeCount int `json:"nodeCount"`
+}
+
+// GetLimit returns GetPublicReposRateLimit.Limit, and is useful for accessing the field via an interface.
+func (v *GetPublicReposRateLimit) GetLimit() int { return v.Limit }
+
+// GetRemaining returns GetPublicReposRateLimit.Remaining, and is useful for accessing the field via an interface.
+func (v *GetPublicReposRateLimit) GetRemaining() int { return v.Remaining }
+
+// GetUsed returns GetPublicReposRateLimit.Used, and is useful for accessing the field via an interface.
+func (v *GetPublicReposRateLimit) GetUsed() int { return v.Used }
+
+// GetResetAt returns GetPublicReposRateLimit.ResetAt, and is useful for accessing the field via an interface.
+func (v *GetPublicReposRateLimit) GetResetAt() time.Time { return v.ResetAt }
+
+// GetCost returns GetPublicReposRateLimit.Cost, and is useful for accessing the field via an interface.
+func (v *GetPublicReposRateLimit) GetCost() int { return v.Cost }
+
+// GetNodeCount returns GetPublicReposRateLimit.NodeCount, and is useful for accessing the field via an interface.
+func (v *GetPublicReposRateLimit) GetNodeCount() int { return v.NodeCount }
+
 // GetPublicReposResponse is returned by GetPublicRepos on success.
 type GetPublicReposResponse struct {
+	// The client's rate limit information.
+	RateLimit GetPublicReposRateLimit `json:"rateLimit"`
 	// Perform a search across resources, returning a maximum of 1,000 results.
 	Search GetPublicReposSearchSearchResultItemConnection `json:"search"`
 }
+
+// GetRateLimit returns GetPublicReposResponse.RateLimit, and is useful for accessing the field via an interface.
+func (v *GetPublicReposResponse) GetRateLimit() GetPublicReposRateLimit { return v.RateLimit }
 
 // GetSearch returns GetPublicReposResponse.Search, and is useful for accessing the field via an interface.
 func (v *GetPublicReposResponse) GetSearch() GetPublicReposSearchSearchResultItemConnection {
@@ -509,6 +551,14 @@ func (v *__GetPublicReposInput) GetCursor() string { return v.Cursor }
 // The query or mutation executed by GetPublicRepos.
 const GetPublicRepos_Operation = `
 query GetPublicRepos ($query: String!, $limit: Int!, $cursor: String!) {
+	rateLimit {
+		limit
+		remaining
+		used
+		resetAt
+		cost
+		nodeCount
+	}
 	search(type: REPOSITORY, query: $query, first: $limit, after: $cursor) {
 		edges {
 			node {

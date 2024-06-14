@@ -11,8 +11,6 @@ import (
 	"github.com/glup3/TrendyGitHub/internal/loader"
 )
 
-const timeout_seconds = 40
-
 func main() {
 	ctx := context.Background()
 
@@ -32,19 +30,14 @@ func main() {
 		log.Fatalf("Unable to ping database: %v", err)
 	}
 
-	var dataLoader loader.DataLoader
+	unitCount := 0
 	cursors := []string{
 		"Y3Vyc29yOjEwMA==", "Y3Vyc29yOjIwMA==", "Y3Vyc29yOjMwMA==",
 		"Y3Vyc29yOjQwMA==", "Y3Vyc29yOjUwMA==", "Y3Vyc29yOjYwMA==",
 		"Y3Vyc29yOjcwMA==", "Y3Vyc29yOjgwMA==", "Y3Vyc29yOjkwMA==", "",
 	}
 
-	// TODO: make it possible via settings to toggle between file loaders
-	if true {
-		dataLoader = loader.NewAPILoader(ctx, configs.GitHubToken)
-	}
-
-	unitCount := 0
+	dataLoader := loader.NewAPILoader(ctx, configs.GitHubToken)
 
 	for {
 		settings, err := database.LoadSettings(db, ctx)
@@ -57,11 +50,9 @@ func main() {
 			break
 		}
 
-		if unitCount < 60 {
-			unitCount += 10
-		} else {
-			fmt.Println("waiting out", timeout_seconds, "secondary rate limit...")
-			time.Sleep(timeout_seconds * time.Second)
+		if unitCount >= settings.TimeoutMaxUnits {
+			fmt.Printf("Prevent secondary time limit, waiting %d seconds\n", settings.TimeoutSecondsPrevent)
+			time.Sleep(time.Duration(settings.TimeoutSecondsPrevent) * time.Second)
 			unitCount = 0
 		}
 
@@ -83,9 +74,9 @@ func main() {
 		fmt.Println("upserted", len(ids), "repositories")
 
 		if hasLoadError {
-			fmt.Println("skipping update max star count because of errors")
-			fmt.Println("stopping data loading")
-			break
+			fmt.Printf("Encountered errors! Timeout of %d seconds\n", settings.TimeoutSecondsExceeded)
+			time.Sleep(time.Duration(settings.TimeoutSecondsExceeded) * time.Second)
+			continue
 		}
 
 		if settings.CurrentMaxStarCount == pageInfo.NextMaxStarCount {
@@ -94,7 +85,6 @@ func main() {
 		}
 
 		fmt.Println("max star count now is", pageInfo.NextMaxStarCount)
-		fmt.Println()
 
 		err = database.UpdateCurrentMaxStarCount(db, ctx, settings.ID, pageInfo.NextMaxStarCount)
 		if err != nil {

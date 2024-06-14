@@ -1,4 +1,13 @@
 query GetPublicRepos($query: String!, $limit: Int!, $cursor: String!) {
+  rateLimit {
+    limit
+    remaining
+    used
+    resetAt
+    cost
+    nodeCount
+  }
+
   search(type: REPOSITORY, query: $query, first: $limit, after: $cursor) {
     edges {
       node {

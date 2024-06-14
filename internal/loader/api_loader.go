@@ -46,6 +46,7 @@ func (l *APILoader) LoadRepos(maxStarCount int, cursor string) ([]GitHubRepo, *P
 
 	pageInfo := &PageInfo{
 		NextMaxStarCount: repos[len(repos)-1].StarCount,
+		UnitCosts:        resp.RateLimit.Cost,
 	}
 
 	return repos, pageInfo, nil
@@ -91,8 +92,9 @@ func (l *APILoader) LoadMultipleRepos(maxStarCount int, cursors []string) ([]Git
 	close(errChan)
 
 	var allRepos []GitHubRepo
-	smallestNextMaxStarCount := maxStarCount
 	var allErrors []error
+	smallestNextMaxStarCount := maxStarCount
+	totalUnitCosts := 0
 
 	for repos := range repoChan {
 		allRepos = append(allRepos, repos...)
@@ -102,6 +104,8 @@ func (l *APILoader) LoadMultipleRepos(maxStarCount int, cursors []string) ([]Git
 		if pageInfo.NextMaxStarCount < smallestNextMaxStarCount {
 			smallestNextMaxStarCount = pageInfo.NextMaxStarCount
 		}
+
+		totalUnitCosts += pageInfo.UnitCosts
 	}
 
 	for err := range errChan {
@@ -110,6 +114,7 @@ func (l *APILoader) LoadMultipleRepos(maxStarCount int, cursors []string) ([]Git
 
 	pageInfo := &PageInfo{
 		NextMaxStarCount: smallestNextMaxStarCount,
+		UnitCosts:        totalUnitCosts,
 	}
 
 	if len(allErrors) > 0 {
