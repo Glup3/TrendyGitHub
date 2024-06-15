@@ -102,6 +102,7 @@ func UpsertRepositories(db *Database, ctx context.Context, repos []RepoInput) ([
 			DO UPDATE SET
 				star_count = EXCLUDED.star_count,
 				fork_count = EXCLUDED.fork_count,
+        name_with_owner = EXCLUDED.name_with_owner,
         primary_language = EXCLUDED.primary_language,
 				languages = EXCLUDED.languages
 		`).

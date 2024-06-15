@@ -82,6 +82,7 @@ func main() {
 		if hasLoadError {
 			fmt.Printf("Encountered errors! Timeout of %d seconds\n", settings.TimeoutSecondsExceeded)
 			time.Sleep(time.Duration(settings.TimeoutSecondsExceeded) * time.Second)
+			unitCount = 0
 			continue
 		}
 
