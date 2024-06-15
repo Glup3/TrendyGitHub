@@ -147,3 +147,77 @@ func UpdateCurrentMaxStarCount(db *Database, ctx context.Context, settingsID int
 
 	return nil
 }
+
+func createStarHistorySnapshot(tx pgx.Tx, ctx context.Context) (int64, error) {
+	sql, args, err := sq.Insert("stars_history").
+		Columns("repository_id", "star_count").
+		Select(sq.Select("id", "star_count").From("repositories")).
+		ToSql()
+	if err != nil {
+		return 0, err
+	}
+
+	commandTag, err := tx.Exec(ctx, sql, args...)
+	if err != nil {
+		return 0, err
+	}
+
+	return commandTag.RowsAffected(), nil
+}
+
+func resetMaxStarCount(tx pgx.Tx, ctx context.Context, settingsId int) error {
+	sql, args, err := sq.StatementBuilder.PlaceholderFormat(sq.Dollar).
+		Update("settings").
+		Set("current_max_star_count", 1_000_000).
+		Where(sq.Eq{"id": settingsId}).
+		ToSql()
+	if err != nil {
+		return err
+	}
+
+	_, err = tx.Exec(ctx, sql, args...)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func CreateSnapshotAndReset(db *Database, ctx context.Context, settingsId int) (int64, error) {
+	tx, err := db.pool.Begin(ctx)
+	if err != nil {
+		return 0, fmt.Errorf("failed to begin transaction: %v", err)
+	}
+
+	defer func() {
+		if p := recover(); p != nil {
+			tx.Rollback(ctx)
+			panic(p) // Re-throw panic after Rollback
+		} else if err != nil {
+			tx.Rollback(ctx)
+			fmt.Println("transaction failed -> rollback:", err)
+		} else {
+			err = tx.Commit(ctx)
+			if err != nil {
+				fmt.Println("commit failed:", err)
+			}
+		}
+	}()
+
+	_, err = tx.Exec(ctx, "SET LOCAL work_mem TO '128MB'")
+	if err != nil {
+		return 0, fmt.Errorf("failed to set work_mem: %v", err)
+	}
+
+	rowsUpdated, err := createStarHistorySnapshot(tx, ctx)
+	if err != nil {
+		return 0, fmt.Errorf("failed to create star history snapshot: %v", err)
+	}
+
+	err = resetMaxStarCount(tx, ctx, settingsId)
+	if err != nil {
+		return 0, fmt.Errorf("failed to reset max star count: %v", err)
+	}
+
+	return rowsUpdated, nil
+}
