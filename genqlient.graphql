@@ -9,6 +9,8 @@ query GetPublicRepos($query: String!, $limit: Int!, $cursor: String!) {
   }
 
   search(type: REPOSITORY, query: $query, first: $limit, after: $cursor) {
+    repositoryCount
+
     edges {
       node {
         ... on Repository {
@@ -19,7 +21,6 @@ query GetPublicRepos($query: String!, $limit: Int!, $cursor: String!) {
           homepageUrl
           name
           nameWithOwner
-          url
           updatedAt
           primaryLanguage {
             name

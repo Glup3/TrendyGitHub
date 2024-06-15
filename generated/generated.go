@@ -71,8 +71,17 @@ func (v *GetPublicReposResponse) GetSearch() GetPublicReposSearchSearchResultIte
 // of matches, a maximum of 1,000 results will be available across all types,
 // potentially split across many pages.
 type GetPublicReposSearchSearchResultItemConnection struct {
+	// The total number of repositories that matched the search query. Regardless of
+	// the total number of matches, a maximum of 1,000 results will be available
+	// across all types.
+	RepositoryCount int `json:"repositoryCount"`
 	// A list of edges.
 	Edges []GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdge `json:"edges"`
+}
+
+// GetRepositoryCount returns GetPublicReposSearchSearchResultItemConnection.RepositoryCount, and is useful for accessing the field via an interface.
+func (v *GetPublicReposSearchSearchResultItemConnection) GetRepositoryCount() int {
+	return v.RepositoryCount
 }
 
 // GetEdges returns GetPublicReposSearchSearchResultItemConnection.Edges, and is useful for accessing the field via an interface.
@@ -255,8 +264,6 @@ type GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNode
 	Name string `json:"name"`
 	// The repository's name with owner.
 	NameWithOwner string `json:"nameWithOwner"`
-	// The HTTP URL for this repository
-	Url string `json:"url"`
 	// Identifies the date and time when the object was last updated.
 	UpdatedAt time.Time `json:"updatedAt"`
 	// The primary language of the repository's code.
@@ -303,11 +310,6 @@ func (v *GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdge
 // GetNameWithOwner returns GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepository.NameWithOwner, and is useful for accessing the field via an interface.
 func (v *GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepository) GetNameWithOwner() string {
 	return v.NameWithOwner
-}
-
-// GetUrl returns GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepository.Url, and is useful for accessing the field via an interface.
-func (v *GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepository) GetUrl() string {
-	return v.Url
 }
 
 // GetUpdatedAt returns GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepository.UpdatedAt, and is useful for accessing the field via an interface.
@@ -581,6 +583,7 @@ query GetPublicRepos ($query: String!, $limit: Int!, $cursor: String!) {
 		nodeCount
 	}
 	search(type: REPOSITORY, query: $query, first: $limit, after: $cursor) {
+		repositoryCount
 		edges {
 			node {
 				__typename
@@ -592,7 +595,6 @@ query GetPublicRepos ($query: String!, $limit: Int!, $cursor: String!) {
 					homepageUrl
 					name
 					nameWithOwner
-					url
 					updatedAt
 					primaryLanguage {
 						name

@@ -10,7 +10,7 @@ import (
 
 const (
 	minStarCount = 50
-	perPage      = 5
+	perPage      = 100 // TODO: cursors depend on this
 )
 
 type APILoader struct {
