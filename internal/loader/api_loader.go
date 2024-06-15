@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"sync"
+	"time"
 
 	"github.com/glup3/TrendyGitHub/generated"
 )
@@ -122,4 +123,28 @@ func (l *APILoader) LoadMultipleRepos(maxStarCount int, cursors []string) ([]Git
 	}
 
 	return allRepos, pageInfo, nil
+}
+
+func (l *APILoader) LoadRepoStarHistoryDates(githubId string, cursor string) ([]time.Time, *StarPageInfo, error) {
+	client := GetApiClient(l.apiKey)
+
+	resp, err := generated.GetStarGazers(l.ctx, client, githubId, cursor)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	repo, _ := resp.Node.(*generated.GetStarGazersNodeRepository)
+	dateTimes := make([]time.Time, len(repo.Stargazers.Edges))
+
+	for i, stargazer := range repo.Stargazers.Edges {
+		dateTimes[i] = stargazer.StarredAt
+	}
+
+	pageInfo := &StarPageInfo{
+		TotalStars:  repo.Stargazers.TotalCount,
+		NextCursor:  repo.Stargazers.PageInfo.EndCursor,
+		HasNextPage: repo.Stargazers.PageInfo.HasNextPage,
+	}
+
+	return dateTimes, pageInfo, nil
 }

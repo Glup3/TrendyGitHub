@@ -555,6 +555,6114 @@ func (v *GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdge
 	return v.Typename
 }
 
+// GetStarGazersNode includes the requested fields of the GraphQL interface Node.
+//
+// GetStarGazersNode is implemented by the following types:
+// GetStarGazersNodeAddedToMergeQueueEvent
+// GetStarGazersNodeAddedToProjectEvent
+// GetStarGazersNodeApp
+// GetStarGazersNodeAssignedEvent
+// GetStarGazersNodeAutoMergeDisabledEvent
+// GetStarGazersNodeAutoMergeEnabledEvent
+// GetStarGazersNodeAutoRebaseEnabledEvent
+// GetStarGazersNodeAutoSquashEnabledEvent
+// GetStarGazersNodeAutomaticBaseChangeFailedEvent
+// GetStarGazersNodeAutomaticBaseChangeSucceededEvent
+// GetStarGazersNodeBaseRefChangedEvent
+// GetStarGazersNodeBaseRefDeletedEvent
+// GetStarGazersNodeBaseRefForcePushedEvent
+// GetStarGazersNodeBlob
+// GetStarGazersNodeBot
+// GetStarGazersNodeBranchProtectionRule
+// GetStarGazersNodeBypassForcePushAllowance
+// GetStarGazersNodeBypassPullRequestAllowance
+// GetStarGazersNodeCWE
+// GetStarGazersNodeCheckRun
+// GetStarGazersNodeCheckSuite
+// GetStarGazersNodeClosedEvent
+// GetStarGazersNodeCodeOfConduct
+// GetStarGazersNodeCommentDeletedEvent
+// GetStarGazersNodeCommit
+// GetStarGazersNodeCommitComment
+// GetStarGazersNodeCommitCommentThread
+// GetStarGazersNodeComparison
+// GetStarGazersNodeConnectedEvent
+// GetStarGazersNodeConvertToDraftEvent
+// GetStarGazersNodeConvertedNoteToIssueEvent
+// GetStarGazersNodeConvertedToDiscussionEvent
+// GetStarGazersNodeCrossReferencedEvent
+// GetStarGazersNodeDemilestonedEvent
+// GetStarGazersNodeDependencyGraphManifest
+// GetStarGazersNodeDeployKey
+// GetStarGazersNodeDeployedEvent
+// GetStarGazersNodeDeployment
+// GetStarGazersNodeDeploymentEnvironmentChangedEvent
+// GetStarGazersNodeDeploymentReview
+// GetStarGazersNodeDeploymentStatus
+// GetStarGazersNodeDisconnectedEvent
+// GetStarGazersNodeDiscussion
+// GetStarGazersNodeDiscussionCategory
+// GetStarGazersNodeDiscussionComment
+// GetStarGazersNodeDiscussionPoll
+// GetStarGazersNodeDiscussionPollOption
+// GetStarGazersNodeDraftIssue
+// GetStarGazersNodeEnterprise
+// GetStarGazersNodeEnterpriseAdministratorInvitation
+// GetStarGazersNodeEnterpriseIdentityProvider
+// GetStarGazersNodeEnterpriseRepositoryInfo
+// GetStarGazersNodeEnterpriseServerInstallation
+// GetStarGazersNodeEnterpriseServerUserAccount
+// GetStarGazersNodeEnterpriseServerUserAccountEmail
+// GetStarGazersNodeEnterpriseServerUserAccountsUpload
+// GetStarGazersNodeEnterpriseUserAccount
+// GetStarGazersNodeEnvironment
+// GetStarGazersNodeExternalIdentity
+// GetStarGazersNodeGist
+// GetStarGazersNodeGistComment
+// GetStarGazersNodeHeadRefDeletedEvent
+// GetStarGazersNodeHeadRefForcePushedEvent
+// GetStarGazersNodeHeadRefRestoredEvent
+// GetStarGazersNodeIpAllowListEntry
+// GetStarGazersNodeIssue
+// GetStarGazersNodeIssueComment
+// GetStarGazersNodeLabel
+// GetStarGazersNodeLabeledEvent
+// GetStarGazersNodeLanguage
+// GetStarGazersNodeLicense
+// GetStarGazersNodeLinkedBranch
+// GetStarGazersNodeLockedEvent
+// GetStarGazersNodeMannequin
+// GetStarGazersNodeMarkedAsDuplicateEvent
+// GetStarGazersNodeMarketplaceCategory
+// GetStarGazersNodeMarketplaceListing
+// GetStarGazersNodeMemberFeatureRequestNotification
+// GetStarGazersNodeMembersCanDeleteReposClearAuditEntry
+// GetStarGazersNodeMembersCanDeleteReposDisableAuditEntry
+// GetStarGazersNodeMembersCanDeleteReposEnableAuditEntry
+// GetStarGazersNodeMentionedEvent
+// GetStarGazersNodeMergeQueue
+// GetStarGazersNodeMergeQueueEntry
+// GetStarGazersNodeMergedEvent
+// GetStarGazersNodeMigrationSource
+// GetStarGazersNodeMilestone
+// GetStarGazersNodeMilestonedEvent
+// GetStarGazersNodeMovedColumnsInProjectEvent
+// GetStarGazersNodeOIDCProvider
+// GetStarGazersNodeOauthApplicationCreateAuditEntry
+// GetStarGazersNodeOrgAddBillingManagerAuditEntry
+// GetStarGazersNodeOrgAddMemberAuditEntry
+// GetStarGazersNodeOrgBlockUserAuditEntry
+// GetStarGazersNodeOrgConfigDisableCollaboratorsOnlyAuditEntry
+// GetStarGazersNodeOrgConfigEnableCollaboratorsOnlyAuditEntry
+// GetStarGazersNodeOrgCreateAuditEntry
+// GetStarGazersNodeOrgDisableOauthAppRestrictionsAuditEntry
+// GetStarGazersNodeOrgDisableSamlAuditEntry
+// GetStarGazersNodeOrgDisableTwoFactorRequirementAuditEntry
+// GetStarGazersNodeOrgEnableOauthAppRestrictionsAuditEntry
+// GetStarGazersNodeOrgEnableSamlAuditEntry
+// GetStarGazersNodeOrgEnableTwoFactorRequirementAuditEntry
+// GetStarGazersNodeOrgInviteMemberAuditEntry
+// GetStarGazersNodeOrgInviteToBusinessAuditEntry
+// GetStarGazersNodeOrgOauthAppAccessApprovedAuditEntry
+// GetStarGazersNodeOrgOauthAppAccessBlockedAuditEntry
+// GetStarGazersNodeOrgOauthAppAccessDeniedAuditEntry
+// GetStarGazersNodeOrgOauthAppAccessRequestedAuditEntry
+// GetStarGazersNodeOrgOauthAppAccessUnblockedAuditEntry
+// GetStarGazersNodeOrgRemoveBillingManagerAuditEntry
+// GetStarGazersNodeOrgRemoveMemberAuditEntry
+// GetStarGazersNodeOrgRemoveOutsideCollaboratorAuditEntry
+// GetStarGazersNodeOrgRestoreMemberAuditEntry
+// GetStarGazersNodeOrgUnblockUserAuditEntry
+// GetStarGazersNodeOrgUpdateDefaultRepositoryPermissionAuditEntry
+// GetStarGazersNodeOrgUpdateMemberAuditEntry
+// GetStarGazersNodeOrgUpdateMemberRepositoryCreationPermissionAuditEntry
+// GetStarGazersNodeOrgUpdateMemberRepositoryInvitationPermissionAuditEntry
+// GetStarGazersNodeOrganization
+// GetStarGazersNodeOrganizationIdentityProvider
+// GetStarGazersNodeOrganizationInvitation
+// GetStarGazersNodeOrganizationMigration
+// GetStarGazersNodePackage
+// GetStarGazersNodePackageFile
+// GetStarGazersNodePackageTag
+// GetStarGazersNodePackageVersion
+// GetStarGazersNodePinnedDiscussion
+// GetStarGazersNodePinnedEnvironment
+// GetStarGazersNodePinnedEvent
+// GetStarGazersNodePinnedIssue
+// GetStarGazersNodePrivateRepositoryForkingDisableAuditEntry
+// GetStarGazersNodePrivateRepositoryForkingEnableAuditEntry
+// GetStarGazersNodeProject
+// GetStarGazersNodeProjectCard
+// GetStarGazersNodeProjectColumn
+// GetStarGazersNodeProjectV2
+// GetStarGazersNodeProjectV2Field
+// GetStarGazersNodeProjectV2Item
+// GetStarGazersNodeProjectV2ItemFieldDateValue
+// GetStarGazersNodeProjectV2ItemFieldIterationValue
+// GetStarGazersNodeProjectV2ItemFieldNumberValue
+// GetStarGazersNodeProjectV2ItemFieldSingleSelectValue
+// GetStarGazersNodeProjectV2ItemFieldTextValue
+// GetStarGazersNodeProjectV2IterationField
+// GetStarGazersNodeProjectV2SingleSelectField
+// GetStarGazersNodeProjectV2View
+// GetStarGazersNodeProjectV2Workflow
+// GetStarGazersNodePublicKey
+// GetStarGazersNodePullRequest
+// GetStarGazersNodePullRequestCommit
+// GetStarGazersNodePullRequestCommitCommentThread
+// GetStarGazersNodePullRequestReview
+// GetStarGazersNodePullRequestReviewComment
+// GetStarGazersNodePullRequestReviewThread
+// GetStarGazersNodePullRequestThread
+// GetStarGazersNodePush
+// GetStarGazersNodePushAllowance
+// GetStarGazersNodeReaction
+// GetStarGazersNodeReadyForReviewEvent
+// GetStarGazersNodeRef
+// GetStarGazersNodeReferencedEvent
+// GetStarGazersNodeRelease
+// GetStarGazersNodeReleaseAsset
+// GetStarGazersNodeRemovedFromMergeQueueEvent
+// GetStarGazersNodeRemovedFromProjectEvent
+// GetStarGazersNodeRenamedTitleEvent
+// GetStarGazersNodeReopenedEvent
+// GetStarGazersNodeRepoAccessAuditEntry
+// GetStarGazersNodeRepoAddMemberAuditEntry
+// GetStarGazersNodeRepoAddTopicAuditEntry
+// GetStarGazersNodeRepoArchivedAuditEntry
+// GetStarGazersNodeRepoChangeMergeSettingAuditEntry
+// GetStarGazersNodeRepoConfigDisableAnonymousGitAccessAuditEntry
+// GetStarGazersNodeRepoConfigDisableCollaboratorsOnlyAuditEntry
+// GetStarGazersNodeRepoConfigDisableContributorsOnlyAuditEntry
+// GetStarGazersNodeRepoConfigDisableSockpuppetDisallowedAuditEntry
+// GetStarGazersNodeRepoConfigEnableAnonymousGitAccessAuditEntry
+// GetStarGazersNodeRepoConfigEnableCollaboratorsOnlyAuditEntry
+// GetStarGazersNodeRepoConfigEnableContributorsOnlyAuditEntry
+// GetStarGazersNodeRepoConfigEnableSockpuppetDisallowedAuditEntry
+// GetStarGazersNodeRepoConfigLockAnonymousGitAccessAuditEntry
+// GetStarGazersNodeRepoConfigUnlockAnonymousGitAccessAuditEntry
+// GetStarGazersNodeRepoCreateAuditEntry
+// GetStarGazersNodeRepoDestroyAuditEntry
+// GetStarGazersNodeRepoRemoveMemberAuditEntry
+// GetStarGazersNodeRepoRemoveTopicAuditEntry
+// GetStarGazersNodeRepository
+// GetStarGazersNodeRepositoryInvitation
+// GetStarGazersNodeRepositoryMigration
+// GetStarGazersNodeRepositoryRule
+// GetStarGazersNodeRepositoryRuleset
+// GetStarGazersNodeRepositoryRulesetBypassActor
+// GetStarGazersNodeRepositoryTopic
+// GetStarGazersNodeRepositoryVisibilityChangeDisableAuditEntry
+// GetStarGazersNodeRepositoryVisibilityChangeEnableAuditEntry
+// GetStarGazersNodeRepositoryVulnerabilityAlert
+// GetStarGazersNodeReviewDismissalAllowance
+// GetStarGazersNodeReviewDismissedEvent
+// GetStarGazersNodeReviewRequest
+// GetStarGazersNodeReviewRequestRemovedEvent
+// GetStarGazersNodeReviewRequestedEvent
+// GetStarGazersNodeSavedReply
+// GetStarGazersNodeSecurityAdvisory
+// GetStarGazersNodeSponsorsActivity
+// GetStarGazersNodeSponsorsListing
+// GetStarGazersNodeSponsorsListingFeaturedItem
+// GetStarGazersNodeSponsorsTier
+// GetStarGazersNodeSponsorship
+// GetStarGazersNodeSponsorshipNewsletter
+// GetStarGazersNodeStatus
+// GetStarGazersNodeStatusCheckRollup
+// GetStarGazersNodeStatusContext
+// GetStarGazersNodeSubscribedEvent
+// GetStarGazersNodeTag
+// GetStarGazersNodeTeam
+// GetStarGazersNodeTeamAddMemberAuditEntry
+// GetStarGazersNodeTeamAddRepositoryAuditEntry
+// GetStarGazersNodeTeamChangeParentTeamAuditEntry
+// GetStarGazersNodeTeamDiscussion
+// GetStarGazersNodeTeamDiscussionComment
+// GetStarGazersNodeTeamRemoveMemberAuditEntry
+// GetStarGazersNodeTeamRemoveRepositoryAuditEntry
+// GetStarGazersNodeTopic
+// GetStarGazersNodeTransferredEvent
+// GetStarGazersNodeTree
+// GetStarGazersNodeUnassignedEvent
+// GetStarGazersNodeUnlabeledEvent
+// GetStarGazersNodeUnlockedEvent
+// GetStarGazersNodeUnmarkedAsDuplicateEvent
+// GetStarGazersNodeUnpinnedEvent
+// GetStarGazersNodeUnsubscribedEvent
+// GetStarGazersNodeUser
+// GetStarGazersNodeUserBlockedEvent
+// GetStarGazersNodeUserContentEdit
+// GetStarGazersNodeUserList
+// GetStarGazersNodeUserStatus
+// GetStarGazersNodeVerifiableDomain
+// GetStarGazersNodeWorkflow
+// GetStarGazersNodeWorkflowRun
+// GetStarGazersNodeWorkflowRunFile
+// The GraphQL type's documentation follows.
+//
+// An object with an ID.
+type GetStarGazersNode interface {
+	implementsGraphQLInterfaceGetStarGazersNode()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() string
+}
+
+func (v *GetStarGazersNodeAddedToMergeQueueEvent) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeAddedToProjectEvent) implementsGraphQLInterfaceGetStarGazersNode()    {}
+func (v *GetStarGazersNodeApp) implementsGraphQLInterfaceGetStarGazersNode()                    {}
+func (v *GetStarGazersNodeAssignedEvent) implementsGraphQLInterfaceGetStarGazersNode()          {}
+func (v *GetStarGazersNodeAutoMergeDisabledEvent) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeAutoMergeEnabledEvent) implementsGraphQLInterfaceGetStarGazersNode()  {}
+func (v *GetStarGazersNodeAutoRebaseEnabledEvent) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeAutoSquashEnabledEvent) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeAutomaticBaseChangeFailedEvent) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeAutomaticBaseChangeSucceededEvent) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeBaseRefChangedEvent) implementsGraphQLInterfaceGetStarGazersNode()        {}
+func (v *GetStarGazersNodeBaseRefDeletedEvent) implementsGraphQLInterfaceGetStarGazersNode()        {}
+func (v *GetStarGazersNodeBaseRefForcePushedEvent) implementsGraphQLInterfaceGetStarGazersNode()    {}
+func (v *GetStarGazersNodeBlob) implementsGraphQLInterfaceGetStarGazersNode()                       {}
+func (v *GetStarGazersNodeBot) implementsGraphQLInterfaceGetStarGazersNode()                        {}
+func (v *GetStarGazersNodeBranchProtectionRule) implementsGraphQLInterfaceGetStarGazersNode()       {}
+func (v *GetStarGazersNodeBypassForcePushAllowance) implementsGraphQLInterfaceGetStarGazersNode()   {}
+func (v *GetStarGazersNodeBypassPullRequestAllowance) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeCWE) implementsGraphQLInterfaceGetStarGazersNode()                        {}
+func (v *GetStarGazersNodeCheckRun) implementsGraphQLInterfaceGetStarGazersNode()                   {}
+func (v *GetStarGazersNodeCheckSuite) implementsGraphQLInterfaceGetStarGazersNode()                 {}
+func (v *GetStarGazersNodeClosedEvent) implementsGraphQLInterfaceGetStarGazersNode()                {}
+func (v *GetStarGazersNodeCodeOfConduct) implementsGraphQLInterfaceGetStarGazersNode()              {}
+func (v *GetStarGazersNodeCommentDeletedEvent) implementsGraphQLInterfaceGetStarGazersNode()        {}
+func (v *GetStarGazersNodeCommit) implementsGraphQLInterfaceGetStarGazersNode()                     {}
+func (v *GetStarGazersNodeCommitComment) implementsGraphQLInterfaceGetStarGazersNode()              {}
+func (v *GetStarGazersNodeCommitCommentThread) implementsGraphQLInterfaceGetStarGazersNode()        {}
+func (v *GetStarGazersNodeComparison) implementsGraphQLInterfaceGetStarGazersNode()                 {}
+func (v *GetStarGazersNodeConnectedEvent) implementsGraphQLInterfaceGetStarGazersNode()             {}
+func (v *GetStarGazersNodeConvertToDraftEvent) implementsGraphQLInterfaceGetStarGazersNode()        {}
+func (v *GetStarGazersNodeConvertedNoteToIssueEvent) implementsGraphQLInterfaceGetStarGazersNode()  {}
+func (v *GetStarGazersNodeConvertedToDiscussionEvent) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeCrossReferencedEvent) implementsGraphQLInterfaceGetStarGazersNode()       {}
+func (v *GetStarGazersNodeDemilestonedEvent) implementsGraphQLInterfaceGetStarGazersNode()          {}
+func (v *GetStarGazersNodeDependencyGraphManifest) implementsGraphQLInterfaceGetStarGazersNode()    {}
+func (v *GetStarGazersNodeDeployKey) implementsGraphQLInterfaceGetStarGazersNode()                  {}
+func (v *GetStarGazersNodeDeployedEvent) implementsGraphQLInterfaceGetStarGazersNode()              {}
+func (v *GetStarGazersNodeDeployment) implementsGraphQLInterfaceGetStarGazersNode()                 {}
+func (v *GetStarGazersNodeDeploymentEnvironmentChangedEvent) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeDeploymentReview) implementsGraphQLInterfaceGetStarGazersNode()     {}
+func (v *GetStarGazersNodeDeploymentStatus) implementsGraphQLInterfaceGetStarGazersNode()     {}
+func (v *GetStarGazersNodeDisconnectedEvent) implementsGraphQLInterfaceGetStarGazersNode()    {}
+func (v *GetStarGazersNodeDiscussion) implementsGraphQLInterfaceGetStarGazersNode()           {}
+func (v *GetStarGazersNodeDiscussionCategory) implementsGraphQLInterfaceGetStarGazersNode()   {}
+func (v *GetStarGazersNodeDiscussionComment) implementsGraphQLInterfaceGetStarGazersNode()    {}
+func (v *GetStarGazersNodeDiscussionPoll) implementsGraphQLInterfaceGetStarGazersNode()       {}
+func (v *GetStarGazersNodeDiscussionPollOption) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeDraftIssue) implementsGraphQLInterfaceGetStarGazersNode()           {}
+func (v *GetStarGazersNodeEnterprise) implementsGraphQLInterfaceGetStarGazersNode()           {}
+func (v *GetStarGazersNodeEnterpriseAdministratorInvitation) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeEnterpriseIdentityProvider) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeEnterpriseRepositoryInfo) implementsGraphQLInterfaceGetStarGazersNode()   {}
+func (v *GetStarGazersNodeEnterpriseServerInstallation) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeEnterpriseServerUserAccount) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeEnterpriseServerUserAccountEmail) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeEnterpriseServerUserAccountsUpload) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeEnterpriseUserAccount) implementsGraphQLInterfaceGetStarGazersNode()   {}
+func (v *GetStarGazersNodeEnvironment) implementsGraphQLInterfaceGetStarGazersNode()             {}
+func (v *GetStarGazersNodeExternalIdentity) implementsGraphQLInterfaceGetStarGazersNode()        {}
+func (v *GetStarGazersNodeGist) implementsGraphQLInterfaceGetStarGazersNode()                    {}
+func (v *GetStarGazersNodeGistComment) implementsGraphQLInterfaceGetStarGazersNode()             {}
+func (v *GetStarGazersNodeHeadRefDeletedEvent) implementsGraphQLInterfaceGetStarGazersNode()     {}
+func (v *GetStarGazersNodeHeadRefForcePushedEvent) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeHeadRefRestoredEvent) implementsGraphQLInterfaceGetStarGazersNode()    {}
+func (v *GetStarGazersNodeIpAllowListEntry) implementsGraphQLInterfaceGetStarGazersNode()        {}
+func (v *GetStarGazersNodeIssue) implementsGraphQLInterfaceGetStarGazersNode()                   {}
+func (v *GetStarGazersNodeIssueComment) implementsGraphQLInterfaceGetStarGazersNode()            {}
+func (v *GetStarGazersNodeLabel) implementsGraphQLInterfaceGetStarGazersNode()                   {}
+func (v *GetStarGazersNodeLabeledEvent) implementsGraphQLInterfaceGetStarGazersNode()            {}
+func (v *GetStarGazersNodeLanguage) implementsGraphQLInterfaceGetStarGazersNode()                {}
+func (v *GetStarGazersNodeLicense) implementsGraphQLInterfaceGetStarGazersNode()                 {}
+func (v *GetStarGazersNodeLinkedBranch) implementsGraphQLInterfaceGetStarGazersNode()            {}
+func (v *GetStarGazersNodeLockedEvent) implementsGraphQLInterfaceGetStarGazersNode()             {}
+func (v *GetStarGazersNodeMannequin) implementsGraphQLInterfaceGetStarGazersNode()               {}
+func (v *GetStarGazersNodeMarkedAsDuplicateEvent) implementsGraphQLInterfaceGetStarGazersNode()  {}
+func (v *GetStarGazersNodeMarketplaceCategory) implementsGraphQLInterfaceGetStarGazersNode()     {}
+func (v *GetStarGazersNodeMarketplaceListing) implementsGraphQLInterfaceGetStarGazersNode()      {}
+func (v *GetStarGazersNodeMemberFeatureRequestNotification) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeMembersCanDeleteReposClearAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeMembersCanDeleteReposDisableAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeMembersCanDeleteReposEnableAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeMentionedEvent) implementsGraphQLInterfaceGetStarGazersNode()             {}
+func (v *GetStarGazersNodeMergeQueue) implementsGraphQLInterfaceGetStarGazersNode()                 {}
+func (v *GetStarGazersNodeMergeQueueEntry) implementsGraphQLInterfaceGetStarGazersNode()            {}
+func (v *GetStarGazersNodeMergedEvent) implementsGraphQLInterfaceGetStarGazersNode()                {}
+func (v *GetStarGazersNodeMigrationSource) implementsGraphQLInterfaceGetStarGazersNode()            {}
+func (v *GetStarGazersNodeMilestone) implementsGraphQLInterfaceGetStarGazersNode()                  {}
+func (v *GetStarGazersNodeMilestonedEvent) implementsGraphQLInterfaceGetStarGazersNode()            {}
+func (v *GetStarGazersNodeMovedColumnsInProjectEvent) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeOIDCProvider) implementsGraphQLInterfaceGetStarGazersNode()               {}
+func (v *GetStarGazersNodeOauthApplicationCreateAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeOrgAddBillingManagerAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeOrgAddMemberAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeOrgBlockUserAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeOrgConfigDisableCollaboratorsOnlyAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeOrgConfigEnableCollaboratorsOnlyAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeOrgCreateAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeOrgDisableOauthAppRestrictionsAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeOrgDisableSamlAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeOrgDisableTwoFactorRequirementAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeOrgEnableOauthAppRestrictionsAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeOrgEnableSamlAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeOrgEnableTwoFactorRequirementAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeOrgInviteMemberAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeOrgInviteToBusinessAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeOrgOauthAppAccessApprovedAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeOrgOauthAppAccessBlockedAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeOrgOauthAppAccessDeniedAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeOrgOauthAppAccessRequestedAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeOrgOauthAppAccessUnblockedAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeOrgRemoveBillingManagerAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeOrgRemoveMemberAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeOrgRemoveOutsideCollaboratorAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeOrgRestoreMemberAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeOrgUnblockUserAuditEntry) implementsGraphQLInterfaceGetStarGazersNode()   {}
+func (v *GetStarGazersNodeOrgUpdateDefaultRepositoryPermissionAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeOrgUpdateMemberAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeOrgUpdateMemberRepositoryCreationPermissionAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeOrgUpdateMemberRepositoryInvitationPermissionAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeOrganization) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeOrganizationIdentityProvider) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeOrganizationInvitation) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeOrganizationMigration) implementsGraphQLInterfaceGetStarGazersNode()  {}
+func (v *GetStarGazersNodePackage) implementsGraphQLInterfaceGetStarGazersNode()                {}
+func (v *GetStarGazersNodePackageFile) implementsGraphQLInterfaceGetStarGazersNode()            {}
+func (v *GetStarGazersNodePackageTag) implementsGraphQLInterfaceGetStarGazersNode()             {}
+func (v *GetStarGazersNodePackageVersion) implementsGraphQLInterfaceGetStarGazersNode()         {}
+func (v *GetStarGazersNodePinnedDiscussion) implementsGraphQLInterfaceGetStarGazersNode()       {}
+func (v *GetStarGazersNodePinnedEnvironment) implementsGraphQLInterfaceGetStarGazersNode()      {}
+func (v *GetStarGazersNodePinnedEvent) implementsGraphQLInterfaceGetStarGazersNode()            {}
+func (v *GetStarGazersNodePinnedIssue) implementsGraphQLInterfaceGetStarGazersNode()            {}
+func (v *GetStarGazersNodePrivateRepositoryForkingDisableAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodePrivateRepositoryForkingEnableAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeProject) implementsGraphQLInterfaceGetStarGazersNode()        {}
+func (v *GetStarGazersNodeProjectCard) implementsGraphQLInterfaceGetStarGazersNode()    {}
+func (v *GetStarGazersNodeProjectColumn) implementsGraphQLInterfaceGetStarGazersNode()  {}
+func (v *GetStarGazersNodeProjectV2) implementsGraphQLInterfaceGetStarGazersNode()      {}
+func (v *GetStarGazersNodeProjectV2Field) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeProjectV2Item) implementsGraphQLInterfaceGetStarGazersNode()  {}
+func (v *GetStarGazersNodeProjectV2ItemFieldDateValue) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeProjectV2ItemFieldIterationValue) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeProjectV2ItemFieldNumberValue) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeProjectV2ItemFieldSingleSelectValue) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeProjectV2ItemFieldTextValue) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeProjectV2IterationField) implementsGraphQLInterfaceGetStarGazersNode()    {}
+func (v *GetStarGazersNodeProjectV2SingleSelectField) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeProjectV2View) implementsGraphQLInterfaceGetStarGazersNode()              {}
+func (v *GetStarGazersNodeProjectV2Workflow) implementsGraphQLInterfaceGetStarGazersNode()          {}
+func (v *GetStarGazersNodePublicKey) implementsGraphQLInterfaceGetStarGazersNode()                  {}
+func (v *GetStarGazersNodePullRequest) implementsGraphQLInterfaceGetStarGazersNode()                {}
+func (v *GetStarGazersNodePullRequestCommit) implementsGraphQLInterfaceGetStarGazersNode()          {}
+func (v *GetStarGazersNodePullRequestCommitCommentThread) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodePullRequestReview) implementsGraphQLInterfaceGetStarGazersNode()          {}
+func (v *GetStarGazersNodePullRequestReviewComment) implementsGraphQLInterfaceGetStarGazersNode()   {}
+func (v *GetStarGazersNodePullRequestReviewThread) implementsGraphQLInterfaceGetStarGazersNode()    {}
+func (v *GetStarGazersNodePullRequestThread) implementsGraphQLInterfaceGetStarGazersNode()          {}
+func (v *GetStarGazersNodePush) implementsGraphQLInterfaceGetStarGazersNode()                       {}
+func (v *GetStarGazersNodePushAllowance) implementsGraphQLInterfaceGetStarGazersNode()              {}
+func (v *GetStarGazersNodeReaction) implementsGraphQLInterfaceGetStarGazersNode()                   {}
+func (v *GetStarGazersNodeReadyForReviewEvent) implementsGraphQLInterfaceGetStarGazersNode()        {}
+func (v *GetStarGazersNodeRef) implementsGraphQLInterfaceGetStarGazersNode()                        {}
+func (v *GetStarGazersNodeReferencedEvent) implementsGraphQLInterfaceGetStarGazersNode()            {}
+func (v *GetStarGazersNodeRelease) implementsGraphQLInterfaceGetStarGazersNode()                    {}
+func (v *GetStarGazersNodeReleaseAsset) implementsGraphQLInterfaceGetStarGazersNode()               {}
+func (v *GetStarGazersNodeRemovedFromMergeQueueEvent) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeRemovedFromProjectEvent) implementsGraphQLInterfaceGetStarGazersNode()    {}
+func (v *GetStarGazersNodeRenamedTitleEvent) implementsGraphQLInterfaceGetStarGazersNode()          {}
+func (v *GetStarGazersNodeReopenedEvent) implementsGraphQLInterfaceGetStarGazersNode()              {}
+func (v *GetStarGazersNodeRepoAccessAuditEntry) implementsGraphQLInterfaceGetStarGazersNode()       {}
+func (v *GetStarGazersNodeRepoAddMemberAuditEntry) implementsGraphQLInterfaceGetStarGazersNode()    {}
+func (v *GetStarGazersNodeRepoAddTopicAuditEntry) implementsGraphQLInterfaceGetStarGazersNode()     {}
+func (v *GetStarGazersNodeRepoArchivedAuditEntry) implementsGraphQLInterfaceGetStarGazersNode()     {}
+func (v *GetStarGazersNodeRepoChangeMergeSettingAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeRepoConfigDisableAnonymousGitAccessAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeRepoConfigDisableCollaboratorsOnlyAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeRepoConfigDisableContributorsOnlyAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeRepoConfigDisableSockpuppetDisallowedAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeRepoConfigEnableAnonymousGitAccessAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeRepoConfigEnableCollaboratorsOnlyAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeRepoConfigEnableContributorsOnlyAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeRepoConfigEnableSockpuppetDisallowedAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeRepoConfigLockAnonymousGitAccessAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeRepoConfigUnlockAnonymousGitAccessAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeRepoCreateAuditEntry) implementsGraphQLInterfaceGetStarGazersNode()       {}
+func (v *GetStarGazersNodeRepoDestroyAuditEntry) implementsGraphQLInterfaceGetStarGazersNode()      {}
+func (v *GetStarGazersNodeRepoRemoveMemberAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeRepoRemoveTopicAuditEntry) implementsGraphQLInterfaceGetStarGazersNode()  {}
+func (v *GetStarGazersNodeRepository) implementsGraphQLInterfaceGetStarGazersNode()                 {}
+func (v *GetStarGazersNodeRepositoryInvitation) implementsGraphQLInterfaceGetStarGazersNode()       {}
+func (v *GetStarGazersNodeRepositoryMigration) implementsGraphQLInterfaceGetStarGazersNode()        {}
+func (v *GetStarGazersNodeRepositoryRule) implementsGraphQLInterfaceGetStarGazersNode()             {}
+func (v *GetStarGazersNodeRepositoryRuleset) implementsGraphQLInterfaceGetStarGazersNode()          {}
+func (v *GetStarGazersNodeRepositoryRulesetBypassActor) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeRepositoryTopic) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeRepositoryVisibilityChangeDisableAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeRepositoryVisibilityChangeEnableAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeRepositoryVulnerabilityAlert) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeReviewDismissalAllowance) implementsGraphQLInterfaceGetStarGazersNode()  {}
+func (v *GetStarGazersNodeReviewDismissedEvent) implementsGraphQLInterfaceGetStarGazersNode()      {}
+func (v *GetStarGazersNodeReviewRequest) implementsGraphQLInterfaceGetStarGazersNode()             {}
+func (v *GetStarGazersNodeReviewRequestRemovedEvent) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeReviewRequestedEvent) implementsGraphQLInterfaceGetStarGazersNode()      {}
+func (v *GetStarGazersNodeSavedReply) implementsGraphQLInterfaceGetStarGazersNode()                {}
+func (v *GetStarGazersNodeSecurityAdvisory) implementsGraphQLInterfaceGetStarGazersNode()          {}
+func (v *GetStarGazersNodeSponsorsActivity) implementsGraphQLInterfaceGetStarGazersNode()          {}
+func (v *GetStarGazersNodeSponsorsListing) implementsGraphQLInterfaceGetStarGazersNode()           {}
+func (v *GetStarGazersNodeSponsorsListingFeaturedItem) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeSponsorsTier) implementsGraphQLInterfaceGetStarGazersNode()            {}
+func (v *GetStarGazersNodeSponsorship) implementsGraphQLInterfaceGetStarGazersNode()             {}
+func (v *GetStarGazersNodeSponsorshipNewsletter) implementsGraphQLInterfaceGetStarGazersNode()   {}
+func (v *GetStarGazersNodeStatus) implementsGraphQLInterfaceGetStarGazersNode()                  {}
+func (v *GetStarGazersNodeStatusCheckRollup) implementsGraphQLInterfaceGetStarGazersNode()       {}
+func (v *GetStarGazersNodeStatusContext) implementsGraphQLInterfaceGetStarGazersNode()           {}
+func (v *GetStarGazersNodeSubscribedEvent) implementsGraphQLInterfaceGetStarGazersNode()         {}
+func (v *GetStarGazersNodeTag) implementsGraphQLInterfaceGetStarGazersNode()                     {}
+func (v *GetStarGazersNodeTeam) implementsGraphQLInterfaceGetStarGazersNode()                    {}
+func (v *GetStarGazersNodeTeamAddMemberAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeTeamAddRepositoryAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeTeamChangeParentTeamAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeTeamDiscussion) implementsGraphQLInterfaceGetStarGazersNode()             {}
+func (v *GetStarGazersNodeTeamDiscussionComment) implementsGraphQLInterfaceGetStarGazersNode()      {}
+func (v *GetStarGazersNodeTeamRemoveMemberAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeTeamRemoveRepositoryAuditEntry) implementsGraphQLInterfaceGetStarGazersNode() {
+}
+func (v *GetStarGazersNodeTopic) implementsGraphQLInterfaceGetStarGazersNode()                    {}
+func (v *GetStarGazersNodeTransferredEvent) implementsGraphQLInterfaceGetStarGazersNode()         {}
+func (v *GetStarGazersNodeTree) implementsGraphQLInterfaceGetStarGazersNode()                     {}
+func (v *GetStarGazersNodeUnassignedEvent) implementsGraphQLInterfaceGetStarGazersNode()          {}
+func (v *GetStarGazersNodeUnlabeledEvent) implementsGraphQLInterfaceGetStarGazersNode()           {}
+func (v *GetStarGazersNodeUnlockedEvent) implementsGraphQLInterfaceGetStarGazersNode()            {}
+func (v *GetStarGazersNodeUnmarkedAsDuplicateEvent) implementsGraphQLInterfaceGetStarGazersNode() {}
+func (v *GetStarGazersNodeUnpinnedEvent) implementsGraphQLInterfaceGetStarGazersNode()            {}
+func (v *GetStarGazersNodeUnsubscribedEvent) implementsGraphQLInterfaceGetStarGazersNode()        {}
+func (v *GetStarGazersNodeUser) implementsGraphQLInterfaceGetStarGazersNode()                     {}
+func (v *GetStarGazersNodeUserBlockedEvent) implementsGraphQLInterfaceGetStarGazersNode()         {}
+func (v *GetStarGazersNodeUserContentEdit) implementsGraphQLInterfaceGetStarGazersNode()          {}
+func (v *GetStarGazersNodeUserList) implementsGraphQLInterfaceGetStarGazersNode()                 {}
+func (v *GetStarGazersNodeUserStatus) implementsGraphQLInterfaceGetStarGazersNode()               {}
+func (v *GetStarGazersNodeVerifiableDomain) implementsGraphQLInterfaceGetStarGazersNode()         {}
+func (v *GetStarGazersNodeWorkflow) implementsGraphQLInterfaceGetStarGazersNode()                 {}
+func (v *GetStarGazersNodeWorkflowRun) implementsGraphQLInterfaceGetStarGazersNode()              {}
+func (v *GetStarGazersNodeWorkflowRunFile) implementsGraphQLInterfaceGetStarGazersNode()          {}
+
+func __unmarshalGetStarGazersNode(b []byte, v *GetStarGazersNode) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "AddedToMergeQueueEvent":
+		*v = new(GetStarGazersNodeAddedToMergeQueueEvent)
+		return json.Unmarshal(b, *v)
+	case "AddedToProjectEvent":
+		*v = new(GetStarGazersNodeAddedToProjectEvent)
+		return json.Unmarshal(b, *v)
+	case "App":
+		*v = new(GetStarGazersNodeApp)
+		return json.Unmarshal(b, *v)
+	case "AssignedEvent":
+		*v = new(GetStarGazersNodeAssignedEvent)
+		return json.Unmarshal(b, *v)
+	case "AutoMergeDisabledEvent":
+		*v = new(GetStarGazersNodeAutoMergeDisabledEvent)
+		return json.Unmarshal(b, *v)
+	case "AutoMergeEnabledEvent":
+		*v = new(GetStarGazersNodeAutoMergeEnabledEvent)
+		return json.Unmarshal(b, *v)
+	case "AutoRebaseEnabledEvent":
+		*v = new(GetStarGazersNodeAutoRebaseEnabledEvent)
+		return json.Unmarshal(b, *v)
+	case "AutoSquashEnabledEvent":
+		*v = new(GetStarGazersNodeAutoSquashEnabledEvent)
+		return json.Unmarshal(b, *v)
+	case "AutomaticBaseChangeFailedEvent":
+		*v = new(GetStarGazersNodeAutomaticBaseChangeFailedEvent)
+		return json.Unmarshal(b, *v)
+	case "AutomaticBaseChangeSucceededEvent":
+		*v = new(GetStarGazersNodeAutomaticBaseChangeSucceededEvent)
+		return json.Unmarshal(b, *v)
+	case "BaseRefChangedEvent":
+		*v = new(GetStarGazersNodeBaseRefChangedEvent)
+		return json.Unmarshal(b, *v)
+	case "BaseRefDeletedEvent":
+		*v = new(GetStarGazersNodeBaseRefDeletedEvent)
+		return json.Unmarshal(b, *v)
+	case "BaseRefForcePushedEvent":
+		*v = new(GetStarGazersNodeBaseRefForcePushedEvent)
+		return json.Unmarshal(b, *v)
+	case "Blob":
+		*v = new(GetStarGazersNodeBlob)
+		return json.Unmarshal(b, *v)
+	case "Bot":
+		*v = new(GetStarGazersNodeBot)
+		return json.Unmarshal(b, *v)
+	case "BranchProtectionRule":
+		*v = new(GetStarGazersNodeBranchProtectionRule)
+		return json.Unmarshal(b, *v)
+	case "BypassForcePushAllowance":
+		*v = new(GetStarGazersNodeBypassForcePushAllowance)
+		return json.Unmarshal(b, *v)
+	case "BypassPullRequestAllowance":
+		*v = new(GetStarGazersNodeBypassPullRequestAllowance)
+		return json.Unmarshal(b, *v)
+	case "CWE":
+		*v = new(GetStarGazersNodeCWE)
+		return json.Unmarshal(b, *v)
+	case "CheckRun":
+		*v = new(GetStarGazersNodeCheckRun)
+		return json.Unmarshal(b, *v)
+	case "CheckSuite":
+		*v = new(GetStarGazersNodeCheckSuite)
+		return json.Unmarshal(b, *v)
+	case "ClosedEvent":
+		*v = new(GetStarGazersNodeClosedEvent)
+		return json.Unmarshal(b, *v)
+	case "CodeOfConduct":
+		*v = new(GetStarGazersNodeCodeOfConduct)
+		return json.Unmarshal(b, *v)
+	case "CommentDeletedEvent":
+		*v = new(GetStarGazersNodeCommentDeletedEvent)
+		return json.Unmarshal(b, *v)
+	case "Commit":
+		*v = new(GetStarGazersNodeCommit)
+		return json.Unmarshal(b, *v)
+	case "CommitComment":
+		*v = new(GetStarGazersNodeCommitComment)
+		return json.Unmarshal(b, *v)
+	case "CommitCommentThread":
+		*v = new(GetStarGazersNodeCommitCommentThread)
+		return json.Unmarshal(b, *v)
+	case "Comparison":
+		*v = new(GetStarGazersNodeComparison)
+		return json.Unmarshal(b, *v)
+	case "ConnectedEvent":
+		*v = new(GetStarGazersNodeConnectedEvent)
+		return json.Unmarshal(b, *v)
+	case "ConvertToDraftEvent":
+		*v = new(GetStarGazersNodeConvertToDraftEvent)
+		return json.Unmarshal(b, *v)
+	case "ConvertedNoteToIssueEvent":
+		*v = new(GetStarGazersNodeConvertedNoteToIssueEvent)
+		return json.Unmarshal(b, *v)
+	case "ConvertedToDiscussionEvent":
+		*v = new(GetStarGazersNodeConvertedToDiscussionEvent)
+		return json.Unmarshal(b, *v)
+	case "CrossReferencedEvent":
+		*v = new(GetStarGazersNodeCrossReferencedEvent)
+		return json.Unmarshal(b, *v)
+	case "DemilestonedEvent":
+		*v = new(GetStarGazersNodeDemilestonedEvent)
+		return json.Unmarshal(b, *v)
+	case "DependencyGraphManifest":
+		*v = new(GetStarGazersNodeDependencyGraphManifest)
+		return json.Unmarshal(b, *v)
+	case "DeployKey":
+		*v = new(GetStarGazersNodeDeployKey)
+		return json.Unmarshal(b, *v)
+	case "DeployedEvent":
+		*v = new(GetStarGazersNodeDeployedEvent)
+		return json.Unmarshal(b, *v)
+	case "Deployment":
+		*v = new(GetStarGazersNodeDeployment)
+		return json.Unmarshal(b, *v)
+	case "DeploymentEnvironmentChangedEvent":
+		*v = new(GetStarGazersNodeDeploymentEnvironmentChangedEvent)
+		return json.Unmarshal(b, *v)
+	case "DeploymentReview":
+		*v = new(GetStarGazersNodeDeploymentReview)
+		return json.Unmarshal(b, *v)
+	case "DeploymentStatus":
+		*v = new(GetStarGazersNodeDeploymentStatus)
+		return json.Unmarshal(b, *v)
+	case "DisconnectedEvent":
+		*v = new(GetStarGazersNodeDisconnectedEvent)
+		return json.Unmarshal(b, *v)
+	case "Discussion":
+		*v = new(GetStarGazersNodeDiscussion)
+		return json.Unmarshal(b, *v)
+	case "DiscussionCategory":
+		*v = new(GetStarGazersNodeDiscussionCategory)
+		return json.Unmarshal(b, *v)
+	case "DiscussionComment":
+		*v = new(GetStarGazersNodeDiscussionComment)
+		return json.Unmarshal(b, *v)
+	case "DiscussionPoll":
+		*v = new(GetStarGazersNodeDiscussionPoll)
+		return json.Unmarshal(b, *v)
+	case "DiscussionPollOption":
+		*v = new(GetStarGazersNodeDiscussionPollOption)
+		return json.Unmarshal(b, *v)
+	case "DraftIssue":
+		*v = new(GetStarGazersNodeDraftIssue)
+		return json.Unmarshal(b, *v)
+	case "Enterprise":
+		*v = new(GetStarGazersNodeEnterprise)
+		return json.Unmarshal(b, *v)
+	case "EnterpriseAdministratorInvitation":
+		*v = new(GetStarGazersNodeEnterpriseAdministratorInvitation)
+		return json.Unmarshal(b, *v)
+	case "EnterpriseIdentityProvider":
+		*v = new(GetStarGazersNodeEnterpriseIdentityProvider)
+		return json.Unmarshal(b, *v)
+	case "EnterpriseRepositoryInfo":
+		*v = new(GetStarGazersNodeEnterpriseRepositoryInfo)
+		return json.Unmarshal(b, *v)
+	case "EnterpriseServerInstallation":
+		*v = new(GetStarGazersNodeEnterpriseServerInstallation)
+		return json.Unmarshal(b, *v)
+	case "EnterpriseServerUserAccount":
+		*v = new(GetStarGazersNodeEnterpriseServerUserAccount)
+		return json.Unmarshal(b, *v)
+	case "EnterpriseServerUserAccountEmail":
+		*v = new(GetStarGazersNodeEnterpriseServerUserAccountEmail)
+		return json.Unmarshal(b, *v)
+	case "EnterpriseServerUserAccountsUpload":
+		*v = new(GetStarGazersNodeEnterpriseServerUserAccountsUpload)
+		return json.Unmarshal(b, *v)
+	case "EnterpriseUserAccount":
+		*v = new(GetStarGazersNodeEnterpriseUserAccount)
+		return json.Unmarshal(b, *v)
+	case "Environment":
+		*v = new(GetStarGazersNodeEnvironment)
+		return json.Unmarshal(b, *v)
+	case "ExternalIdentity":
+		*v = new(GetStarGazersNodeExternalIdentity)
+		return json.Unmarshal(b, *v)
+	case "Gist":
+		*v = new(GetStarGazersNodeGist)
+		return json.Unmarshal(b, *v)
+	case "GistComment":
+		*v = new(GetStarGazersNodeGistComment)
+		return json.Unmarshal(b, *v)
+	case "HeadRefDeletedEvent":
+		*v = new(GetStarGazersNodeHeadRefDeletedEvent)
+		return json.Unmarshal(b, *v)
+	case "HeadRefForcePushedEvent":
+		*v = new(GetStarGazersNodeHeadRefForcePushedEvent)
+		return json.Unmarshal(b, *v)
+	case "HeadRefRestoredEvent":
+		*v = new(GetStarGazersNodeHeadRefRestoredEvent)
+		return json.Unmarshal(b, *v)
+	case "IpAllowListEntry":
+		*v = new(GetStarGazersNodeIpAllowListEntry)
+		return json.Unmarshal(b, *v)
+	case "Issue":
+		*v = new(GetStarGazersNodeIssue)
+		return json.Unmarshal(b, *v)
+	case "IssueComment":
+		*v = new(GetStarGazersNodeIssueComment)
+		return json.Unmarshal(b, *v)
+	case "Label":
+		*v = new(GetStarGazersNodeLabel)
+		return json.Unmarshal(b, *v)
+	case "LabeledEvent":
+		*v = new(GetStarGazersNodeLabeledEvent)
+		return json.Unmarshal(b, *v)
+	case "Language":
+		*v = new(GetStarGazersNodeLanguage)
+		return json.Unmarshal(b, *v)
+	case "License":
+		*v = new(GetStarGazersNodeLicense)
+		return json.Unmarshal(b, *v)
+	case "LinkedBranch":
+		*v = new(GetStarGazersNodeLinkedBranch)
+		return json.Unmarshal(b, *v)
+	case "LockedEvent":
+		*v = new(GetStarGazersNodeLockedEvent)
+		return json.Unmarshal(b, *v)
+	case "Mannequin":
+		*v = new(GetStarGazersNodeMannequin)
+		return json.Unmarshal(b, *v)
+	case "MarkedAsDuplicateEvent":
+		*v = new(GetStarGazersNodeMarkedAsDuplicateEvent)
+		return json.Unmarshal(b, *v)
+	case "MarketplaceCategory":
+		*v = new(GetStarGazersNodeMarketplaceCategory)
+		return json.Unmarshal(b, *v)
+	case "MarketplaceListing":
+		*v = new(GetStarGazersNodeMarketplaceListing)
+		return json.Unmarshal(b, *v)
+	case "MemberFeatureRequestNotification":
+		*v = new(GetStarGazersNodeMemberFeatureRequestNotification)
+		return json.Unmarshal(b, *v)
+	case "MembersCanDeleteReposClearAuditEntry":
+		*v = new(GetStarGazersNodeMembersCanDeleteReposClearAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "MembersCanDeleteReposDisableAuditEntry":
+		*v = new(GetStarGazersNodeMembersCanDeleteReposDisableAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "MembersCanDeleteReposEnableAuditEntry":
+		*v = new(GetStarGazersNodeMembersCanDeleteReposEnableAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "MentionedEvent":
+		*v = new(GetStarGazersNodeMentionedEvent)
+		return json.Unmarshal(b, *v)
+	case "MergeQueue":
+		*v = new(GetStarGazersNodeMergeQueue)
+		return json.Unmarshal(b, *v)
+	case "MergeQueueEntry":
+		*v = new(GetStarGazersNodeMergeQueueEntry)
+		return json.Unmarshal(b, *v)
+	case "MergedEvent":
+		*v = new(GetStarGazersNodeMergedEvent)
+		return json.Unmarshal(b, *v)
+	case "MigrationSource":
+		*v = new(GetStarGazersNodeMigrationSource)
+		return json.Unmarshal(b, *v)
+	case "Milestone":
+		*v = new(GetStarGazersNodeMilestone)
+		return json.Unmarshal(b, *v)
+	case "MilestonedEvent":
+		*v = new(GetStarGazersNodeMilestonedEvent)
+		return json.Unmarshal(b, *v)
+	case "MovedColumnsInProjectEvent":
+		*v = new(GetStarGazersNodeMovedColumnsInProjectEvent)
+		return json.Unmarshal(b, *v)
+	case "OIDCProvider":
+		*v = new(GetStarGazersNodeOIDCProvider)
+		return json.Unmarshal(b, *v)
+	case "OauthApplicationCreateAuditEntry":
+		*v = new(GetStarGazersNodeOauthApplicationCreateAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgAddBillingManagerAuditEntry":
+		*v = new(GetStarGazersNodeOrgAddBillingManagerAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgAddMemberAuditEntry":
+		*v = new(GetStarGazersNodeOrgAddMemberAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgBlockUserAuditEntry":
+		*v = new(GetStarGazersNodeOrgBlockUserAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgConfigDisableCollaboratorsOnlyAuditEntry":
+		*v = new(GetStarGazersNodeOrgConfigDisableCollaboratorsOnlyAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgConfigEnableCollaboratorsOnlyAuditEntry":
+		*v = new(GetStarGazersNodeOrgConfigEnableCollaboratorsOnlyAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgCreateAuditEntry":
+		*v = new(GetStarGazersNodeOrgCreateAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgDisableOauthAppRestrictionsAuditEntry":
+		*v = new(GetStarGazersNodeOrgDisableOauthAppRestrictionsAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgDisableSamlAuditEntry":
+		*v = new(GetStarGazersNodeOrgDisableSamlAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgDisableTwoFactorRequirementAuditEntry":
+		*v = new(GetStarGazersNodeOrgDisableTwoFactorRequirementAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgEnableOauthAppRestrictionsAuditEntry":
+		*v = new(GetStarGazersNodeOrgEnableOauthAppRestrictionsAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgEnableSamlAuditEntry":
+		*v = new(GetStarGazersNodeOrgEnableSamlAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgEnableTwoFactorRequirementAuditEntry":
+		*v = new(GetStarGazersNodeOrgEnableTwoFactorRequirementAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgInviteMemberAuditEntry":
+		*v = new(GetStarGazersNodeOrgInviteMemberAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgInviteToBusinessAuditEntry":
+		*v = new(GetStarGazersNodeOrgInviteToBusinessAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgOauthAppAccessApprovedAuditEntry":
+		*v = new(GetStarGazersNodeOrgOauthAppAccessApprovedAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgOauthAppAccessBlockedAuditEntry":
+		*v = new(GetStarGazersNodeOrgOauthAppAccessBlockedAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgOauthAppAccessDeniedAuditEntry":
+		*v = new(GetStarGazersNodeOrgOauthAppAccessDeniedAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgOauthAppAccessRequestedAuditEntry":
+		*v = new(GetStarGazersNodeOrgOauthAppAccessRequestedAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgOauthAppAccessUnblockedAuditEntry":
+		*v = new(GetStarGazersNodeOrgOauthAppAccessUnblockedAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgRemoveBillingManagerAuditEntry":
+		*v = new(GetStarGazersNodeOrgRemoveBillingManagerAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgRemoveMemberAuditEntry":
+		*v = new(GetStarGazersNodeOrgRemoveMemberAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgRemoveOutsideCollaboratorAuditEntry":
+		*v = new(GetStarGazersNodeOrgRemoveOutsideCollaboratorAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgRestoreMemberAuditEntry":
+		*v = new(GetStarGazersNodeOrgRestoreMemberAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgUnblockUserAuditEntry":
+		*v = new(GetStarGazersNodeOrgUnblockUserAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgUpdateDefaultRepositoryPermissionAuditEntry":
+		*v = new(GetStarGazersNodeOrgUpdateDefaultRepositoryPermissionAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgUpdateMemberAuditEntry":
+		*v = new(GetStarGazersNodeOrgUpdateMemberAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgUpdateMemberRepositoryCreationPermissionAuditEntry":
+		*v = new(GetStarGazersNodeOrgUpdateMemberRepositoryCreationPermissionAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "OrgUpdateMemberRepositoryInvitationPermissionAuditEntry":
+		*v = new(GetStarGazersNodeOrgUpdateMemberRepositoryInvitationPermissionAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "Organization":
+		*v = new(GetStarGazersNodeOrganization)
+		return json.Unmarshal(b, *v)
+	case "OrganizationIdentityProvider":
+		*v = new(GetStarGazersNodeOrganizationIdentityProvider)
+		return json.Unmarshal(b, *v)
+	case "OrganizationInvitation":
+		*v = new(GetStarGazersNodeOrganizationInvitation)
+		return json.Unmarshal(b, *v)
+	case "OrganizationMigration":
+		*v = new(GetStarGazersNodeOrganizationMigration)
+		return json.Unmarshal(b, *v)
+	case "Package":
+		*v = new(GetStarGazersNodePackage)
+		return json.Unmarshal(b, *v)
+	case "PackageFile":
+		*v = new(GetStarGazersNodePackageFile)
+		return json.Unmarshal(b, *v)
+	case "PackageTag":
+		*v = new(GetStarGazersNodePackageTag)
+		return json.Unmarshal(b, *v)
+	case "PackageVersion":
+		*v = new(GetStarGazersNodePackageVersion)
+		return json.Unmarshal(b, *v)
+	case "PinnedDiscussion":
+		*v = new(GetStarGazersNodePinnedDiscussion)
+		return json.Unmarshal(b, *v)
+	case "PinnedEnvironment":
+		*v = new(GetStarGazersNodePinnedEnvironment)
+		return json.Unmarshal(b, *v)
+	case "PinnedEvent":
+		*v = new(GetStarGazersNodePinnedEvent)
+		return json.Unmarshal(b, *v)
+	case "PinnedIssue":
+		*v = new(GetStarGazersNodePinnedIssue)
+		return json.Unmarshal(b, *v)
+	case "PrivateRepositoryForkingDisableAuditEntry":
+		*v = new(GetStarGazersNodePrivateRepositoryForkingDisableAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "PrivateRepositoryForkingEnableAuditEntry":
+		*v = new(GetStarGazersNodePrivateRepositoryForkingEnableAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "Project":
+		*v = new(GetStarGazersNodeProject)
+		return json.Unmarshal(b, *v)
+	case "ProjectCard":
+		*v = new(GetStarGazersNodeProjectCard)
+		return json.Unmarshal(b, *v)
+	case "ProjectColumn":
+		*v = new(GetStarGazersNodeProjectColumn)
+		return json.Unmarshal(b, *v)
+	case "ProjectV2":
+		*v = new(GetStarGazersNodeProjectV2)
+		return json.Unmarshal(b, *v)
+	case "ProjectV2Field":
+		*v = new(GetStarGazersNodeProjectV2Field)
+		return json.Unmarshal(b, *v)
+	case "ProjectV2Item":
+		*v = new(GetStarGazersNodeProjectV2Item)
+		return json.Unmarshal(b, *v)
+	case "ProjectV2ItemFieldDateValue":
+		*v = new(GetStarGazersNodeProjectV2ItemFieldDateValue)
+		return json.Unmarshal(b, *v)
+	case "ProjectV2ItemFieldIterationValue":
+		*v = new(GetStarGazersNodeProjectV2ItemFieldIterationValue)
+		return json.Unmarshal(b, *v)
+	case "ProjectV2ItemFieldNumberValue":
+		*v = new(GetStarGazersNodeProjectV2ItemFieldNumberValue)
+		return json.Unmarshal(b, *v)
+	case "ProjectV2ItemFieldSingleSelectValue":
+		*v = new(GetStarGazersNodeProjectV2ItemFieldSingleSelectValue)
+		return json.Unmarshal(b, *v)
+	case "ProjectV2ItemFieldTextValue":
+		*v = new(GetStarGazersNodeProjectV2ItemFieldTextValue)
+		return json.Unmarshal(b, *v)
+	case "ProjectV2IterationField":
+		*v = new(GetStarGazersNodeProjectV2IterationField)
+		return json.Unmarshal(b, *v)
+	case "ProjectV2SingleSelectField":
+		*v = new(GetStarGazersNodeProjectV2SingleSelectField)
+		return json.Unmarshal(b, *v)
+	case "ProjectV2View":
+		*v = new(GetStarGazersNodeProjectV2View)
+		return json.Unmarshal(b, *v)
+	case "ProjectV2Workflow":
+		*v = new(GetStarGazersNodeProjectV2Workflow)
+		return json.Unmarshal(b, *v)
+	case "PublicKey":
+		*v = new(GetStarGazersNodePublicKey)
+		return json.Unmarshal(b, *v)
+	case "PullRequest":
+		*v = new(GetStarGazersNodePullRequest)
+		return json.Unmarshal(b, *v)
+	case "PullRequestCommit":
+		*v = new(GetStarGazersNodePullRequestCommit)
+		return json.Unmarshal(b, *v)
+	case "PullRequestCommitCommentThread":
+		*v = new(GetStarGazersNodePullRequestCommitCommentThread)
+		return json.Unmarshal(b, *v)
+	case "PullRequestReview":
+		*v = new(GetStarGazersNodePullRequestReview)
+		return json.Unmarshal(b, *v)
+	case "PullRequestReviewComment":
+		*v = new(GetStarGazersNodePullRequestReviewComment)
+		return json.Unmarshal(b, *v)
+	case "PullRequestReviewThread":
+		*v = new(GetStarGazersNodePullRequestReviewThread)
+		return json.Unmarshal(b, *v)
+	case "PullRequestThread":
+		*v = new(GetStarGazersNodePullRequestThread)
+		return json.Unmarshal(b, *v)
+	case "Push":
+		*v = new(GetStarGazersNodePush)
+		return json.Unmarshal(b, *v)
+	case "PushAllowance":
+		*v = new(GetStarGazersNodePushAllowance)
+		return json.Unmarshal(b, *v)
+	case "Reaction":
+		*v = new(GetStarGazersNodeReaction)
+		return json.Unmarshal(b, *v)
+	case "ReadyForReviewEvent":
+		*v = new(GetStarGazersNodeReadyForReviewEvent)
+		return json.Unmarshal(b, *v)
+	case "Ref":
+		*v = new(GetStarGazersNodeRef)
+		return json.Unmarshal(b, *v)
+	case "ReferencedEvent":
+		*v = new(GetStarGazersNodeReferencedEvent)
+		return json.Unmarshal(b, *v)
+	case "Release":
+		*v = new(GetStarGazersNodeRelease)
+		return json.Unmarshal(b, *v)
+	case "ReleaseAsset":
+		*v = new(GetStarGazersNodeReleaseAsset)
+		return json.Unmarshal(b, *v)
+	case "RemovedFromMergeQueueEvent":
+		*v = new(GetStarGazersNodeRemovedFromMergeQueueEvent)
+		return json.Unmarshal(b, *v)
+	case "RemovedFromProjectEvent":
+		*v = new(GetStarGazersNodeRemovedFromProjectEvent)
+		return json.Unmarshal(b, *v)
+	case "RenamedTitleEvent":
+		*v = new(GetStarGazersNodeRenamedTitleEvent)
+		return json.Unmarshal(b, *v)
+	case "ReopenedEvent":
+		*v = new(GetStarGazersNodeReopenedEvent)
+		return json.Unmarshal(b, *v)
+	case "RepoAccessAuditEntry":
+		*v = new(GetStarGazersNodeRepoAccessAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "RepoAddMemberAuditEntry":
+		*v = new(GetStarGazersNodeRepoAddMemberAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "RepoAddTopicAuditEntry":
+		*v = new(GetStarGazersNodeRepoAddTopicAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "RepoArchivedAuditEntry":
+		*v = new(GetStarGazersNodeRepoArchivedAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "RepoChangeMergeSettingAuditEntry":
+		*v = new(GetStarGazersNodeRepoChangeMergeSettingAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "RepoConfigDisableAnonymousGitAccessAuditEntry":
+		*v = new(GetStarGazersNodeRepoConfigDisableAnonymousGitAccessAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "RepoConfigDisableCollaboratorsOnlyAuditEntry":
+		*v = new(GetStarGazersNodeRepoConfigDisableCollaboratorsOnlyAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "RepoConfigDisableContributorsOnlyAuditEntry":
+		*v = new(GetStarGazersNodeRepoConfigDisableContributorsOnlyAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "RepoConfigDisableSockpuppetDisallowedAuditEntry":
+		*v = new(GetStarGazersNodeRepoConfigDisableSockpuppetDisallowedAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "RepoConfigEnableAnonymousGitAccessAuditEntry":
+		*v = new(GetStarGazersNodeRepoConfigEnableAnonymousGitAccessAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "RepoConfigEnableCollaboratorsOnlyAuditEntry":
+		*v = new(GetStarGazersNodeRepoConfigEnableCollaboratorsOnlyAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "RepoConfigEnableContributorsOnlyAuditEntry":
+		*v = new(GetStarGazersNodeRepoConfigEnableContributorsOnlyAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "RepoConfigEnableSockpuppetDisallowedAuditEntry":
+		*v = new(GetStarGazersNodeRepoConfigEnableSockpuppetDisallowedAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "RepoConfigLockAnonymousGitAccessAuditEntry":
+		*v = new(GetStarGazersNodeRepoConfigLockAnonymousGitAccessAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "RepoConfigUnlockAnonymousGitAccessAuditEntry":
+		*v = new(GetStarGazersNodeRepoConfigUnlockAnonymousGitAccessAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "RepoCreateAuditEntry":
+		*v = new(GetStarGazersNodeRepoCreateAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "RepoDestroyAuditEntry":
+		*v = new(GetStarGazersNodeRepoDestroyAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "RepoRemoveMemberAuditEntry":
+		*v = new(GetStarGazersNodeRepoRemoveMemberAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "RepoRemoveTopicAuditEntry":
+		*v = new(GetStarGazersNodeRepoRemoveTopicAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "Repository":
+		*v = new(GetStarGazersNodeRepository)
+		return json.Unmarshal(b, *v)
+	case "RepositoryInvitation":
+		*v = new(GetStarGazersNodeRepositoryInvitation)
+		return json.Unmarshal(b, *v)
+	case "RepositoryMigration":
+		*v = new(GetStarGazersNodeRepositoryMigration)
+		return json.Unmarshal(b, *v)
+	case "RepositoryRule":
+		*v = new(GetStarGazersNodeRepositoryRule)
+		return json.Unmarshal(b, *v)
+	case "RepositoryRuleset":
+		*v = new(GetStarGazersNodeRepositoryRuleset)
+		return json.Unmarshal(b, *v)
+	case "RepositoryRulesetBypassActor":
+		*v = new(GetStarGazersNodeRepositoryRulesetBypassActor)
+		return json.Unmarshal(b, *v)
+	case "RepositoryTopic":
+		*v = new(GetStarGazersNodeRepositoryTopic)
+		return json.Unmarshal(b, *v)
+	case "RepositoryVisibilityChangeDisableAuditEntry":
+		*v = new(GetStarGazersNodeRepositoryVisibilityChangeDisableAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "RepositoryVisibilityChangeEnableAuditEntry":
+		*v = new(GetStarGazersNodeRepositoryVisibilityChangeEnableAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "RepositoryVulnerabilityAlert":
+		*v = new(GetStarGazersNodeRepositoryVulnerabilityAlert)
+		return json.Unmarshal(b, *v)
+	case "ReviewDismissalAllowance":
+		*v = new(GetStarGazersNodeReviewDismissalAllowance)
+		return json.Unmarshal(b, *v)
+	case "ReviewDismissedEvent":
+		*v = new(GetStarGazersNodeReviewDismissedEvent)
+		return json.Unmarshal(b, *v)
+	case "ReviewRequest":
+		*v = new(GetStarGazersNodeReviewRequest)
+		return json.Unmarshal(b, *v)
+	case "ReviewRequestRemovedEvent":
+		*v = new(GetStarGazersNodeReviewRequestRemovedEvent)
+		return json.Unmarshal(b, *v)
+	case "ReviewRequestedEvent":
+		*v = new(GetStarGazersNodeReviewRequestedEvent)
+		return json.Unmarshal(b, *v)
+	case "SavedReply":
+		*v = new(GetStarGazersNodeSavedReply)
+		return json.Unmarshal(b, *v)
+	case "SecurityAdvisory":
+		*v = new(GetStarGazersNodeSecurityAdvisory)
+		return json.Unmarshal(b, *v)
+	case "SponsorsActivity":
+		*v = new(GetStarGazersNodeSponsorsActivity)
+		return json.Unmarshal(b, *v)
+	case "SponsorsListing":
+		*v = new(GetStarGazersNodeSponsorsListing)
+		return json.Unmarshal(b, *v)
+	case "SponsorsListingFeaturedItem":
+		*v = new(GetStarGazersNodeSponsorsListingFeaturedItem)
+		return json.Unmarshal(b, *v)
+	case "SponsorsTier":
+		*v = new(GetStarGazersNodeSponsorsTier)
+		return json.Unmarshal(b, *v)
+	case "Sponsorship":
+		*v = new(GetStarGazersNodeSponsorship)
+		return json.Unmarshal(b, *v)
+	case "SponsorshipNewsletter":
+		*v = new(GetStarGazersNodeSponsorshipNewsletter)
+		return json.Unmarshal(b, *v)
+	case "Status":
+		*v = new(GetStarGazersNodeStatus)
+		return json.Unmarshal(b, *v)
+	case "StatusCheckRollup":
+		*v = new(GetStarGazersNodeStatusCheckRollup)
+		return json.Unmarshal(b, *v)
+	case "StatusContext":
+		*v = new(GetStarGazersNodeStatusContext)
+		return json.Unmarshal(b, *v)
+	case "SubscribedEvent":
+		*v = new(GetStarGazersNodeSubscribedEvent)
+		return json.Unmarshal(b, *v)
+	case "Tag":
+		*v = new(GetStarGazersNodeTag)
+		return json.Unmarshal(b, *v)
+	case "Team":
+		*v = new(GetStarGazersNodeTeam)
+		return json.Unmarshal(b, *v)
+	case "TeamAddMemberAuditEntry":
+		*v = new(GetStarGazersNodeTeamAddMemberAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "TeamAddRepositoryAuditEntry":
+		*v = new(GetStarGazersNodeTeamAddRepositoryAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "TeamChangeParentTeamAuditEntry":
+		*v = new(GetStarGazersNodeTeamChangeParentTeamAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "TeamDiscussion":
+		*v = new(GetStarGazersNodeTeamDiscussion)
+		return json.Unmarshal(b, *v)
+	case "TeamDiscussionComment":
+		*v = new(GetStarGazersNodeTeamDiscussionComment)
+		return json.Unmarshal(b, *v)
+	case "TeamRemoveMemberAuditEntry":
+		*v = new(GetStarGazersNodeTeamRemoveMemberAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "TeamRemoveRepositoryAuditEntry":
+		*v = new(GetStarGazersNodeTeamRemoveRepositoryAuditEntry)
+		return json.Unmarshal(b, *v)
+	case "Topic":
+		*v = new(GetStarGazersNodeTopic)
+		return json.Unmarshal(b, *v)
+	case "TransferredEvent":
+		*v = new(GetStarGazersNodeTransferredEvent)
+		return json.Unmarshal(b, *v)
+	case "Tree":
+		*v = new(GetStarGazersNodeTree)
+		return json.Unmarshal(b, *v)
+	case "UnassignedEvent":
+		*v = new(GetStarGazersNodeUnassignedEvent)
+		return json.Unmarshal(b, *v)
+	case "UnlabeledEvent":
+		*v = new(GetStarGazersNodeUnlabeledEvent)
+		return json.Unmarshal(b, *v)
+	case "UnlockedEvent":
+		*v = new(GetStarGazersNodeUnlockedEvent)
+		return json.Unmarshal(b, *v)
+	case "UnmarkedAsDuplicateEvent":
+		*v = new(GetStarGazersNodeUnmarkedAsDuplicateEvent)
+		return json.Unmarshal(b, *v)
+	case "UnpinnedEvent":
+		*v = new(GetStarGazersNodeUnpinnedEvent)
+		return json.Unmarshal(b, *v)
+	case "UnsubscribedEvent":
+		*v = new(GetStarGazersNodeUnsubscribedEvent)
+		return json.Unmarshal(b, *v)
+	case "User":
+		*v = new(GetStarGazersNodeUser)
+		return json.Unmarshal(b, *v)
+	case "UserBlockedEvent":
+		*v = new(GetStarGazersNodeUserBlockedEvent)
+		return json.Unmarshal(b, *v)
+	case "UserContentEdit":
+		*v = new(GetStarGazersNodeUserContentEdit)
+		return json.Unmarshal(b, *v)
+	case "UserList":
+		*v = new(GetStarGazersNodeUserList)
+		return json.Unmarshal(b, *v)
+	case "UserStatus":
+		*v = new(GetStarGazersNodeUserStatus)
+		return json.Unmarshal(b, *v)
+	case "VerifiableDomain":
+		*v = new(GetStarGazersNodeVerifiableDomain)
+		return json.Unmarshal(b, *v)
+	case "Workflow":
+		*v = new(GetStarGazersNodeWorkflow)
+		return json.Unmarshal(b, *v)
+	case "WorkflowRun":
+		*v = new(GetStarGazersNodeWorkflowRun)
+		return json.Unmarshal(b, *v)
+	case "WorkflowRunFile":
+		*v = new(GetStarGazersNodeWorkflowRunFile)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing Node.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for GetStarGazersNode: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalGetStarGazersNode(v *GetStarGazersNode) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *GetStarGazersNodeAddedToMergeQueueEvent:
+		typename = "AddedToMergeQueueEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeAddedToMergeQueueEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeAddedToProjectEvent:
+		typename = "AddedToProjectEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeAddedToProjectEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeApp:
+		typename = "App"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeApp
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeAssignedEvent:
+		typename = "AssignedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeAssignedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeAutoMergeDisabledEvent:
+		typename = "AutoMergeDisabledEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeAutoMergeDisabledEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeAutoMergeEnabledEvent:
+		typename = "AutoMergeEnabledEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeAutoMergeEnabledEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeAutoRebaseEnabledEvent:
+		typename = "AutoRebaseEnabledEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeAutoRebaseEnabledEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeAutoSquashEnabledEvent:
+		typename = "AutoSquashEnabledEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeAutoSquashEnabledEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeAutomaticBaseChangeFailedEvent:
+		typename = "AutomaticBaseChangeFailedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeAutomaticBaseChangeFailedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeAutomaticBaseChangeSucceededEvent:
+		typename = "AutomaticBaseChangeSucceededEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeAutomaticBaseChangeSucceededEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeBaseRefChangedEvent:
+		typename = "BaseRefChangedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeBaseRefChangedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeBaseRefDeletedEvent:
+		typename = "BaseRefDeletedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeBaseRefDeletedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeBaseRefForcePushedEvent:
+		typename = "BaseRefForcePushedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeBaseRefForcePushedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeBlob:
+		typename = "Blob"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeBlob
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeBot:
+		typename = "Bot"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeBot
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeBranchProtectionRule:
+		typename = "BranchProtectionRule"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeBranchProtectionRule
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeBypassForcePushAllowance:
+		typename = "BypassForcePushAllowance"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeBypassForcePushAllowance
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeBypassPullRequestAllowance:
+		typename = "BypassPullRequestAllowance"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeBypassPullRequestAllowance
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeCWE:
+		typename = "CWE"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeCWE
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeCheckRun:
+		typename = "CheckRun"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeCheckRun
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeCheckSuite:
+		typename = "CheckSuite"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeCheckSuite
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeClosedEvent:
+		typename = "ClosedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeClosedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeCodeOfConduct:
+		typename = "CodeOfConduct"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeCodeOfConduct
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeCommentDeletedEvent:
+		typename = "CommentDeletedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeCommentDeletedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeCommit:
+		typename = "Commit"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeCommit
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeCommitComment:
+		typename = "CommitComment"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeCommitComment
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeCommitCommentThread:
+		typename = "CommitCommentThread"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeCommitCommentThread
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeComparison:
+		typename = "Comparison"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeComparison
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeConnectedEvent:
+		typename = "ConnectedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeConnectedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeConvertToDraftEvent:
+		typename = "ConvertToDraftEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeConvertToDraftEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeConvertedNoteToIssueEvent:
+		typename = "ConvertedNoteToIssueEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeConvertedNoteToIssueEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeConvertedToDiscussionEvent:
+		typename = "ConvertedToDiscussionEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeConvertedToDiscussionEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeCrossReferencedEvent:
+		typename = "CrossReferencedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeCrossReferencedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeDemilestonedEvent:
+		typename = "DemilestonedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeDemilestonedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeDependencyGraphManifest:
+		typename = "DependencyGraphManifest"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeDependencyGraphManifest
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeDeployKey:
+		typename = "DeployKey"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeDeployKey
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeDeployedEvent:
+		typename = "DeployedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeDeployedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeDeployment:
+		typename = "Deployment"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeDeployment
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeDeploymentEnvironmentChangedEvent:
+		typename = "DeploymentEnvironmentChangedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeDeploymentEnvironmentChangedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeDeploymentReview:
+		typename = "DeploymentReview"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeDeploymentReview
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeDeploymentStatus:
+		typename = "DeploymentStatus"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeDeploymentStatus
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeDisconnectedEvent:
+		typename = "DisconnectedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeDisconnectedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeDiscussion:
+		typename = "Discussion"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeDiscussion
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeDiscussionCategory:
+		typename = "DiscussionCategory"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeDiscussionCategory
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeDiscussionComment:
+		typename = "DiscussionComment"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeDiscussionComment
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeDiscussionPoll:
+		typename = "DiscussionPoll"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeDiscussionPoll
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeDiscussionPollOption:
+		typename = "DiscussionPollOption"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeDiscussionPollOption
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeDraftIssue:
+		typename = "DraftIssue"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeDraftIssue
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeEnterprise:
+		typename = "Enterprise"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeEnterprise
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeEnterpriseAdministratorInvitation:
+		typename = "EnterpriseAdministratorInvitation"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeEnterpriseAdministratorInvitation
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeEnterpriseIdentityProvider:
+		typename = "EnterpriseIdentityProvider"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeEnterpriseIdentityProvider
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeEnterpriseRepositoryInfo:
+		typename = "EnterpriseRepositoryInfo"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeEnterpriseRepositoryInfo
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeEnterpriseServerInstallation:
+		typename = "EnterpriseServerInstallation"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeEnterpriseServerInstallation
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeEnterpriseServerUserAccount:
+		typename = "EnterpriseServerUserAccount"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeEnterpriseServerUserAccount
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeEnterpriseServerUserAccountEmail:
+		typename = "EnterpriseServerUserAccountEmail"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeEnterpriseServerUserAccountEmail
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeEnterpriseServerUserAccountsUpload:
+		typename = "EnterpriseServerUserAccountsUpload"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeEnterpriseServerUserAccountsUpload
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeEnterpriseUserAccount:
+		typename = "EnterpriseUserAccount"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeEnterpriseUserAccount
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeEnvironment:
+		typename = "Environment"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeEnvironment
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeExternalIdentity:
+		typename = "ExternalIdentity"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeExternalIdentity
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeGist:
+		typename = "Gist"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeGist
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeGistComment:
+		typename = "GistComment"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeGistComment
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeHeadRefDeletedEvent:
+		typename = "HeadRefDeletedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeHeadRefDeletedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeHeadRefForcePushedEvent:
+		typename = "HeadRefForcePushedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeHeadRefForcePushedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeHeadRefRestoredEvent:
+		typename = "HeadRefRestoredEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeHeadRefRestoredEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeIpAllowListEntry:
+		typename = "IpAllowListEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeIpAllowListEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeIssue:
+		typename = "Issue"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeIssue
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeIssueComment:
+		typename = "IssueComment"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeIssueComment
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeLabel:
+		typename = "Label"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeLabel
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeLabeledEvent:
+		typename = "LabeledEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeLabeledEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeLanguage:
+		typename = "Language"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeLanguage
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeLicense:
+		typename = "License"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeLicense
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeLinkedBranch:
+		typename = "LinkedBranch"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeLinkedBranch
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeLockedEvent:
+		typename = "LockedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeLockedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeMannequin:
+		typename = "Mannequin"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeMannequin
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeMarkedAsDuplicateEvent:
+		typename = "MarkedAsDuplicateEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeMarkedAsDuplicateEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeMarketplaceCategory:
+		typename = "MarketplaceCategory"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeMarketplaceCategory
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeMarketplaceListing:
+		typename = "MarketplaceListing"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeMarketplaceListing
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeMemberFeatureRequestNotification:
+		typename = "MemberFeatureRequestNotification"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeMemberFeatureRequestNotification
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeMembersCanDeleteReposClearAuditEntry:
+		typename = "MembersCanDeleteReposClearAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeMembersCanDeleteReposClearAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeMembersCanDeleteReposDisableAuditEntry:
+		typename = "MembersCanDeleteReposDisableAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeMembersCanDeleteReposDisableAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeMembersCanDeleteReposEnableAuditEntry:
+		typename = "MembersCanDeleteReposEnableAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeMembersCanDeleteReposEnableAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeMentionedEvent:
+		typename = "MentionedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeMentionedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeMergeQueue:
+		typename = "MergeQueue"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeMergeQueue
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeMergeQueueEntry:
+		typename = "MergeQueueEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeMergeQueueEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeMergedEvent:
+		typename = "MergedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeMergedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeMigrationSource:
+		typename = "MigrationSource"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeMigrationSource
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeMilestone:
+		typename = "Milestone"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeMilestone
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeMilestonedEvent:
+		typename = "MilestonedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeMilestonedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeMovedColumnsInProjectEvent:
+		typename = "MovedColumnsInProjectEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeMovedColumnsInProjectEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOIDCProvider:
+		typename = "OIDCProvider"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOIDCProvider
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOauthApplicationCreateAuditEntry:
+		typename = "OauthApplicationCreateAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOauthApplicationCreateAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgAddBillingManagerAuditEntry:
+		typename = "OrgAddBillingManagerAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgAddBillingManagerAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgAddMemberAuditEntry:
+		typename = "OrgAddMemberAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgAddMemberAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgBlockUserAuditEntry:
+		typename = "OrgBlockUserAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgBlockUserAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgConfigDisableCollaboratorsOnlyAuditEntry:
+		typename = "OrgConfigDisableCollaboratorsOnlyAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgConfigDisableCollaboratorsOnlyAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgConfigEnableCollaboratorsOnlyAuditEntry:
+		typename = "OrgConfigEnableCollaboratorsOnlyAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgConfigEnableCollaboratorsOnlyAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgCreateAuditEntry:
+		typename = "OrgCreateAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgCreateAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgDisableOauthAppRestrictionsAuditEntry:
+		typename = "OrgDisableOauthAppRestrictionsAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgDisableOauthAppRestrictionsAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgDisableSamlAuditEntry:
+		typename = "OrgDisableSamlAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgDisableSamlAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgDisableTwoFactorRequirementAuditEntry:
+		typename = "OrgDisableTwoFactorRequirementAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgDisableTwoFactorRequirementAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgEnableOauthAppRestrictionsAuditEntry:
+		typename = "OrgEnableOauthAppRestrictionsAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgEnableOauthAppRestrictionsAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgEnableSamlAuditEntry:
+		typename = "OrgEnableSamlAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgEnableSamlAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgEnableTwoFactorRequirementAuditEntry:
+		typename = "OrgEnableTwoFactorRequirementAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgEnableTwoFactorRequirementAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgInviteMemberAuditEntry:
+		typename = "OrgInviteMemberAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgInviteMemberAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgInviteToBusinessAuditEntry:
+		typename = "OrgInviteToBusinessAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgInviteToBusinessAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgOauthAppAccessApprovedAuditEntry:
+		typename = "OrgOauthAppAccessApprovedAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgOauthAppAccessApprovedAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgOauthAppAccessBlockedAuditEntry:
+		typename = "OrgOauthAppAccessBlockedAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgOauthAppAccessBlockedAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgOauthAppAccessDeniedAuditEntry:
+		typename = "OrgOauthAppAccessDeniedAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgOauthAppAccessDeniedAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgOauthAppAccessRequestedAuditEntry:
+		typename = "OrgOauthAppAccessRequestedAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgOauthAppAccessRequestedAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgOauthAppAccessUnblockedAuditEntry:
+		typename = "OrgOauthAppAccessUnblockedAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgOauthAppAccessUnblockedAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgRemoveBillingManagerAuditEntry:
+		typename = "OrgRemoveBillingManagerAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgRemoveBillingManagerAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgRemoveMemberAuditEntry:
+		typename = "OrgRemoveMemberAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgRemoveMemberAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgRemoveOutsideCollaboratorAuditEntry:
+		typename = "OrgRemoveOutsideCollaboratorAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgRemoveOutsideCollaboratorAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgRestoreMemberAuditEntry:
+		typename = "OrgRestoreMemberAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgRestoreMemberAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgUnblockUserAuditEntry:
+		typename = "OrgUnblockUserAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgUnblockUserAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgUpdateDefaultRepositoryPermissionAuditEntry:
+		typename = "OrgUpdateDefaultRepositoryPermissionAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgUpdateDefaultRepositoryPermissionAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgUpdateMemberAuditEntry:
+		typename = "OrgUpdateMemberAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgUpdateMemberAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgUpdateMemberRepositoryCreationPermissionAuditEntry:
+		typename = "OrgUpdateMemberRepositoryCreationPermissionAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgUpdateMemberRepositoryCreationPermissionAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrgUpdateMemberRepositoryInvitationPermissionAuditEntry:
+		typename = "OrgUpdateMemberRepositoryInvitationPermissionAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrgUpdateMemberRepositoryInvitationPermissionAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrganization:
+		typename = "Organization"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrganization
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrganizationIdentityProvider:
+		typename = "OrganizationIdentityProvider"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrganizationIdentityProvider
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrganizationInvitation:
+		typename = "OrganizationInvitation"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrganizationInvitation
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeOrganizationMigration:
+		typename = "OrganizationMigration"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeOrganizationMigration
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodePackage:
+		typename = "Package"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodePackage
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodePackageFile:
+		typename = "PackageFile"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodePackageFile
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodePackageTag:
+		typename = "PackageTag"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodePackageTag
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodePackageVersion:
+		typename = "PackageVersion"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodePackageVersion
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodePinnedDiscussion:
+		typename = "PinnedDiscussion"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodePinnedDiscussion
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodePinnedEnvironment:
+		typename = "PinnedEnvironment"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodePinnedEnvironment
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodePinnedEvent:
+		typename = "PinnedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodePinnedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodePinnedIssue:
+		typename = "PinnedIssue"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodePinnedIssue
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodePrivateRepositoryForkingDisableAuditEntry:
+		typename = "PrivateRepositoryForkingDisableAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodePrivateRepositoryForkingDisableAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodePrivateRepositoryForkingEnableAuditEntry:
+		typename = "PrivateRepositoryForkingEnableAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodePrivateRepositoryForkingEnableAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeProject:
+		typename = "Project"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeProject
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeProjectCard:
+		typename = "ProjectCard"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeProjectCard
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeProjectColumn:
+		typename = "ProjectColumn"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeProjectColumn
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeProjectV2:
+		typename = "ProjectV2"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeProjectV2
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeProjectV2Field:
+		typename = "ProjectV2Field"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeProjectV2Field
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeProjectV2Item:
+		typename = "ProjectV2Item"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeProjectV2Item
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeProjectV2ItemFieldDateValue:
+		typename = "ProjectV2ItemFieldDateValue"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeProjectV2ItemFieldDateValue
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeProjectV2ItemFieldIterationValue:
+		typename = "ProjectV2ItemFieldIterationValue"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeProjectV2ItemFieldIterationValue
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeProjectV2ItemFieldNumberValue:
+		typename = "ProjectV2ItemFieldNumberValue"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeProjectV2ItemFieldNumberValue
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeProjectV2ItemFieldSingleSelectValue:
+		typename = "ProjectV2ItemFieldSingleSelectValue"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeProjectV2ItemFieldSingleSelectValue
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeProjectV2ItemFieldTextValue:
+		typename = "ProjectV2ItemFieldTextValue"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeProjectV2ItemFieldTextValue
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeProjectV2IterationField:
+		typename = "ProjectV2IterationField"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeProjectV2IterationField
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeProjectV2SingleSelectField:
+		typename = "ProjectV2SingleSelectField"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeProjectV2SingleSelectField
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeProjectV2View:
+		typename = "ProjectV2View"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeProjectV2View
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeProjectV2Workflow:
+		typename = "ProjectV2Workflow"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeProjectV2Workflow
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodePublicKey:
+		typename = "PublicKey"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodePublicKey
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodePullRequest:
+		typename = "PullRequest"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodePullRequest
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodePullRequestCommit:
+		typename = "PullRequestCommit"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodePullRequestCommit
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodePullRequestCommitCommentThread:
+		typename = "PullRequestCommitCommentThread"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodePullRequestCommitCommentThread
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodePullRequestReview:
+		typename = "PullRequestReview"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodePullRequestReview
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodePullRequestReviewComment:
+		typename = "PullRequestReviewComment"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodePullRequestReviewComment
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodePullRequestReviewThread:
+		typename = "PullRequestReviewThread"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodePullRequestReviewThread
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodePullRequestThread:
+		typename = "PullRequestThread"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodePullRequestThread
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodePush:
+		typename = "Push"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodePush
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodePushAllowance:
+		typename = "PushAllowance"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodePushAllowance
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeReaction:
+		typename = "Reaction"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeReaction
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeReadyForReviewEvent:
+		typename = "ReadyForReviewEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeReadyForReviewEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRef:
+		typename = "Ref"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRef
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeReferencedEvent:
+		typename = "ReferencedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeReferencedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRelease:
+		typename = "Release"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRelease
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeReleaseAsset:
+		typename = "ReleaseAsset"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeReleaseAsset
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRemovedFromMergeQueueEvent:
+		typename = "RemovedFromMergeQueueEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRemovedFromMergeQueueEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRemovedFromProjectEvent:
+		typename = "RemovedFromProjectEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRemovedFromProjectEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRenamedTitleEvent:
+		typename = "RenamedTitleEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRenamedTitleEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeReopenedEvent:
+		typename = "ReopenedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeReopenedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepoAccessAuditEntry:
+		typename = "RepoAccessAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepoAccessAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepoAddMemberAuditEntry:
+		typename = "RepoAddMemberAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepoAddMemberAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepoAddTopicAuditEntry:
+		typename = "RepoAddTopicAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepoAddTopicAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepoArchivedAuditEntry:
+		typename = "RepoArchivedAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepoArchivedAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepoChangeMergeSettingAuditEntry:
+		typename = "RepoChangeMergeSettingAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepoChangeMergeSettingAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepoConfigDisableAnonymousGitAccessAuditEntry:
+		typename = "RepoConfigDisableAnonymousGitAccessAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepoConfigDisableAnonymousGitAccessAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepoConfigDisableCollaboratorsOnlyAuditEntry:
+		typename = "RepoConfigDisableCollaboratorsOnlyAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepoConfigDisableCollaboratorsOnlyAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepoConfigDisableContributorsOnlyAuditEntry:
+		typename = "RepoConfigDisableContributorsOnlyAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepoConfigDisableContributorsOnlyAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepoConfigDisableSockpuppetDisallowedAuditEntry:
+		typename = "RepoConfigDisableSockpuppetDisallowedAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepoConfigDisableSockpuppetDisallowedAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepoConfigEnableAnonymousGitAccessAuditEntry:
+		typename = "RepoConfigEnableAnonymousGitAccessAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepoConfigEnableAnonymousGitAccessAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepoConfigEnableCollaboratorsOnlyAuditEntry:
+		typename = "RepoConfigEnableCollaboratorsOnlyAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepoConfigEnableCollaboratorsOnlyAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepoConfigEnableContributorsOnlyAuditEntry:
+		typename = "RepoConfigEnableContributorsOnlyAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepoConfigEnableContributorsOnlyAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepoConfigEnableSockpuppetDisallowedAuditEntry:
+		typename = "RepoConfigEnableSockpuppetDisallowedAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepoConfigEnableSockpuppetDisallowedAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepoConfigLockAnonymousGitAccessAuditEntry:
+		typename = "RepoConfigLockAnonymousGitAccessAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepoConfigLockAnonymousGitAccessAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepoConfigUnlockAnonymousGitAccessAuditEntry:
+		typename = "RepoConfigUnlockAnonymousGitAccessAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepoConfigUnlockAnonymousGitAccessAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepoCreateAuditEntry:
+		typename = "RepoCreateAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepoCreateAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepoDestroyAuditEntry:
+		typename = "RepoDestroyAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepoDestroyAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepoRemoveMemberAuditEntry:
+		typename = "RepoRemoveMemberAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepoRemoveMemberAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepoRemoveTopicAuditEntry:
+		typename = "RepoRemoveTopicAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepoRemoveTopicAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepository:
+		typename = "Repository"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepository
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepositoryInvitation:
+		typename = "RepositoryInvitation"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepositoryInvitation
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepositoryMigration:
+		typename = "RepositoryMigration"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepositoryMigration
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepositoryRule:
+		typename = "RepositoryRule"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepositoryRule
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepositoryRuleset:
+		typename = "RepositoryRuleset"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepositoryRuleset
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepositoryRulesetBypassActor:
+		typename = "RepositoryRulesetBypassActor"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepositoryRulesetBypassActor
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepositoryTopic:
+		typename = "RepositoryTopic"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepositoryTopic
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepositoryVisibilityChangeDisableAuditEntry:
+		typename = "RepositoryVisibilityChangeDisableAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepositoryVisibilityChangeDisableAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepositoryVisibilityChangeEnableAuditEntry:
+		typename = "RepositoryVisibilityChangeEnableAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepositoryVisibilityChangeEnableAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeRepositoryVulnerabilityAlert:
+		typename = "RepositoryVulnerabilityAlert"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeRepositoryVulnerabilityAlert
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeReviewDismissalAllowance:
+		typename = "ReviewDismissalAllowance"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeReviewDismissalAllowance
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeReviewDismissedEvent:
+		typename = "ReviewDismissedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeReviewDismissedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeReviewRequest:
+		typename = "ReviewRequest"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeReviewRequest
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeReviewRequestRemovedEvent:
+		typename = "ReviewRequestRemovedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeReviewRequestRemovedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeReviewRequestedEvent:
+		typename = "ReviewRequestedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeReviewRequestedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeSavedReply:
+		typename = "SavedReply"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeSavedReply
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeSecurityAdvisory:
+		typename = "SecurityAdvisory"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeSecurityAdvisory
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeSponsorsActivity:
+		typename = "SponsorsActivity"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeSponsorsActivity
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeSponsorsListing:
+		typename = "SponsorsListing"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeSponsorsListing
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeSponsorsListingFeaturedItem:
+		typename = "SponsorsListingFeaturedItem"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeSponsorsListingFeaturedItem
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeSponsorsTier:
+		typename = "SponsorsTier"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeSponsorsTier
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeSponsorship:
+		typename = "Sponsorship"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeSponsorship
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeSponsorshipNewsletter:
+		typename = "SponsorshipNewsletter"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeSponsorshipNewsletter
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeStatus:
+		typename = "Status"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeStatus
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeStatusCheckRollup:
+		typename = "StatusCheckRollup"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeStatusCheckRollup
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeStatusContext:
+		typename = "StatusContext"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeStatusContext
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeSubscribedEvent:
+		typename = "SubscribedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeSubscribedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeTag:
+		typename = "Tag"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeTag
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeTeam:
+		typename = "Team"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeTeam
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeTeamAddMemberAuditEntry:
+		typename = "TeamAddMemberAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeTeamAddMemberAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeTeamAddRepositoryAuditEntry:
+		typename = "TeamAddRepositoryAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeTeamAddRepositoryAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeTeamChangeParentTeamAuditEntry:
+		typename = "TeamChangeParentTeamAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeTeamChangeParentTeamAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeTeamDiscussion:
+		typename = "TeamDiscussion"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeTeamDiscussion
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeTeamDiscussionComment:
+		typename = "TeamDiscussionComment"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeTeamDiscussionComment
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeTeamRemoveMemberAuditEntry:
+		typename = "TeamRemoveMemberAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeTeamRemoveMemberAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeTeamRemoveRepositoryAuditEntry:
+		typename = "TeamRemoveRepositoryAuditEntry"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeTeamRemoveRepositoryAuditEntry
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeTopic:
+		typename = "Topic"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeTopic
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeTransferredEvent:
+		typename = "TransferredEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeTransferredEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeTree:
+		typename = "Tree"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeTree
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeUnassignedEvent:
+		typename = "UnassignedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeUnassignedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeUnlabeledEvent:
+		typename = "UnlabeledEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeUnlabeledEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeUnlockedEvent:
+		typename = "UnlockedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeUnlockedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeUnmarkedAsDuplicateEvent:
+		typename = "UnmarkedAsDuplicateEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeUnmarkedAsDuplicateEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeUnpinnedEvent:
+		typename = "UnpinnedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeUnpinnedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeUnsubscribedEvent:
+		typename = "UnsubscribedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeUnsubscribedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeUser:
+		typename = "User"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeUser
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeUserBlockedEvent:
+		typename = "UserBlockedEvent"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeUserBlockedEvent
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeUserContentEdit:
+		typename = "UserContentEdit"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeUserContentEdit
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeUserList:
+		typename = "UserList"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeUserList
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeUserStatus:
+		typename = "UserStatus"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeUserStatus
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeVerifiableDomain:
+		typename = "VerifiableDomain"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeVerifiableDomain
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeWorkflow:
+		typename = "Workflow"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeWorkflow
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeWorkflowRun:
+		typename = "WorkflowRun"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeWorkflowRun
+		}{typename, v}
+		return json.Marshal(result)
+	case *GetStarGazersNodeWorkflowRunFile:
+		typename = "WorkflowRunFile"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetStarGazersNodeWorkflowRunFile
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for GetStarGazersNode: "%T"`, v)
+	}
+}
+
+// GetStarGazersNodeAddedToMergeQueueEvent includes the requested fields of the GraphQL type AddedToMergeQueueEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents an 'added_to_merge_queue' event on a given pull request.
+type GetStarGazersNodeAddedToMergeQueueEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeAddedToMergeQueueEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeAddedToMergeQueueEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeAddedToProjectEvent includes the requested fields of the GraphQL type AddedToProjectEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'added_to_project' event on a given issue or pull request.
+type GetStarGazersNodeAddedToProjectEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeAddedToProjectEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeAddedToProjectEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeApp includes the requested fields of the GraphQL type App.
+// The GraphQL type's documentation follows.
+//
+// A GitHub App.
+type GetStarGazersNodeApp struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeApp.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeApp) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeAssignedEvent includes the requested fields of the GraphQL type AssignedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents an 'assigned' event on any assignable object.
+type GetStarGazersNodeAssignedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeAssignedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeAssignedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeAutoMergeDisabledEvent includes the requested fields of the GraphQL type AutoMergeDisabledEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'auto_merge_disabled' event on a given pull request.
+type GetStarGazersNodeAutoMergeDisabledEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeAutoMergeDisabledEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeAutoMergeDisabledEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeAutoMergeEnabledEvent includes the requested fields of the GraphQL type AutoMergeEnabledEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'auto_merge_enabled' event on a given pull request.
+type GetStarGazersNodeAutoMergeEnabledEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeAutoMergeEnabledEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeAutoMergeEnabledEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeAutoRebaseEnabledEvent includes the requested fields of the GraphQL type AutoRebaseEnabledEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'auto_rebase_enabled' event on a given pull request.
+type GetStarGazersNodeAutoRebaseEnabledEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeAutoRebaseEnabledEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeAutoRebaseEnabledEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeAutoSquashEnabledEvent includes the requested fields of the GraphQL type AutoSquashEnabledEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'auto_squash_enabled' event on a given pull request.
+type GetStarGazersNodeAutoSquashEnabledEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeAutoSquashEnabledEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeAutoSquashEnabledEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeAutomaticBaseChangeFailedEvent includes the requested fields of the GraphQL type AutomaticBaseChangeFailedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'automatic_base_change_failed' event on a given pull request.
+type GetStarGazersNodeAutomaticBaseChangeFailedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeAutomaticBaseChangeFailedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeAutomaticBaseChangeFailedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeAutomaticBaseChangeSucceededEvent includes the requested fields of the GraphQL type AutomaticBaseChangeSucceededEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'automatic_base_change_succeeded' event on a given pull request.
+type GetStarGazersNodeAutomaticBaseChangeSucceededEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeAutomaticBaseChangeSucceededEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeAutomaticBaseChangeSucceededEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeBaseRefChangedEvent includes the requested fields of the GraphQL type BaseRefChangedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'base_ref_changed' event on a given issue or pull request.
+type GetStarGazersNodeBaseRefChangedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeBaseRefChangedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeBaseRefChangedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeBaseRefDeletedEvent includes the requested fields of the GraphQL type BaseRefDeletedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'base_ref_deleted' event on a given pull request.
+type GetStarGazersNodeBaseRefDeletedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeBaseRefDeletedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeBaseRefDeletedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeBaseRefForcePushedEvent includes the requested fields of the GraphQL type BaseRefForcePushedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'base_ref_force_pushed' event on a given pull request.
+type GetStarGazersNodeBaseRefForcePushedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeBaseRefForcePushedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeBaseRefForcePushedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeBlob includes the requested fields of the GraphQL type Blob.
+// The GraphQL type's documentation follows.
+//
+// Represents a Git blob.
+type GetStarGazersNodeBlob struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeBlob.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeBlob) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeBot includes the requested fields of the GraphQL type Bot.
+// The GraphQL type's documentation follows.
+//
+// A special type of user which takes actions on behalf of GitHub Apps.
+type GetStarGazersNodeBot struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeBot.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeBot) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeBranchProtectionRule includes the requested fields of the GraphQL type BranchProtectionRule.
+// The GraphQL type's documentation follows.
+//
+// A branch protection rule.
+type GetStarGazersNodeBranchProtectionRule struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeBranchProtectionRule.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeBranchProtectionRule) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeBypassForcePushAllowance includes the requested fields of the GraphQL type BypassForcePushAllowance.
+// The GraphQL type's documentation follows.
+//
+// A user, team, or app who has the ability to bypass a force push requirement on a protected branch.
+type GetStarGazersNodeBypassForcePushAllowance struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeBypassForcePushAllowance.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeBypassForcePushAllowance) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeBypassPullRequestAllowance includes the requested fields of the GraphQL type BypassPullRequestAllowance.
+// The GraphQL type's documentation follows.
+//
+// A user, team, or app who has the ability to bypass a pull request requirement on a protected branch.
+type GetStarGazersNodeBypassPullRequestAllowance struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeBypassPullRequestAllowance.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeBypassPullRequestAllowance) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeCWE includes the requested fields of the GraphQL type CWE.
+// The GraphQL type's documentation follows.
+//
+// A common weakness enumeration
+type GetStarGazersNodeCWE struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeCWE.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeCWE) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeCheckRun includes the requested fields of the GraphQL type CheckRun.
+// The GraphQL type's documentation follows.
+//
+// A check run.
+type GetStarGazersNodeCheckRun struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeCheckRun.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeCheckRun) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeCheckSuite includes the requested fields of the GraphQL type CheckSuite.
+// The GraphQL type's documentation follows.
+//
+// A check suite.
+type GetStarGazersNodeCheckSuite struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeCheckSuite.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeCheckSuite) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeClosedEvent includes the requested fields of the GraphQL type ClosedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'closed' event on any `Closable`.
+type GetStarGazersNodeClosedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeClosedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeClosedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeCodeOfConduct includes the requested fields of the GraphQL type CodeOfConduct.
+// The GraphQL type's documentation follows.
+//
+// The Code of Conduct for a repository
+type GetStarGazersNodeCodeOfConduct struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeCodeOfConduct.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeCodeOfConduct) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeCommentDeletedEvent includes the requested fields of the GraphQL type CommentDeletedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'comment_deleted' event on a given issue or pull request.
+type GetStarGazersNodeCommentDeletedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeCommentDeletedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeCommentDeletedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeCommit includes the requested fields of the GraphQL type Commit.
+// The GraphQL type's documentation follows.
+//
+// Represents a Git commit.
+type GetStarGazersNodeCommit struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeCommit.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeCommit) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeCommitComment includes the requested fields of the GraphQL type CommitComment.
+// The GraphQL type's documentation follows.
+//
+// Represents a comment on a given Commit.
+type GetStarGazersNodeCommitComment struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeCommitComment.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeCommitComment) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeCommitCommentThread includes the requested fields of the GraphQL type CommitCommentThread.
+// The GraphQL type's documentation follows.
+//
+// A thread of comments on a commit.
+type GetStarGazersNodeCommitCommentThread struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeCommitCommentThread.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeCommitCommentThread) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeComparison includes the requested fields of the GraphQL type Comparison.
+// The GraphQL type's documentation follows.
+//
+// Represents a comparison between two commit revisions.
+type GetStarGazersNodeComparison struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeComparison.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeComparison) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeConnectedEvent includes the requested fields of the GraphQL type ConnectedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'connected' event on a given issue or pull request.
+type GetStarGazersNodeConnectedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeConnectedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeConnectedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeConvertToDraftEvent includes the requested fields of the GraphQL type ConvertToDraftEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'convert_to_draft' event on a given pull request.
+type GetStarGazersNodeConvertToDraftEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeConvertToDraftEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeConvertToDraftEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeConvertedNoteToIssueEvent includes the requested fields of the GraphQL type ConvertedNoteToIssueEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'converted_note_to_issue' event on a given issue or pull request.
+type GetStarGazersNodeConvertedNoteToIssueEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeConvertedNoteToIssueEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeConvertedNoteToIssueEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeConvertedToDiscussionEvent includes the requested fields of the GraphQL type ConvertedToDiscussionEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'converted_to_discussion' event on a given issue.
+type GetStarGazersNodeConvertedToDiscussionEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeConvertedToDiscussionEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeConvertedToDiscussionEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeCrossReferencedEvent includes the requested fields of the GraphQL type CrossReferencedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a mention made by one issue or pull request to another.
+type GetStarGazersNodeCrossReferencedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeCrossReferencedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeCrossReferencedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeDemilestonedEvent includes the requested fields of the GraphQL type DemilestonedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'demilestoned' event on a given issue or pull request.
+type GetStarGazersNodeDemilestonedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeDemilestonedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeDemilestonedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeDependencyGraphManifest includes the requested fields of the GraphQL type DependencyGraphManifest.
+// The GraphQL type's documentation follows.
+//
+// Dependency manifest for a repository
+type GetStarGazersNodeDependencyGraphManifest struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeDependencyGraphManifest.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeDependencyGraphManifest) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeDeployKey includes the requested fields of the GraphQL type DeployKey.
+// The GraphQL type's documentation follows.
+//
+// A repository deploy key.
+type GetStarGazersNodeDeployKey struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeDeployKey.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeDeployKey) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeDeployedEvent includes the requested fields of the GraphQL type DeployedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'deployed' event on a given pull request.
+type GetStarGazersNodeDeployedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeDeployedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeDeployedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeDeployment includes the requested fields of the GraphQL type Deployment.
+// The GraphQL type's documentation follows.
+//
+// Represents triggered deployment instance.
+type GetStarGazersNodeDeployment struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeDeployment.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeDeployment) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeDeploymentEnvironmentChangedEvent includes the requested fields of the GraphQL type DeploymentEnvironmentChangedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'deployment_environment_changed' event on a given pull request.
+type GetStarGazersNodeDeploymentEnvironmentChangedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeDeploymentEnvironmentChangedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeDeploymentEnvironmentChangedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeDeploymentReview includes the requested fields of the GraphQL type DeploymentReview.
+// The GraphQL type's documentation follows.
+//
+// A deployment review.
+type GetStarGazersNodeDeploymentReview struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeDeploymentReview.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeDeploymentReview) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeDeploymentStatus includes the requested fields of the GraphQL type DeploymentStatus.
+// The GraphQL type's documentation follows.
+//
+// Describes the status of a given deployment attempt.
+type GetStarGazersNodeDeploymentStatus struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeDeploymentStatus.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeDeploymentStatus) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeDisconnectedEvent includes the requested fields of the GraphQL type DisconnectedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'disconnected' event on a given issue or pull request.
+type GetStarGazersNodeDisconnectedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeDisconnectedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeDisconnectedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeDiscussion includes the requested fields of the GraphQL type Discussion.
+// The GraphQL type's documentation follows.
+//
+// A discussion in a repository.
+type GetStarGazersNodeDiscussion struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeDiscussion.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeDiscussion) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeDiscussionCategory includes the requested fields of the GraphQL type DiscussionCategory.
+// The GraphQL type's documentation follows.
+//
+// A category for discussions in a repository.
+type GetStarGazersNodeDiscussionCategory struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeDiscussionCategory.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeDiscussionCategory) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeDiscussionComment includes the requested fields of the GraphQL type DiscussionComment.
+// The GraphQL type's documentation follows.
+//
+// A comment on a discussion.
+type GetStarGazersNodeDiscussionComment struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeDiscussionComment.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeDiscussionComment) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeDiscussionPoll includes the requested fields of the GraphQL type DiscussionPoll.
+// The GraphQL type's documentation follows.
+//
+// A poll for a discussion.
+type GetStarGazersNodeDiscussionPoll struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeDiscussionPoll.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeDiscussionPoll) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeDiscussionPollOption includes the requested fields of the GraphQL type DiscussionPollOption.
+// The GraphQL type's documentation follows.
+//
+// An option for a discussion poll.
+type GetStarGazersNodeDiscussionPollOption struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeDiscussionPollOption.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeDiscussionPollOption) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeDraftIssue includes the requested fields of the GraphQL type DraftIssue.
+// The GraphQL type's documentation follows.
+//
+// A draft issue within a project.
+type GetStarGazersNodeDraftIssue struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeDraftIssue.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeDraftIssue) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeEnterprise includes the requested fields of the GraphQL type Enterprise.
+// The GraphQL type's documentation follows.
+//
+// An account to manage multiple organizations with consolidated policy and billing.
+type GetStarGazersNodeEnterprise struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeEnterprise.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeEnterprise) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeEnterpriseAdministratorInvitation includes the requested fields of the GraphQL type EnterpriseAdministratorInvitation.
+// The GraphQL type's documentation follows.
+//
+// An invitation for a user to become an owner or billing manager of an enterprise.
+type GetStarGazersNodeEnterpriseAdministratorInvitation struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeEnterpriseAdministratorInvitation.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeEnterpriseAdministratorInvitation) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeEnterpriseIdentityProvider includes the requested fields of the GraphQL type EnterpriseIdentityProvider.
+// The GraphQL type's documentation follows.
+//
+// An identity provider configured to provision identities for an enterprise.
+// Visible to enterprise owners or enterprise owners' personal access tokens
+// (classic) with read:enterprise or admin:enterprise scope.
+type GetStarGazersNodeEnterpriseIdentityProvider struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeEnterpriseIdentityProvider.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeEnterpriseIdentityProvider) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeEnterpriseRepositoryInfo includes the requested fields of the GraphQL type EnterpriseRepositoryInfo.
+// The GraphQL type's documentation follows.
+//
+// A subset of repository information queryable from an enterprise.
+type GetStarGazersNodeEnterpriseRepositoryInfo struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeEnterpriseRepositoryInfo.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeEnterpriseRepositoryInfo) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeEnterpriseServerInstallation includes the requested fields of the GraphQL type EnterpriseServerInstallation.
+// The GraphQL type's documentation follows.
+//
+// An Enterprise Server installation.
+type GetStarGazersNodeEnterpriseServerInstallation struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeEnterpriseServerInstallation.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeEnterpriseServerInstallation) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeEnterpriseServerUserAccount includes the requested fields of the GraphQL type EnterpriseServerUserAccount.
+// The GraphQL type's documentation follows.
+//
+// A user account on an Enterprise Server installation.
+type GetStarGazersNodeEnterpriseServerUserAccount struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeEnterpriseServerUserAccount.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeEnterpriseServerUserAccount) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeEnterpriseServerUserAccountEmail includes the requested fields of the GraphQL type EnterpriseServerUserAccountEmail.
+// The GraphQL type's documentation follows.
+//
+// An email belonging to a user account on an Enterprise Server installation.
+type GetStarGazersNodeEnterpriseServerUserAccountEmail struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeEnterpriseServerUserAccountEmail.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeEnterpriseServerUserAccountEmail) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeEnterpriseServerUserAccountsUpload includes the requested fields of the GraphQL type EnterpriseServerUserAccountsUpload.
+// The GraphQL type's documentation follows.
+//
+// A user accounts upload from an Enterprise Server installation.
+type GetStarGazersNodeEnterpriseServerUserAccountsUpload struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeEnterpriseServerUserAccountsUpload.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeEnterpriseServerUserAccountsUpload) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeEnterpriseUserAccount includes the requested fields of the GraphQL type EnterpriseUserAccount.
+// The GraphQL type's documentation follows.
+//
+// An account for a user who is an admin of an enterprise or a member of an enterprise through one or more organizations.
+type GetStarGazersNodeEnterpriseUserAccount struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeEnterpriseUserAccount.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeEnterpriseUserAccount) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeEnvironment includes the requested fields of the GraphQL type Environment.
+// The GraphQL type's documentation follows.
+//
+// An environment.
+type GetStarGazersNodeEnvironment struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeEnvironment.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeEnvironment) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeExternalIdentity includes the requested fields of the GraphQL type ExternalIdentity.
+// The GraphQL type's documentation follows.
+//
+// An external identity provisioned by SAML SSO or SCIM. If SAML is configured on
+// the organization, the external identity is visible to (1) organization owners,
+// (2) organization owners' personal access tokens (classic) with read:org or
+// admin:org scope, (3) GitHub App with an installation token with read or write
+// access to members. If SAML is configured on the enterprise, the external
+// identity is visible to (1) enterprise owners, (2) enterprise owners' personal
+// access tokens (classic) with read:enterprise or admin:enterprise scope.
+type GetStarGazersNodeExternalIdentity struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeExternalIdentity.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeExternalIdentity) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeGist includes the requested fields of the GraphQL type Gist.
+// The GraphQL type's documentation follows.
+//
+// A Gist.
+type GetStarGazersNodeGist struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeGist.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeGist) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeGistComment includes the requested fields of the GraphQL type GistComment.
+// The GraphQL type's documentation follows.
+//
+// Represents a comment on an Gist.
+type GetStarGazersNodeGistComment struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeGistComment.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeGistComment) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeHeadRefDeletedEvent includes the requested fields of the GraphQL type HeadRefDeletedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'head_ref_deleted' event on a given pull request.
+type GetStarGazersNodeHeadRefDeletedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeHeadRefDeletedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeHeadRefDeletedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeHeadRefForcePushedEvent includes the requested fields of the GraphQL type HeadRefForcePushedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'head_ref_force_pushed' event on a given pull request.
+type GetStarGazersNodeHeadRefForcePushedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeHeadRefForcePushedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeHeadRefForcePushedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeHeadRefRestoredEvent includes the requested fields of the GraphQL type HeadRefRestoredEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'head_ref_restored' event on a given pull request.
+type GetStarGazersNodeHeadRefRestoredEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeHeadRefRestoredEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeHeadRefRestoredEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeIpAllowListEntry includes the requested fields of the GraphQL type IpAllowListEntry.
+// The GraphQL type's documentation follows.
+//
+// An IP address or range of addresses that is allowed to access an owner's resources.
+type GetStarGazersNodeIpAllowListEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeIpAllowListEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeIpAllowListEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeIssue includes the requested fields of the GraphQL type Issue.
+// The GraphQL type's documentation follows.
+//
+// An Issue is a place to discuss ideas, enhancements, tasks, and bugs for a project.
+type GetStarGazersNodeIssue struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeIssue.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeIssue) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeIssueComment includes the requested fields of the GraphQL type IssueComment.
+// The GraphQL type's documentation follows.
+//
+// Represents a comment on an Issue.
+type GetStarGazersNodeIssueComment struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeIssueComment.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeIssueComment) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeLabel includes the requested fields of the GraphQL type Label.
+// The GraphQL type's documentation follows.
+//
+// A label for categorizing Issues, Pull Requests, Milestones, or Discussions with a given Repository.
+type GetStarGazersNodeLabel struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeLabel.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeLabel) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeLabeledEvent includes the requested fields of the GraphQL type LabeledEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'labeled' event on a given issue or pull request.
+type GetStarGazersNodeLabeledEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeLabeledEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeLabeledEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeLanguage includes the requested fields of the GraphQL type Language.
+// The GraphQL type's documentation follows.
+//
+// Represents a given language found in repositories.
+type GetStarGazersNodeLanguage struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeLanguage.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeLanguage) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeLicense includes the requested fields of the GraphQL type License.
+// The GraphQL type's documentation follows.
+//
+// A repository's open source license
+type GetStarGazersNodeLicense struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeLicense.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeLicense) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeLinkedBranch includes the requested fields of the GraphQL type LinkedBranch.
+// The GraphQL type's documentation follows.
+//
+// A branch linked to an issue.
+type GetStarGazersNodeLinkedBranch struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeLinkedBranch.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeLinkedBranch) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeLockedEvent includes the requested fields of the GraphQL type LockedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'locked' event on a given issue or pull request.
+type GetStarGazersNodeLockedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeLockedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeLockedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeMannequin includes the requested fields of the GraphQL type Mannequin.
+// The GraphQL type's documentation follows.
+//
+// A placeholder user for attribution of imported data on GitHub.
+type GetStarGazersNodeMannequin struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeMannequin.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeMannequin) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeMarkedAsDuplicateEvent includes the requested fields of the GraphQL type MarkedAsDuplicateEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'marked_as_duplicate' event on a given issue or pull request.
+type GetStarGazersNodeMarkedAsDuplicateEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeMarkedAsDuplicateEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeMarkedAsDuplicateEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeMarketplaceCategory includes the requested fields of the GraphQL type MarketplaceCategory.
+// The GraphQL type's documentation follows.
+//
+// A public description of a Marketplace category.
+type GetStarGazersNodeMarketplaceCategory struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeMarketplaceCategory.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeMarketplaceCategory) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeMarketplaceListing includes the requested fields of the GraphQL type MarketplaceListing.
+// The GraphQL type's documentation follows.
+//
+// A listing in the GitHub integration marketplace.
+type GetStarGazersNodeMarketplaceListing struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeMarketplaceListing.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeMarketplaceListing) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeMemberFeatureRequestNotification includes the requested fields of the GraphQL type MemberFeatureRequestNotification.
+// The GraphQL type's documentation follows.
+//
+// Represents a member feature request notification
+type GetStarGazersNodeMemberFeatureRequestNotification struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeMemberFeatureRequestNotification.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeMemberFeatureRequestNotification) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeMembersCanDeleteReposClearAuditEntry includes the requested fields of the GraphQL type MembersCanDeleteReposClearAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a members_can_delete_repos.clear event.
+type GetStarGazersNodeMembersCanDeleteReposClearAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeMembersCanDeleteReposClearAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeMembersCanDeleteReposClearAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeMembersCanDeleteReposDisableAuditEntry includes the requested fields of the GraphQL type MembersCanDeleteReposDisableAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a members_can_delete_repos.disable event.
+type GetStarGazersNodeMembersCanDeleteReposDisableAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeMembersCanDeleteReposDisableAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeMembersCanDeleteReposDisableAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeMembersCanDeleteReposEnableAuditEntry includes the requested fields of the GraphQL type MembersCanDeleteReposEnableAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a members_can_delete_repos.enable event.
+type GetStarGazersNodeMembersCanDeleteReposEnableAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeMembersCanDeleteReposEnableAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeMembersCanDeleteReposEnableAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeMentionedEvent includes the requested fields of the GraphQL type MentionedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'mentioned' event on a given issue or pull request.
+type GetStarGazersNodeMentionedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeMentionedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeMentionedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeMergeQueue includes the requested fields of the GraphQL type MergeQueue.
+// The GraphQL type's documentation follows.
+//
+// The queue of pull request entries to be merged into a protected branch in a repository.
+type GetStarGazersNodeMergeQueue struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeMergeQueue.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeMergeQueue) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeMergeQueueEntry includes the requested fields of the GraphQL type MergeQueueEntry.
+// The GraphQL type's documentation follows.
+//
+// Entries in a MergeQueue
+type GetStarGazersNodeMergeQueueEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeMergeQueueEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeMergeQueueEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeMergedEvent includes the requested fields of the GraphQL type MergedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'merged' event on a given pull request.
+type GetStarGazersNodeMergedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeMergedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeMergedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeMigrationSource includes the requested fields of the GraphQL type MigrationSource.
+// The GraphQL type's documentation follows.
+//
+// A GitHub Enterprise Importer (GEI) migration source.
+type GetStarGazersNodeMigrationSource struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeMigrationSource.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeMigrationSource) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeMilestone includes the requested fields of the GraphQL type Milestone.
+// The GraphQL type's documentation follows.
+//
+// Represents a Milestone object on a given repository.
+type GetStarGazersNodeMilestone struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeMilestone.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeMilestone) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeMilestonedEvent includes the requested fields of the GraphQL type MilestonedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'milestoned' event on a given issue or pull request.
+type GetStarGazersNodeMilestonedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeMilestonedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeMilestonedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeMovedColumnsInProjectEvent includes the requested fields of the GraphQL type MovedColumnsInProjectEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'moved_columns_in_project' event on a given issue or pull request.
+type GetStarGazersNodeMovedColumnsInProjectEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeMovedColumnsInProjectEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeMovedColumnsInProjectEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeOIDCProvider includes the requested fields of the GraphQL type OIDCProvider.
+// The GraphQL type's documentation follows.
+//
+// An OIDC identity provider configured to provision identities for an enterprise.
+// Visible to enterprise owners or enterprise owners' personal access tokens
+// (classic) with read:enterprise or admin:enterprise scope.
+type GetStarGazersNodeOIDCProvider struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOIDCProvider.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOIDCProvider) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeOauthApplicationCreateAuditEntry includes the requested fields of the GraphQL type OauthApplicationCreateAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a oauth_application.create event.
+type GetStarGazersNodeOauthApplicationCreateAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOauthApplicationCreateAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOauthApplicationCreateAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeOrgAddBillingManagerAuditEntry includes the requested fields of the GraphQL type OrgAddBillingManagerAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.add_billing_manager
+type GetStarGazersNodeOrgAddBillingManagerAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgAddBillingManagerAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgAddBillingManagerAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeOrgAddMemberAuditEntry includes the requested fields of the GraphQL type OrgAddMemberAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.add_member
+type GetStarGazersNodeOrgAddMemberAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgAddMemberAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgAddMemberAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeOrgBlockUserAuditEntry includes the requested fields of the GraphQL type OrgBlockUserAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.block_user
+type GetStarGazersNodeOrgBlockUserAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgBlockUserAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgBlockUserAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeOrgConfigDisableCollaboratorsOnlyAuditEntry includes the requested fields of the GraphQL type OrgConfigDisableCollaboratorsOnlyAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.config.disable_collaborators_only event.
+type GetStarGazersNodeOrgConfigDisableCollaboratorsOnlyAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgConfigDisableCollaboratorsOnlyAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgConfigDisableCollaboratorsOnlyAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeOrgConfigEnableCollaboratorsOnlyAuditEntry includes the requested fields of the GraphQL type OrgConfigEnableCollaboratorsOnlyAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.config.enable_collaborators_only event.
+type GetStarGazersNodeOrgConfigEnableCollaboratorsOnlyAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgConfigEnableCollaboratorsOnlyAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgConfigEnableCollaboratorsOnlyAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeOrgCreateAuditEntry includes the requested fields of the GraphQL type OrgCreateAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.create event.
+type GetStarGazersNodeOrgCreateAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgCreateAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgCreateAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeOrgDisableOauthAppRestrictionsAuditEntry includes the requested fields of the GraphQL type OrgDisableOauthAppRestrictionsAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.disable_oauth_app_restrictions event.
+type GetStarGazersNodeOrgDisableOauthAppRestrictionsAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgDisableOauthAppRestrictionsAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgDisableOauthAppRestrictionsAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeOrgDisableSamlAuditEntry includes the requested fields of the GraphQL type OrgDisableSamlAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.disable_saml event.
+type GetStarGazersNodeOrgDisableSamlAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgDisableSamlAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgDisableSamlAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeOrgDisableTwoFactorRequirementAuditEntry includes the requested fields of the GraphQL type OrgDisableTwoFactorRequirementAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.disable_two_factor_requirement event.
+type GetStarGazersNodeOrgDisableTwoFactorRequirementAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgDisableTwoFactorRequirementAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgDisableTwoFactorRequirementAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeOrgEnableOauthAppRestrictionsAuditEntry includes the requested fields of the GraphQL type OrgEnableOauthAppRestrictionsAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.enable_oauth_app_restrictions event.
+type GetStarGazersNodeOrgEnableOauthAppRestrictionsAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgEnableOauthAppRestrictionsAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgEnableOauthAppRestrictionsAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeOrgEnableSamlAuditEntry includes the requested fields of the GraphQL type OrgEnableSamlAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.enable_saml event.
+type GetStarGazersNodeOrgEnableSamlAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgEnableSamlAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgEnableSamlAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeOrgEnableTwoFactorRequirementAuditEntry includes the requested fields of the GraphQL type OrgEnableTwoFactorRequirementAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.enable_two_factor_requirement event.
+type GetStarGazersNodeOrgEnableTwoFactorRequirementAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgEnableTwoFactorRequirementAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgEnableTwoFactorRequirementAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeOrgInviteMemberAuditEntry includes the requested fields of the GraphQL type OrgInviteMemberAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.invite_member event.
+type GetStarGazersNodeOrgInviteMemberAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgInviteMemberAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgInviteMemberAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeOrgInviteToBusinessAuditEntry includes the requested fields of the GraphQL type OrgInviteToBusinessAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.invite_to_business event.
+type GetStarGazersNodeOrgInviteToBusinessAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgInviteToBusinessAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgInviteToBusinessAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeOrgOauthAppAccessApprovedAuditEntry includes the requested fields of the GraphQL type OrgOauthAppAccessApprovedAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.oauth_app_access_approved event.
+type GetStarGazersNodeOrgOauthAppAccessApprovedAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgOauthAppAccessApprovedAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgOauthAppAccessApprovedAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeOrgOauthAppAccessBlockedAuditEntry includes the requested fields of the GraphQL type OrgOauthAppAccessBlockedAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.oauth_app_access_blocked event.
+type GetStarGazersNodeOrgOauthAppAccessBlockedAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgOauthAppAccessBlockedAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgOauthAppAccessBlockedAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeOrgOauthAppAccessDeniedAuditEntry includes the requested fields of the GraphQL type OrgOauthAppAccessDeniedAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.oauth_app_access_denied event.
+type GetStarGazersNodeOrgOauthAppAccessDeniedAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgOauthAppAccessDeniedAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgOauthAppAccessDeniedAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeOrgOauthAppAccessRequestedAuditEntry includes the requested fields of the GraphQL type OrgOauthAppAccessRequestedAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.oauth_app_access_requested event.
+type GetStarGazersNodeOrgOauthAppAccessRequestedAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgOauthAppAccessRequestedAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgOauthAppAccessRequestedAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeOrgOauthAppAccessUnblockedAuditEntry includes the requested fields of the GraphQL type OrgOauthAppAccessUnblockedAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.oauth_app_access_unblocked event.
+type GetStarGazersNodeOrgOauthAppAccessUnblockedAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgOauthAppAccessUnblockedAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgOauthAppAccessUnblockedAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeOrgRemoveBillingManagerAuditEntry includes the requested fields of the GraphQL type OrgRemoveBillingManagerAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.remove_billing_manager event.
+type GetStarGazersNodeOrgRemoveBillingManagerAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgRemoveBillingManagerAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgRemoveBillingManagerAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeOrgRemoveMemberAuditEntry includes the requested fields of the GraphQL type OrgRemoveMemberAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.remove_member event.
+type GetStarGazersNodeOrgRemoveMemberAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgRemoveMemberAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgRemoveMemberAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeOrgRemoveOutsideCollaboratorAuditEntry includes the requested fields of the GraphQL type OrgRemoveOutsideCollaboratorAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.remove_outside_collaborator event.
+type GetStarGazersNodeOrgRemoveOutsideCollaboratorAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgRemoveOutsideCollaboratorAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgRemoveOutsideCollaboratorAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeOrgRestoreMemberAuditEntry includes the requested fields of the GraphQL type OrgRestoreMemberAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.restore_member event.
+type GetStarGazersNodeOrgRestoreMemberAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgRestoreMemberAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgRestoreMemberAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeOrgUnblockUserAuditEntry includes the requested fields of the GraphQL type OrgUnblockUserAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.unblock_user
+type GetStarGazersNodeOrgUnblockUserAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgUnblockUserAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgUnblockUserAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeOrgUpdateDefaultRepositoryPermissionAuditEntry includes the requested fields of the GraphQL type OrgUpdateDefaultRepositoryPermissionAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.update_default_repository_permission
+type GetStarGazersNodeOrgUpdateDefaultRepositoryPermissionAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgUpdateDefaultRepositoryPermissionAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgUpdateDefaultRepositoryPermissionAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeOrgUpdateMemberAuditEntry includes the requested fields of the GraphQL type OrgUpdateMemberAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.update_member event.
+type GetStarGazersNodeOrgUpdateMemberAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgUpdateMemberAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgUpdateMemberAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeOrgUpdateMemberRepositoryCreationPermissionAuditEntry includes the requested fields of the GraphQL type OrgUpdateMemberRepositoryCreationPermissionAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.update_member_repository_creation_permission event.
+type GetStarGazersNodeOrgUpdateMemberRepositoryCreationPermissionAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgUpdateMemberRepositoryCreationPermissionAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgUpdateMemberRepositoryCreationPermissionAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeOrgUpdateMemberRepositoryInvitationPermissionAuditEntry includes the requested fields of the GraphQL type OrgUpdateMemberRepositoryInvitationPermissionAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a org.update_member_repository_invitation_permission event.
+type GetStarGazersNodeOrgUpdateMemberRepositoryInvitationPermissionAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrgUpdateMemberRepositoryInvitationPermissionAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrgUpdateMemberRepositoryInvitationPermissionAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeOrganization includes the requested fields of the GraphQL type Organization.
+// The GraphQL type's documentation follows.
+//
+// An account on GitHub, with one or more owners, that has repositories, members and teams.
+type GetStarGazersNodeOrganization struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrganization.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrganization) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeOrganizationIdentityProvider includes the requested fields of the GraphQL type OrganizationIdentityProvider.
+// The GraphQL type's documentation follows.
+//
+// An Identity Provider configured to provision SAML and SCIM identities for
+// Organizations. Visible to (1) organization owners, (2) organization owners'
+// personal access tokens (classic) with read:org or admin:org scope, (3) GitHub
+// App with an installation token with read or write access to members.
+type GetStarGazersNodeOrganizationIdentityProvider struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrganizationIdentityProvider.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrganizationIdentityProvider) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeOrganizationInvitation includes the requested fields of the GraphQL type OrganizationInvitation.
+// The GraphQL type's documentation follows.
+//
+// An Invitation for a user to an organization.
+type GetStarGazersNodeOrganizationInvitation struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrganizationInvitation.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrganizationInvitation) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeOrganizationMigration includes the requested fields of the GraphQL type OrganizationMigration.
+// The GraphQL type's documentation follows.
+//
+// A GitHub Enterprise Importer (GEI) organization migration.
+type GetStarGazersNodeOrganizationMigration struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeOrganizationMigration.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeOrganizationMigration) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodePackage includes the requested fields of the GraphQL type Package.
+// The GraphQL type's documentation follows.
+//
+// Information for an uploaded package.
+type GetStarGazersNodePackage struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodePackage.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodePackage) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodePackageFile includes the requested fields of the GraphQL type PackageFile.
+// The GraphQL type's documentation follows.
+//
+// A file in a package version.
+type GetStarGazersNodePackageFile struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodePackageFile.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodePackageFile) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodePackageTag includes the requested fields of the GraphQL type PackageTag.
+// The GraphQL type's documentation follows.
+//
+// A version tag contains the mapping between a tag name and a version.
+type GetStarGazersNodePackageTag struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodePackageTag.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodePackageTag) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodePackageVersion includes the requested fields of the GraphQL type PackageVersion.
+// The GraphQL type's documentation follows.
+//
+// Information about a specific package version.
+type GetStarGazersNodePackageVersion struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodePackageVersion.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodePackageVersion) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodePinnedDiscussion includes the requested fields of the GraphQL type PinnedDiscussion.
+// The GraphQL type's documentation follows.
+//
+// A Pinned Discussion is a discussion pinned to a repository's index page.
+type GetStarGazersNodePinnedDiscussion struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodePinnedDiscussion.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodePinnedDiscussion) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodePinnedEnvironment includes the requested fields of the GraphQL type PinnedEnvironment.
+// The GraphQL type's documentation follows.
+//
+// Represents a pinned environment on a given repository
+type GetStarGazersNodePinnedEnvironment struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodePinnedEnvironment.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodePinnedEnvironment) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodePinnedEvent includes the requested fields of the GraphQL type PinnedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'pinned' event on a given issue or pull request.
+type GetStarGazersNodePinnedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodePinnedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodePinnedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodePinnedIssue includes the requested fields of the GraphQL type PinnedIssue.
+// The GraphQL type's documentation follows.
+//
+// A Pinned Issue is a issue pinned to a repository's index page.
+type GetStarGazersNodePinnedIssue struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodePinnedIssue.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodePinnedIssue) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodePrivateRepositoryForkingDisableAuditEntry includes the requested fields of the GraphQL type PrivateRepositoryForkingDisableAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a private_repository_forking.disable event.
+type GetStarGazersNodePrivateRepositoryForkingDisableAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodePrivateRepositoryForkingDisableAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodePrivateRepositoryForkingDisableAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodePrivateRepositoryForkingEnableAuditEntry includes the requested fields of the GraphQL type PrivateRepositoryForkingEnableAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a private_repository_forking.enable event.
+type GetStarGazersNodePrivateRepositoryForkingEnableAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodePrivateRepositoryForkingEnableAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodePrivateRepositoryForkingEnableAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeProject includes the requested fields of the GraphQL type Project.
+// The GraphQL type's documentation follows.
+//
+// Projects manage issues, pull requests and notes within a project owner.
+type GetStarGazersNodeProject struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeProject.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeProject) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeProjectCard includes the requested fields of the GraphQL type ProjectCard.
+// The GraphQL type's documentation follows.
+//
+// A card in a project.
+type GetStarGazersNodeProjectCard struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeProjectCard.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeProjectCard) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeProjectColumn includes the requested fields of the GraphQL type ProjectColumn.
+// The GraphQL type's documentation follows.
+//
+// A column inside a project.
+type GetStarGazersNodeProjectColumn struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeProjectColumn.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeProjectColumn) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeProjectV2 includes the requested fields of the GraphQL type ProjectV2.
+// The GraphQL type's documentation follows.
+//
+// New projects that manage issues, pull requests and drafts using tables and boards.
+type GetStarGazersNodeProjectV2 struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeProjectV2.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeProjectV2) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeProjectV2Field includes the requested fields of the GraphQL type ProjectV2Field.
+// The GraphQL type's documentation follows.
+//
+// A field inside a project.
+type GetStarGazersNodeProjectV2Field struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeProjectV2Field.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeProjectV2Field) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeProjectV2Item includes the requested fields of the GraphQL type ProjectV2Item.
+// The GraphQL type's documentation follows.
+//
+// An item within a Project.
+type GetStarGazersNodeProjectV2Item struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeProjectV2Item.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeProjectV2Item) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeProjectV2ItemFieldDateValue includes the requested fields of the GraphQL type ProjectV2ItemFieldDateValue.
+// The GraphQL type's documentation follows.
+//
+// The value of a date field in a Project item.
+type GetStarGazersNodeProjectV2ItemFieldDateValue struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeProjectV2ItemFieldDateValue.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeProjectV2ItemFieldDateValue) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeProjectV2ItemFieldIterationValue includes the requested fields of the GraphQL type ProjectV2ItemFieldIterationValue.
+// The GraphQL type's documentation follows.
+//
+// The value of an iteration field in a Project item.
+type GetStarGazersNodeProjectV2ItemFieldIterationValue struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeProjectV2ItemFieldIterationValue.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeProjectV2ItemFieldIterationValue) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeProjectV2ItemFieldNumberValue includes the requested fields of the GraphQL type ProjectV2ItemFieldNumberValue.
+// The GraphQL type's documentation follows.
+//
+// The value of a number field in a Project item.
+type GetStarGazersNodeProjectV2ItemFieldNumberValue struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeProjectV2ItemFieldNumberValue.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeProjectV2ItemFieldNumberValue) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeProjectV2ItemFieldSingleSelectValue includes the requested fields of the GraphQL type ProjectV2ItemFieldSingleSelectValue.
+// The GraphQL type's documentation follows.
+//
+// The value of a single select field in a Project item.
+type GetStarGazersNodeProjectV2ItemFieldSingleSelectValue struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeProjectV2ItemFieldSingleSelectValue.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeProjectV2ItemFieldSingleSelectValue) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeProjectV2ItemFieldTextValue includes the requested fields of the GraphQL type ProjectV2ItemFieldTextValue.
+// The GraphQL type's documentation follows.
+//
+// The value of a text field in a Project item.
+type GetStarGazersNodeProjectV2ItemFieldTextValue struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeProjectV2ItemFieldTextValue.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeProjectV2ItemFieldTextValue) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeProjectV2IterationField includes the requested fields of the GraphQL type ProjectV2IterationField.
+// The GraphQL type's documentation follows.
+//
+// An iteration field inside a project.
+type GetStarGazersNodeProjectV2IterationField struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeProjectV2IterationField.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeProjectV2IterationField) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeProjectV2SingleSelectField includes the requested fields of the GraphQL type ProjectV2SingleSelectField.
+// The GraphQL type's documentation follows.
+//
+// A single select field inside a project.
+type GetStarGazersNodeProjectV2SingleSelectField struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeProjectV2SingleSelectField.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeProjectV2SingleSelectField) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeProjectV2View includes the requested fields of the GraphQL type ProjectV2View.
+// The GraphQL type's documentation follows.
+//
+// A view within a ProjectV2.
+type GetStarGazersNodeProjectV2View struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeProjectV2View.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeProjectV2View) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeProjectV2Workflow includes the requested fields of the GraphQL type ProjectV2Workflow.
+// The GraphQL type's documentation follows.
+//
+// A workflow inside a project.
+type GetStarGazersNodeProjectV2Workflow struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeProjectV2Workflow.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeProjectV2Workflow) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodePublicKey includes the requested fields of the GraphQL type PublicKey.
+// The GraphQL type's documentation follows.
+//
+// A user's public key.
+type GetStarGazersNodePublicKey struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodePublicKey.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodePublicKey) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodePullRequest includes the requested fields of the GraphQL type PullRequest.
+// The GraphQL type's documentation follows.
+//
+// A repository pull request.
+type GetStarGazersNodePullRequest struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodePullRequest.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodePullRequest) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodePullRequestCommit includes the requested fields of the GraphQL type PullRequestCommit.
+// The GraphQL type's documentation follows.
+//
+// Represents a Git commit part of a pull request.
+type GetStarGazersNodePullRequestCommit struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodePullRequestCommit.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodePullRequestCommit) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodePullRequestCommitCommentThread includes the requested fields of the GraphQL type PullRequestCommitCommentThread.
+// The GraphQL type's documentation follows.
+//
+// Represents a commit comment thread part of a pull request.
+type GetStarGazersNodePullRequestCommitCommentThread struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodePullRequestCommitCommentThread.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodePullRequestCommitCommentThread) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodePullRequestReview includes the requested fields of the GraphQL type PullRequestReview.
+// The GraphQL type's documentation follows.
+//
+// A review object for a given pull request.
+type GetStarGazersNodePullRequestReview struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodePullRequestReview.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodePullRequestReview) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodePullRequestReviewComment includes the requested fields of the GraphQL type PullRequestReviewComment.
+// The GraphQL type's documentation follows.
+//
+// A review comment associated with a given repository pull request.
+type GetStarGazersNodePullRequestReviewComment struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodePullRequestReviewComment.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodePullRequestReviewComment) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodePullRequestReviewThread includes the requested fields of the GraphQL type PullRequestReviewThread.
+// The GraphQL type's documentation follows.
+//
+// A threaded list of comments for a given pull request.
+type GetStarGazersNodePullRequestReviewThread struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodePullRequestReviewThread.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodePullRequestReviewThread) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodePullRequestThread includes the requested fields of the GraphQL type PullRequestThread.
+// The GraphQL type's documentation follows.
+//
+// A threaded list of comments for a given pull request.
+type GetStarGazersNodePullRequestThread struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodePullRequestThread.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodePullRequestThread) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodePush includes the requested fields of the GraphQL type Push.
+// The GraphQL type's documentation follows.
+//
+// A Git push.
+type GetStarGazersNodePush struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodePush.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodePush) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodePushAllowance includes the requested fields of the GraphQL type PushAllowance.
+// The GraphQL type's documentation follows.
+//
+// A team, user, or app who has the ability to push to a protected branch.
+type GetStarGazersNodePushAllowance struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodePushAllowance.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodePushAllowance) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeReaction includes the requested fields of the GraphQL type Reaction.
+// The GraphQL type's documentation follows.
+//
+// An emoji reaction to a particular piece of content.
+type GetStarGazersNodeReaction struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeReaction.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeReaction) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeReadyForReviewEvent includes the requested fields of the GraphQL type ReadyForReviewEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'ready_for_review' event on a given pull request.
+type GetStarGazersNodeReadyForReviewEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeReadyForReviewEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeReadyForReviewEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeRef includes the requested fields of the GraphQL type Ref.
+// The GraphQL type's documentation follows.
+//
+// Represents a Git reference.
+type GetStarGazersNodeRef struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRef.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRef) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeReferencedEvent includes the requested fields of the GraphQL type ReferencedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'referenced' event on a given `ReferencedSubject`.
+type GetStarGazersNodeReferencedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeReferencedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeReferencedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeRelease includes the requested fields of the GraphQL type Release.
+// The GraphQL type's documentation follows.
+//
+// A release contains the content for a release.
+type GetStarGazersNodeRelease struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRelease.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRelease) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeReleaseAsset includes the requested fields of the GraphQL type ReleaseAsset.
+// The GraphQL type's documentation follows.
+//
+// A release asset contains the content for a release asset.
+type GetStarGazersNodeReleaseAsset struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeReleaseAsset.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeReleaseAsset) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeRemovedFromMergeQueueEvent includes the requested fields of the GraphQL type RemovedFromMergeQueueEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'removed_from_merge_queue' event on a given pull request.
+type GetStarGazersNodeRemovedFromMergeQueueEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRemovedFromMergeQueueEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRemovedFromMergeQueueEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeRemovedFromProjectEvent includes the requested fields of the GraphQL type RemovedFromProjectEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'removed_from_project' event on a given issue or pull request.
+type GetStarGazersNodeRemovedFromProjectEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRemovedFromProjectEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRemovedFromProjectEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeRenamedTitleEvent includes the requested fields of the GraphQL type RenamedTitleEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'renamed' event on a given issue or pull request
+type GetStarGazersNodeRenamedTitleEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRenamedTitleEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRenamedTitleEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeReopenedEvent includes the requested fields of the GraphQL type ReopenedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'reopened' event on any `Closable`.
+type GetStarGazersNodeReopenedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeReopenedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeReopenedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeRepoAccessAuditEntry includes the requested fields of the GraphQL type RepoAccessAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a repo.access event.
+type GetStarGazersNodeRepoAccessAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepoAccessAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepoAccessAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeRepoAddMemberAuditEntry includes the requested fields of the GraphQL type RepoAddMemberAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a repo.add_member event.
+type GetStarGazersNodeRepoAddMemberAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepoAddMemberAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepoAddMemberAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeRepoAddTopicAuditEntry includes the requested fields of the GraphQL type RepoAddTopicAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a repo.add_topic event.
+type GetStarGazersNodeRepoAddTopicAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepoAddTopicAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepoAddTopicAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeRepoArchivedAuditEntry includes the requested fields of the GraphQL type RepoArchivedAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a repo.archived event.
+type GetStarGazersNodeRepoArchivedAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepoArchivedAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepoArchivedAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeRepoChangeMergeSettingAuditEntry includes the requested fields of the GraphQL type RepoChangeMergeSettingAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a repo.change_merge_setting event.
+type GetStarGazersNodeRepoChangeMergeSettingAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepoChangeMergeSettingAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepoChangeMergeSettingAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeRepoConfigDisableAnonymousGitAccessAuditEntry includes the requested fields of the GraphQL type RepoConfigDisableAnonymousGitAccessAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a repo.config.disable_anonymous_git_access event.
+type GetStarGazersNodeRepoConfigDisableAnonymousGitAccessAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepoConfigDisableAnonymousGitAccessAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepoConfigDisableAnonymousGitAccessAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeRepoConfigDisableCollaboratorsOnlyAuditEntry includes the requested fields of the GraphQL type RepoConfigDisableCollaboratorsOnlyAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a repo.config.disable_collaborators_only event.
+type GetStarGazersNodeRepoConfigDisableCollaboratorsOnlyAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepoConfigDisableCollaboratorsOnlyAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepoConfigDisableCollaboratorsOnlyAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeRepoConfigDisableContributorsOnlyAuditEntry includes the requested fields of the GraphQL type RepoConfigDisableContributorsOnlyAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a repo.config.disable_contributors_only event.
+type GetStarGazersNodeRepoConfigDisableContributorsOnlyAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepoConfigDisableContributorsOnlyAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepoConfigDisableContributorsOnlyAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeRepoConfigDisableSockpuppetDisallowedAuditEntry includes the requested fields of the GraphQL type RepoConfigDisableSockpuppetDisallowedAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a repo.config.disable_sockpuppet_disallowed event.
+type GetStarGazersNodeRepoConfigDisableSockpuppetDisallowedAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepoConfigDisableSockpuppetDisallowedAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepoConfigDisableSockpuppetDisallowedAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeRepoConfigEnableAnonymousGitAccessAuditEntry includes the requested fields of the GraphQL type RepoConfigEnableAnonymousGitAccessAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a repo.config.enable_anonymous_git_access event.
+type GetStarGazersNodeRepoConfigEnableAnonymousGitAccessAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepoConfigEnableAnonymousGitAccessAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepoConfigEnableAnonymousGitAccessAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeRepoConfigEnableCollaboratorsOnlyAuditEntry includes the requested fields of the GraphQL type RepoConfigEnableCollaboratorsOnlyAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a repo.config.enable_collaborators_only event.
+type GetStarGazersNodeRepoConfigEnableCollaboratorsOnlyAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepoConfigEnableCollaboratorsOnlyAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepoConfigEnableCollaboratorsOnlyAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeRepoConfigEnableContributorsOnlyAuditEntry includes the requested fields of the GraphQL type RepoConfigEnableContributorsOnlyAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a repo.config.enable_contributors_only event.
+type GetStarGazersNodeRepoConfigEnableContributorsOnlyAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepoConfigEnableContributorsOnlyAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepoConfigEnableContributorsOnlyAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeRepoConfigEnableSockpuppetDisallowedAuditEntry includes the requested fields of the GraphQL type RepoConfigEnableSockpuppetDisallowedAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a repo.config.enable_sockpuppet_disallowed event.
+type GetStarGazersNodeRepoConfigEnableSockpuppetDisallowedAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepoConfigEnableSockpuppetDisallowedAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepoConfigEnableSockpuppetDisallowedAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeRepoConfigLockAnonymousGitAccessAuditEntry includes the requested fields of the GraphQL type RepoConfigLockAnonymousGitAccessAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a repo.config.lock_anonymous_git_access event.
+type GetStarGazersNodeRepoConfigLockAnonymousGitAccessAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepoConfigLockAnonymousGitAccessAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepoConfigLockAnonymousGitAccessAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeRepoConfigUnlockAnonymousGitAccessAuditEntry includes the requested fields of the GraphQL type RepoConfigUnlockAnonymousGitAccessAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a repo.config.unlock_anonymous_git_access event.
+type GetStarGazersNodeRepoConfigUnlockAnonymousGitAccessAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepoConfigUnlockAnonymousGitAccessAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepoConfigUnlockAnonymousGitAccessAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeRepoCreateAuditEntry includes the requested fields of the GraphQL type RepoCreateAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a repo.create event.
+type GetStarGazersNodeRepoCreateAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepoCreateAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepoCreateAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeRepoDestroyAuditEntry includes the requested fields of the GraphQL type RepoDestroyAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a repo.destroy event.
+type GetStarGazersNodeRepoDestroyAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepoDestroyAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepoDestroyAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeRepoRemoveMemberAuditEntry includes the requested fields of the GraphQL type RepoRemoveMemberAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a repo.remove_member event.
+type GetStarGazersNodeRepoRemoveMemberAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepoRemoveMemberAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepoRemoveMemberAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeRepoRemoveTopicAuditEntry includes the requested fields of the GraphQL type RepoRemoveTopicAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a repo.remove_topic event.
+type GetStarGazersNodeRepoRemoveTopicAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepoRemoveTopicAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepoRemoveTopicAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeRepository includes the requested fields of the GraphQL type Repository.
+// The GraphQL type's documentation follows.
+//
+// A repository contains the content for a project.
+type GetStarGazersNodeRepository struct {
+	Typename string `json:"__typename"`
+	// A list of users who have starred this starrable.
+	Stargazers GetStarGazersNodeRepositoryStargazersStargazerConnection `json:"stargazers"`
+}
+
+// GetTypename returns GetStarGazersNodeRepository.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepository) GetTypename() string { return v.Typename }
+
+// GetStargazers returns GetStarGazersNodeRepository.Stargazers, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepository) GetStargazers() GetStarGazersNodeRepositoryStargazersStargazerConnection {
+	return v.Stargazers
+}
+
+// GetStarGazersNodeRepositoryInvitation includes the requested fields of the GraphQL type RepositoryInvitation.
+// The GraphQL type's documentation follows.
+//
+// An invitation for a user to be added to a repository.
+type GetStarGazersNodeRepositoryInvitation struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepositoryInvitation.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepositoryInvitation) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeRepositoryMigration includes the requested fields of the GraphQL type RepositoryMigration.
+// The GraphQL type's documentation follows.
+//
+// A GitHub Enterprise Importer (GEI) repository migration.
+type GetStarGazersNodeRepositoryMigration struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepositoryMigration.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepositoryMigration) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeRepositoryRule includes the requested fields of the GraphQL type RepositoryRule.
+// The GraphQL type's documentation follows.
+//
+// A repository rule.
+type GetStarGazersNodeRepositoryRule struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepositoryRule.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepositoryRule) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeRepositoryRuleset includes the requested fields of the GraphQL type RepositoryRuleset.
+// The GraphQL type's documentation follows.
+//
+// A repository ruleset.
+type GetStarGazersNodeRepositoryRuleset struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepositoryRuleset.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepositoryRuleset) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeRepositoryRulesetBypassActor includes the requested fields of the GraphQL type RepositoryRulesetBypassActor.
+// The GraphQL type's documentation follows.
+//
+// A team or app that has the ability to bypass a rules defined on a ruleset
+type GetStarGazersNodeRepositoryRulesetBypassActor struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepositoryRulesetBypassActor.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepositoryRulesetBypassActor) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeRepositoryStargazersStargazerConnection includes the requested fields of the GraphQL type StargazerConnection.
+// The GraphQL type's documentation follows.
+//
+// The connection type for User.
+type GetStarGazersNodeRepositoryStargazersStargazerConnection struct {
+	// Identifies the total count of items in the connection.
+	TotalCount int `json:"totalCount"`
+	// Information to aid in pagination.
+	PageInfo GetStarGazersNodeRepositoryStargazersStargazerConnectionPageInfo `json:"pageInfo"`
+	// A list of edges.
+	Edges []GetStarGazersNodeRepositoryStargazersStargazerConnectionEdgesStargazerEdge `json:"edges"`
+}
+
+// GetTotalCount returns GetStarGazersNodeRepositoryStargazersStargazerConnection.TotalCount, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepositoryStargazersStargazerConnection) GetTotalCount() int {
+	return v.TotalCount
+}
+
+// GetPageInfo returns GetStarGazersNodeRepositoryStargazersStargazerConnection.PageInfo, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepositoryStargazersStargazerConnection) GetPageInfo() GetStarGazersNodeRepositoryStargazersStargazerConnectionPageInfo {
+	return v.PageInfo
+}
+
+// GetEdges returns GetStarGazersNodeRepositoryStargazersStargazerConnection.Edges, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepositoryStargazersStargazerConnection) GetEdges() []GetStarGazersNodeRepositoryStargazersStargazerConnectionEdgesStargazerEdge {
+	return v.Edges
+}
+
+// GetStarGazersNodeRepositoryStargazersStargazerConnectionEdgesStargazerEdge includes the requested fields of the GraphQL type StargazerEdge.
+// The GraphQL type's documentation follows.
+//
+// Represents a user that's starred a repository.
+type GetStarGazersNodeRepositoryStargazersStargazerConnectionEdgesStargazerEdge struct {
+	// Identifies when the item was starred.
+	StarredAt time.Time `json:"starredAt"`
+}
+
+// GetStarredAt returns GetStarGazersNodeRepositoryStargazersStargazerConnectionEdgesStargazerEdge.StarredAt, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepositoryStargazersStargazerConnectionEdgesStargazerEdge) GetStarredAt() time.Time {
+	return v.StarredAt
+}
+
+// GetStarGazersNodeRepositoryStargazersStargazerConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
+// The GraphQL type's documentation follows.
+//
+// Information about pagination in a connection.
+type GetStarGazersNodeRepositoryStargazersStargazerConnectionPageInfo struct {
+	// When paginating forwards, are there more items?
+	HasNextPage bool `json:"hasNextPage"`
+	// When paginating forwards, the cursor to continue.
+	EndCursor string `json:"endCursor"`
+}
+
+// GetHasNextPage returns GetStarGazersNodeRepositoryStargazersStargazerConnectionPageInfo.HasNextPage, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepositoryStargazersStargazerConnectionPageInfo) GetHasNextPage() bool {
+	return v.HasNextPage
+}
+
+// GetEndCursor returns GetStarGazersNodeRepositoryStargazersStargazerConnectionPageInfo.EndCursor, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepositoryStargazersStargazerConnectionPageInfo) GetEndCursor() string {
+	return v.EndCursor
+}
+
+// GetStarGazersNodeRepositoryTopic includes the requested fields of the GraphQL type RepositoryTopic.
+// The GraphQL type's documentation follows.
+//
+// A repository-topic connects a repository to a topic.
+type GetStarGazersNodeRepositoryTopic struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepositoryTopic.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepositoryTopic) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeRepositoryVisibilityChangeDisableAuditEntry includes the requested fields of the GraphQL type RepositoryVisibilityChangeDisableAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a repository_visibility_change.disable event.
+type GetStarGazersNodeRepositoryVisibilityChangeDisableAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepositoryVisibilityChangeDisableAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepositoryVisibilityChangeDisableAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeRepositoryVisibilityChangeEnableAuditEntry includes the requested fields of the GraphQL type RepositoryVisibilityChangeEnableAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a repository_visibility_change.enable event.
+type GetStarGazersNodeRepositoryVisibilityChangeEnableAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepositoryVisibilityChangeEnableAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepositoryVisibilityChangeEnableAuditEntry) GetTypename() string {
+	return v.Typename
+}
+
+// GetStarGazersNodeRepositoryVulnerabilityAlert includes the requested fields of the GraphQL type RepositoryVulnerabilityAlert.
+// The GraphQL type's documentation follows.
+//
+// A Dependabot alert for a repository with a dependency affected by a security vulnerability.
+type GetStarGazersNodeRepositoryVulnerabilityAlert struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeRepositoryVulnerabilityAlert.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeRepositoryVulnerabilityAlert) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeReviewDismissalAllowance includes the requested fields of the GraphQL type ReviewDismissalAllowance.
+// The GraphQL type's documentation follows.
+//
+// A user, team, or app who has the ability to dismiss a review on a protected branch.
+type GetStarGazersNodeReviewDismissalAllowance struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeReviewDismissalAllowance.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeReviewDismissalAllowance) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeReviewDismissedEvent includes the requested fields of the GraphQL type ReviewDismissedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'review_dismissed' event on a given issue or pull request.
+type GetStarGazersNodeReviewDismissedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeReviewDismissedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeReviewDismissedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeReviewRequest includes the requested fields of the GraphQL type ReviewRequest.
+// The GraphQL type's documentation follows.
+//
+// A request for a user to review a pull request.
+type GetStarGazersNodeReviewRequest struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeReviewRequest.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeReviewRequest) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeReviewRequestRemovedEvent includes the requested fields of the GraphQL type ReviewRequestRemovedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents an 'review_request_removed' event on a given pull request.
+type GetStarGazersNodeReviewRequestRemovedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeReviewRequestRemovedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeReviewRequestRemovedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeReviewRequestedEvent includes the requested fields of the GraphQL type ReviewRequestedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents an 'review_requested' event on a given pull request.
+type GetStarGazersNodeReviewRequestedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeReviewRequestedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeReviewRequestedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeSavedReply includes the requested fields of the GraphQL type SavedReply.
+// The GraphQL type's documentation follows.
+//
+// A Saved Reply is text a user can use to reply quickly.
+type GetStarGazersNodeSavedReply struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeSavedReply.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeSavedReply) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeSecurityAdvisory includes the requested fields of the GraphQL type SecurityAdvisory.
+// The GraphQL type's documentation follows.
+//
+// A GitHub Security Advisory
+type GetStarGazersNodeSecurityAdvisory struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeSecurityAdvisory.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeSecurityAdvisory) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeSponsorsActivity includes the requested fields of the GraphQL type SponsorsActivity.
+// The GraphQL type's documentation follows.
+//
+// An event related to sponsorship activity.
+type GetStarGazersNodeSponsorsActivity struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeSponsorsActivity.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeSponsorsActivity) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeSponsorsListing includes the requested fields of the GraphQL type SponsorsListing.
+// The GraphQL type's documentation follows.
+//
+// A GitHub Sponsors listing.
+type GetStarGazersNodeSponsorsListing struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeSponsorsListing.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeSponsorsListing) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeSponsorsListingFeaturedItem includes the requested fields of the GraphQL type SponsorsListingFeaturedItem.
+// The GraphQL type's documentation follows.
+//
+// A record that is promoted on a GitHub Sponsors profile.
+type GetStarGazersNodeSponsorsListingFeaturedItem struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeSponsorsListingFeaturedItem.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeSponsorsListingFeaturedItem) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeSponsorsTier includes the requested fields of the GraphQL type SponsorsTier.
+// The GraphQL type's documentation follows.
+//
+// A GitHub Sponsors tier associated with a GitHub Sponsors listing.
+type GetStarGazersNodeSponsorsTier struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeSponsorsTier.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeSponsorsTier) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeSponsorship includes the requested fields of the GraphQL type Sponsorship.
+// The GraphQL type's documentation follows.
+//
+// A sponsorship relationship between a sponsor and a maintainer
+type GetStarGazersNodeSponsorship struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeSponsorship.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeSponsorship) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeSponsorshipNewsletter includes the requested fields of the GraphQL type SponsorshipNewsletter.
+// The GraphQL type's documentation follows.
+//
+// An update sent to sponsors of a user or organization on GitHub Sponsors.
+type GetStarGazersNodeSponsorshipNewsletter struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeSponsorshipNewsletter.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeSponsorshipNewsletter) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeStatus includes the requested fields of the GraphQL type Status.
+// The GraphQL type's documentation follows.
+//
+// Represents a commit status.
+type GetStarGazersNodeStatus struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeStatus.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeStatus) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeStatusCheckRollup includes the requested fields of the GraphQL type StatusCheckRollup.
+// The GraphQL type's documentation follows.
+//
+// Represents the rollup for both the check runs and status for a commit.
+type GetStarGazersNodeStatusCheckRollup struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeStatusCheckRollup.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeStatusCheckRollup) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeStatusContext includes the requested fields of the GraphQL type StatusContext.
+// The GraphQL type's documentation follows.
+//
+// Represents an individual commit status context
+type GetStarGazersNodeStatusContext struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeStatusContext.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeStatusContext) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeSubscribedEvent includes the requested fields of the GraphQL type SubscribedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'subscribed' event on a given `Subscribable`.
+type GetStarGazersNodeSubscribedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeSubscribedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeSubscribedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeTag includes the requested fields of the GraphQL type Tag.
+// The GraphQL type's documentation follows.
+//
+// Represents a Git tag.
+type GetStarGazersNodeTag struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeTag.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeTag) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeTeam includes the requested fields of the GraphQL type Team.
+// The GraphQL type's documentation follows.
+//
+// A team of users in an organization.
+type GetStarGazersNodeTeam struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeTeam.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeTeam) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeTeamAddMemberAuditEntry includes the requested fields of the GraphQL type TeamAddMemberAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a team.add_member event.
+type GetStarGazersNodeTeamAddMemberAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeTeamAddMemberAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeTeamAddMemberAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeTeamAddRepositoryAuditEntry includes the requested fields of the GraphQL type TeamAddRepositoryAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a team.add_repository event.
+type GetStarGazersNodeTeamAddRepositoryAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeTeamAddRepositoryAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeTeamAddRepositoryAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeTeamChangeParentTeamAuditEntry includes the requested fields of the GraphQL type TeamChangeParentTeamAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a team.change_parent_team event.
+type GetStarGazersNodeTeamChangeParentTeamAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeTeamChangeParentTeamAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeTeamChangeParentTeamAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeTeamDiscussion includes the requested fields of the GraphQL type TeamDiscussion.
+// The GraphQL type's documentation follows.
+//
+// A team discussion.
+type GetStarGazersNodeTeamDiscussion struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeTeamDiscussion.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeTeamDiscussion) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeTeamDiscussionComment includes the requested fields of the GraphQL type TeamDiscussionComment.
+// The GraphQL type's documentation follows.
+//
+// A comment on a team discussion.
+type GetStarGazersNodeTeamDiscussionComment struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeTeamDiscussionComment.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeTeamDiscussionComment) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeTeamRemoveMemberAuditEntry includes the requested fields of the GraphQL type TeamRemoveMemberAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a team.remove_member event.
+type GetStarGazersNodeTeamRemoveMemberAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeTeamRemoveMemberAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeTeamRemoveMemberAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeTeamRemoveRepositoryAuditEntry includes the requested fields of the GraphQL type TeamRemoveRepositoryAuditEntry.
+// The GraphQL type's documentation follows.
+//
+// Audit log entry for a team.remove_repository event.
+type GetStarGazersNodeTeamRemoveRepositoryAuditEntry struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeTeamRemoveRepositoryAuditEntry.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeTeamRemoveRepositoryAuditEntry) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeTopic includes the requested fields of the GraphQL type Topic.
+// The GraphQL type's documentation follows.
+//
+// A topic aggregates entities that are related to a subject.
+type GetStarGazersNodeTopic struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeTopic.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeTopic) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeTransferredEvent includes the requested fields of the GraphQL type TransferredEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'transferred' event on a given issue or pull request.
+type GetStarGazersNodeTransferredEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeTransferredEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeTransferredEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeTree includes the requested fields of the GraphQL type Tree.
+// The GraphQL type's documentation follows.
+//
+// Represents a Git tree.
+type GetStarGazersNodeTree struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeTree.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeTree) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeUnassignedEvent includes the requested fields of the GraphQL type UnassignedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents an 'unassigned' event on any assignable object.
+type GetStarGazersNodeUnassignedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeUnassignedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeUnassignedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeUnlabeledEvent includes the requested fields of the GraphQL type UnlabeledEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents an 'unlabeled' event on a given issue or pull request.
+type GetStarGazersNodeUnlabeledEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeUnlabeledEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeUnlabeledEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeUnlockedEvent includes the requested fields of the GraphQL type UnlockedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents an 'unlocked' event on a given issue or pull request.
+type GetStarGazersNodeUnlockedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeUnlockedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeUnlockedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeUnmarkedAsDuplicateEvent includes the requested fields of the GraphQL type UnmarkedAsDuplicateEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents an 'unmarked_as_duplicate' event on a given issue or pull request.
+type GetStarGazersNodeUnmarkedAsDuplicateEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeUnmarkedAsDuplicateEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeUnmarkedAsDuplicateEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeUnpinnedEvent includes the requested fields of the GraphQL type UnpinnedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents an 'unpinned' event on a given issue or pull request.
+type GetStarGazersNodeUnpinnedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeUnpinnedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeUnpinnedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeUnsubscribedEvent includes the requested fields of the GraphQL type UnsubscribedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents an 'unsubscribed' event on a given `Subscribable`.
+type GetStarGazersNodeUnsubscribedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeUnsubscribedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeUnsubscribedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeUser includes the requested fields of the GraphQL type User.
+// The GraphQL type's documentation follows.
+//
+// A user is an individual's account on GitHub that owns repositories and can make new content.
+type GetStarGazersNodeUser struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeUser.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeUser) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeUserBlockedEvent includes the requested fields of the GraphQL type UserBlockedEvent.
+// The GraphQL type's documentation follows.
+//
+// Represents a 'user_blocked' event on a given user.
+type GetStarGazersNodeUserBlockedEvent struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeUserBlockedEvent.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeUserBlockedEvent) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeUserContentEdit includes the requested fields of the GraphQL type UserContentEdit.
+// The GraphQL type's documentation follows.
+//
+// An edit on user content
+type GetStarGazersNodeUserContentEdit struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeUserContentEdit.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeUserContentEdit) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeUserList includes the requested fields of the GraphQL type UserList.
+// The GraphQL type's documentation follows.
+//
+// A user-curated list of repositories
+type GetStarGazersNodeUserList struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeUserList.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeUserList) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeUserStatus includes the requested fields of the GraphQL type UserStatus.
+// The GraphQL type's documentation follows.
+//
+// The user's description of what they're currently doing.
+type GetStarGazersNodeUserStatus struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeUserStatus.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeUserStatus) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeVerifiableDomain includes the requested fields of the GraphQL type VerifiableDomain.
+// The GraphQL type's documentation follows.
+//
+// A domain that can be verified or approved for an organization or an enterprise.
+type GetStarGazersNodeVerifiableDomain struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeVerifiableDomain.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeVerifiableDomain) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeWorkflow includes the requested fields of the GraphQL type Workflow.
+// The GraphQL type's documentation follows.
+//
+// A workflow contains meta information about an Actions workflow file.
+type GetStarGazersNodeWorkflow struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeWorkflow.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeWorkflow) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeWorkflowRun includes the requested fields of the GraphQL type WorkflowRun.
+// The GraphQL type's documentation follows.
+//
+// A workflow run.
+type GetStarGazersNodeWorkflowRun struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeWorkflowRun.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeWorkflowRun) GetTypename() string { return v.Typename }
+
+// GetStarGazersNodeWorkflowRunFile includes the requested fields of the GraphQL type WorkflowRunFile.
+// The GraphQL type's documentation follows.
+//
+// An executed workflow file for a workflow run.
+type GetStarGazersNodeWorkflowRunFile struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns GetStarGazersNodeWorkflowRunFile.Typename, and is useful for accessing the field via an interface.
+func (v *GetStarGazersNodeWorkflowRunFile) GetTypename() string { return v.Typename }
+
+// GetStarGazersResponse is returned by GetStarGazers on success.
+type GetStarGazersResponse struct {
+	// Fetches an object given its ID.
+	Node GetStarGazersNode `json:"-"`
+}
+
+// GetNode returns GetStarGazersResponse.Node, and is useful for accessing the field via an interface.
+func (v *GetStarGazersResponse) GetNode() GetStarGazersNode { return v.Node }
+
+func (v *GetStarGazersResponse) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*GetStarGazersResponse
+		Node json.RawMessage `json:"node"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.GetStarGazersResponse = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.Node
+		src := firstPass.Node
+		if len(src) != 0 && string(src) != "null" {
+			err = __unmarshalGetStarGazersNode(
+				src, dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal GetStarGazersResponse.Node: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalGetStarGazersResponse struct {
+	Node json.RawMessage `json:"node"`
+}
+
+func (v *GetStarGazersResponse) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *GetStarGazersResponse) __premarshalJSON() (*__premarshalGetStarGazersResponse, error) {
+	var retval __premarshalGetStarGazersResponse
+
+	{
+
+		dst := &retval.Node
+		src := v.Node
+		var err error
+		*dst, err = __marshalGetStarGazersNode(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal GetStarGazersResponse.Node: %w", err)
+		}
+	}
+	return &retval, nil
+}
+
 // __GetPublicReposInput is used internally by genqlient
 type __GetPublicReposInput struct {
 	Query  string `json:"query"`
@@ -570,6 +6678,18 @@ func (v *__GetPublicReposInput) GetLimit() int { return v.Limit }
 
 // GetCursor returns __GetPublicReposInput.Cursor, and is useful for accessing the field via an interface.
 func (v *__GetPublicReposInput) GetCursor() string { return v.Cursor }
+
+// __GetStarGazersInput is used internally by genqlient
+type __GetStarGazersInput struct {
+	Id     string `json:"id"`
+	Cursor string `json:"cursor"`
+}
+
+// GetId returns __GetStarGazersInput.Id, and is useful for accessing the field via an interface.
+func (v *__GetStarGazersInput) GetId() string { return v.Id }
+
+// GetCursor returns __GetStarGazersInput.Cursor, and is useful for accessing the field via an interface.
+func (v *__GetStarGazersInput) GetCursor() string { return v.Cursor }
 
 // The query or mutation executed by GetPublicRepos.
 const GetPublicRepos_Operation = `
@@ -632,6 +6752,55 @@ func GetPublicRepos(
 	var err_ error
 
 	var data_ GetPublicReposResponse
+	resp_ := &graphql.Response{Data: &data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return &data_, err_
+}
+
+// The query or mutation executed by GetStarGazers.
+const GetStarGazers_Operation = `
+query GetStarGazers ($id: ID!, $cursor: String!) {
+	node(id: $id) {
+		__typename
+		... on Repository {
+			stargazers(first: 100, after: $cursor, orderBy: {field:STARRED_AT,direction:DESC}) {
+				totalCount
+				pageInfo {
+					hasNextPage
+					endCursor
+				}
+				edges {
+					starredAt
+				}
+			}
+		}
+	}
+}
+`
+
+func GetStarGazers(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	id string,
+	cursor string,
+) (*GetStarGazersResponse, error) {
+	req_ := &graphql.Request{
+		OpName: "GetStarGazers",
+		Query:  GetStarGazers_Operation,
+		Variables: &__GetStarGazersInput{
+			Id:     id,
+			Cursor: cursor,
+		},
+	}
+	var err_ error
+
+	var data_ GetStarGazersResponse
 	resp_ := &graphql.Response{Data: &data_}
 
 	err_ = client_.MakeRequest(

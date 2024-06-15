@@ -39,3 +39,19 @@ query GetPublicRepos($query: String!, $limit: Int!, $cursor: String!) {
   }
 }
 
+query GetStarGazers($id: ID!, $cursor: String!) {
+  node(id: $id) {
+    ... on Repository {
+      stargazers(first: 100, after: $cursor, orderBy: {field: STARRED_AT, direction: DESC}) {
+        totalCount
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        edges {
+          starredAt
+        }
+      }
+    }
+  }
+}
