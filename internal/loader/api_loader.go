@@ -10,7 +10,7 @@ import (
 
 const (
 	minStarCount = 50
-	perPage      = 100
+	perPage      = 5
 )
 
 type APILoader struct {
@@ -36,7 +36,6 @@ func (l *APILoader) LoadRepos(maxStarCount int, cursor string) ([]GitHubRepo, *P
 		repos[i] = GitHubRepo{
 			Id:              repo.Id,
 			Name:            repo.Name,
-			Url:             repo.Url,
 			NameWithOwner:   repo.NameWithOwner,
 			StarCount:       repo.StargazerCount,
 			ForkCount:       repo.ForkCount,

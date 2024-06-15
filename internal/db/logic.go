@@ -23,7 +23,6 @@ type Settings struct {
 type RepoInput struct {
 	GithubId        string
 	Name            string
-	Url             string
 	NameWithOwner   string
 	PrimaryLanguage string
 	Languages       []string
@@ -75,7 +74,6 @@ func UpsertRepositories(db *Database, ctx context.Context, repos []RepoInput) ([
 		Columns(
 			"github_id",
 			"name",
-			"url",
 			"name_with_owner",
 			"star_count",
 			"fork_count",
@@ -87,7 +85,6 @@ func UpsertRepositories(db *Database, ctx context.Context, repos []RepoInput) ([
 		upsertBuilder = upsertBuilder.Values(
 			repo.GithubId,
 			repo.Name,
-			repo.Url,
 			repo.NameWithOwner,
 			repo.StarCount,
 			repo.ForkCount,
@@ -102,7 +99,6 @@ func UpsertRepositories(db *Database, ctx context.Context, repos []RepoInput) ([
 			DO UPDATE SET
 				star_count = EXCLUDED.star_count,
 				fork_count = EXCLUDED.fork_count,
-        name_with_owner = EXCLUDED.name_with_owner,
         primary_language = EXCLUDED.primary_language,
 				languages = EXCLUDED.languages
 		`).
@@ -151,8 +147,8 @@ func UpdateCurrentMaxStarCount(db *Database, ctx context.Context, settingsID int
 
 func createStarHistorySnapshot(tx pgx.Tx, ctx context.Context) (int64, error) {
 	sql, args, err := sq.Insert("stars_history").
-		Columns("repository_id", "star_count").
-		Select(sq.Select("id", "star_count").From("repositories")).
+		Columns("repository_id", "star_count", "created_at").
+		Select(sq.Select("id", "star_count", "NOW()").From("repositories")).
 		ToSql()
 	if err != nil {
 		return 0, err

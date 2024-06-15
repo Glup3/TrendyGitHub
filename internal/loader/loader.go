@@ -5,7 +5,6 @@ type GitHubRepo struct {
 	Description     string
 	Name            string
 	NameWithOwner   string
-	Url             string
 	PrimaryLanguage string
 	Languages       []string
 	StarCount       int
