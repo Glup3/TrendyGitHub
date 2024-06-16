@@ -3,6 +3,8 @@ package db
 import (
 	"context"
 	"fmt"
+	"log"
+	"time"
 
 	sq "github.com/Masterminds/squirrel"
 	"github.com/jackc/pgx/v5"
@@ -29,6 +31,14 @@ type RepoInput struct {
 	StarCount       int
 	ForkCount       int
 }
+
+type StarHistoryInput struct {
+	CreatedAt time.Time
+	StarCount int
+	Id        repoId
+}
+
+const batchSize = 10_000
 
 func LoadSettings(db *Database, ctx context.Context) (Settings, error) {
 	var settings Settings
@@ -217,4 +227,68 @@ func CreateSnapshotAndReset(db *Database, ctx context.Context, settingsId int) (
 	}
 
 	return rowsUpdated, nil
+}
+
+func GetGitHubId(db *Database, ctx context.Context, id repoId) (string, error) {
+	var githubId string
+
+	sql, args, err := sq.StatementBuilder.
+		PlaceholderFormat(sq.Dollar).
+		Select("github_id").
+		From("repositories").
+		Where(sq.Eq{"id": id}).
+		ToSql()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = db.pool.QueryRow(ctx, sql, args...).Scan(&githubId)
+	if err != nil {
+		return githubId, err
+	}
+
+	return githubId, nil
+}
+
+func BatchUpsertStarHistory(db *Database, ctx context.Context, inputs []StarHistoryInput) error {
+	tx, err := db.pool.Begin(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to begin transaction: %w", err)
+	}
+	defer tx.Rollback(ctx)
+
+	builder := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
+	for start := 0; start < len(inputs); start += batchSize {
+		end := start + batchSize
+		if end > len(inputs) {
+			end = len(inputs)
+		}
+
+		builder := builder.Insert("stars_history").Columns("repository_id", "star_count", "created_at")
+
+		for _, input := range inputs[start:end] {
+			builder = builder.Values(input.Id, input.StarCount, input.CreatedAt)
+		}
+
+		sql, args, err := builder.
+			Suffix(`
+        ON CONFLICT (repository_id, created_at)
+        DO UPDATE SET
+        star_count = EXCLUDED.star_count
+      `).
+			ToSql()
+		if err != nil {
+			return fmt.Errorf("failed to build SQL: %w", err)
+		}
+
+		if _, err := tx.Exec(ctx, sql, args...); err != nil {
+			return fmt.Errorf("failed to execute upsert: %w", err)
+		}
+	}
+
+	if err := tx.Commit(ctx); err != nil {
+		return fmt.Errorf("failed to commit transaction: %w", err)
+	}
+
+	return nil
 }
