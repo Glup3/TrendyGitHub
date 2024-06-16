@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"sort"
+	"sync"
 	"time"
 
 	config "github.com/glup3/TrendyGitHub/internal"
@@ -37,9 +38,25 @@ func main() {
 		log.Fatal(err)
 	}
 
+	var wg sync.WaitGroup
+	const maxConcurrency = 5
+
+	semaphore := make(chan struct{}, maxConcurrency)
+
 	for _, id := range ids {
-		loadStarHistory(db, ctx, dataLoader, id)
+		wg.Add(1)
+
+		semaphore <- struct{}{}
+
+		go func(id int32) {
+			defer wg.Done()
+			defer func() { <-semaphore }()
+
+			loadStarHistory(db, ctx, dataLoader, id)
+		}(id)
 	}
+
+	wg.Wait()
 
 	// rows, err := database.CreateSnapshotAndReset(db, ctx, 1)
 	// if err != nil {
@@ -62,9 +79,7 @@ func loadStarHistory(db *database.Database, ctx context.Context, dataLoader load
 	for {
 		dates, info, err := dataLoader.LoadRepoStarHistoryDates(githubId, cursor)
 		if err != nil {
-			log.Println(cursor, err)
-			time.Sleep(20 * time.Second)
-			continue
+			log.Fatal(repoId, githubId, cursor, err)
 		}
 
 		cursor = info.NextCursor
