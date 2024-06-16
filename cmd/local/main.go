@@ -30,15 +30,34 @@ func main() {
 		log.Fatalf("Unable to ping database: %v", err)
 	}
 
-	repoId := int32(1640)
+	dataLoader := loader.NewAPILoader(ctx, configs.GitHubToken)
+
+	ids, err := database.GetNextMissingHistoryIds(db, ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, id := range ids {
+		loadStarHistory(db, ctx, dataLoader, id)
+	}
+
+	// rows, err := database.CreateSnapshotAndReset(db, ctx, 1)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	//
+	// log.Println("Created snapshot with repo count", rows)
+}
+
+func loadStarHistory(db *database.Database, ctx context.Context, dataLoader loader.DataLoader, repoId int32) {
 	githubId, err := database.GetGitHubId(db, ctx, repoId)
 	if err != nil {
 		log.Println(err)
 	}
 
-	dataLoader := loader.NewAPILoader(ctx, configs.GitHubToken)
 	cursor := ""
 	var totalDates []time.Time
+	var remainingLimit int
 
 	for {
 		dates, info, err := dataLoader.LoadRepoStarHistoryDates(githubId, cursor)
@@ -50,11 +69,12 @@ func main() {
 
 		cursor = info.NextCursor
 		totalDates = append(totalDates, dates...)
+		remainingLimit = info.RateLimitRemaining
 
-		log.Println("loaded page", cursor)
+		log.Println("loaded page", remainingLimit, cursor)
 
-		if cursor == "" && info.TotalStars/100 > info.RateLimitRemaining {
-			log.Fatal("not enough remaining limit points - next reset is at", info.RateLimitResetAt)
+		if cursor == "" && info.TotalStars/100 > remainingLimit {
+			log.Fatal("not enough remaining limit points - next reset is at", remainingLimit)
 		}
 
 		if !info.HasNextPage {
@@ -62,7 +82,7 @@ func main() {
 		}
 	}
 
-	log.Println("finished, total length", len(totalDates))
+	log.Println("finished loading, total length", len(totalDates))
 
 	starCounts := make(map[time.Time]int)
 	cumulativeCounts := make(map[time.Time]int)
@@ -84,14 +104,7 @@ func main() {
 		log.Fatal("failed to upsert star history", err)
 	}
 
-	log.Println("finished upserting star history for repo id", repoId)
-
-	// rows, err := database.CreateSnapshotAndReset(db, ctx, 1)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	//
-	// log.Println("Created snapshot with repo count", rows)
+	log.Printf("finished upserting star history for repo id %d - remaining limit: %d", repoId, remainingLimit)
 }
 
 // normalizeDate normalizes a time.Time to midnight of the same day

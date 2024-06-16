@@ -305,3 +305,28 @@ func BatchUpsertStarHistory(db *Database, ctx context.Context, inputs []StarHist
 
 	return nil
 }
+
+func GetNextMissingHistoryIds(db *Database, ctx context.Context) ([]repoId, error) {
+	sql, args, err := sq.StatementBuilder.PlaceholderFormat(sq.Dollar).
+		Select("id").
+		From("repositories").
+		Where(sq.Eq{"history_missing": true}).
+		OrderBy("star_count asc").
+		Limit(500).
+		ToSql()
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := db.pool.Query(ctx, sql, args...)
+	if err != nil {
+		return nil, err
+	}
+
+	ids, err := pgx.CollectRows(rows, pgx.RowTo[repoId])
+	if err != nil {
+		return nil, err
+	}
+
+	return ids, nil
+}

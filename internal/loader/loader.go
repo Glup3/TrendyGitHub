@@ -29,5 +29,5 @@ type StarPageInfo struct {
 type DataLoader interface {
 	LoadRepos(maxStarCount int, cursor string) ([]GitHubRepo, *PageInfo, error)
 	LoadMultipleRepos(maxStarCount int, cursors []string) ([]GitHubRepo, *PageInfo, error)
-	LoadRepoStarHistoryDates(cursor string) ([]time.Time, *StarPageInfo, error)
+	LoadRepoStarHistoryDates(githubId string, cursor string) ([]time.Time, *StarPageInfo, error)
 }
