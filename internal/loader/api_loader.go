@@ -141,9 +141,11 @@ func (l *APILoader) LoadRepoStarHistoryDates(githubId string, cursor string) ([]
 	}
 
 	pageInfo := &StarPageInfo{
-		TotalStars:  repo.Stargazers.TotalCount,
-		NextCursor:  repo.Stargazers.PageInfo.EndCursor,
-		HasNextPage: repo.Stargazers.PageInfo.HasNextPage,
+		TotalStars:         repo.Stargazers.TotalCount,
+		NextCursor:         repo.Stargazers.PageInfo.EndCursor,
+		HasNextPage:        repo.Stargazers.PageInfo.HasNextPage,
+		RateLimitRemaining: resp.RateLimit.Remaining,
+		RateLimitResetAt:   resp.RateLimit.ResetAt,
 	}
 
 	return dateTimes, pageInfo, nil

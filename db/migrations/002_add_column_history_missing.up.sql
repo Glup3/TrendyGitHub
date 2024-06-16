@@ -1,0 +1,2 @@
+ALTER TABLE repositories
+ADD COLUMN history_missing BOOLEAN NOT NULL DEFAULT TRUE;

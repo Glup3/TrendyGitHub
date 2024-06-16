@@ -286,6 +286,19 @@ func BatchUpsertStarHistory(db *Database, ctx context.Context, inputs []StarHist
 		}
 	}
 
+	sql, args, err := sq.StatementBuilder.PlaceholderFormat(sq.Dollar).
+		Update("repositories").
+		Set("history_missing", false).
+		Where(sq.Eq{"id": inputs[0].Id}).
+		ToSql()
+	if err != nil {
+		return fmt.Errorf("failed to build SQL: %w", err)
+	}
+
+	if _, err = tx.Exec(ctx, sql, args...); err != nil {
+		return fmt.Errorf("failed to update repository: %w", err)
+	}
+
 	if err := tx.Commit(ctx); err != nil {
 		return fmt.Errorf("failed to commit transaction: %w", err)
 	}

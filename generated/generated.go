@@ -6591,11 +6591,33 @@ type GetStarGazersNodeWorkflowRunFile struct {
 // GetTypename returns GetStarGazersNodeWorkflowRunFile.Typename, and is useful for accessing the field via an interface.
 func (v *GetStarGazersNodeWorkflowRunFile) GetTypename() string { return v.Typename }
 
+// GetStarGazersRateLimit includes the requested fields of the GraphQL type RateLimit.
+// The GraphQL type's documentation follows.
+//
+// Represents the client's rate limit.
+type GetStarGazersRateLimit struct {
+	// The number of points remaining in the current rate limit window.
+	Remaining int `json:"remaining"`
+	// The time at which the current rate limit window resets in UTC epoch seconds.
+	ResetAt time.Time `json:"resetAt"`
+}
+
+// GetRemaining returns GetStarGazersRateLimit.Remaining, and is useful for accessing the field via an interface.
+func (v *GetStarGazersRateLimit) GetRemaining() int { return v.Remaining }
+
+// GetResetAt returns GetStarGazersRateLimit.ResetAt, and is useful for accessing the field via an interface.
+func (v *GetStarGazersRateLimit) GetResetAt() time.Time { return v.ResetAt }
+
 // GetStarGazersResponse is returned by GetStarGazers on success.
 type GetStarGazersResponse struct {
+	// The client's rate limit information.
+	RateLimit GetStarGazersRateLimit `json:"rateLimit"`
 	// Fetches an object given its ID.
 	Node GetStarGazersNode `json:"-"`
 }
+
+// GetRateLimit returns GetStarGazersResponse.RateLimit, and is useful for accessing the field via an interface.
+func (v *GetStarGazersResponse) GetRateLimit() GetStarGazersRateLimit { return v.RateLimit }
 
 // GetNode returns GetStarGazersResponse.Node, and is useful for accessing the field via an interface.
 func (v *GetStarGazersResponse) GetNode() GetStarGazersNode { return v.Node }
@@ -6634,6 +6656,8 @@ func (v *GetStarGazersResponse) UnmarshalJSON(b []byte) error {
 }
 
 type __premarshalGetStarGazersResponse struct {
+	RateLimit GetStarGazersRateLimit `json:"rateLimit"`
+
 	Node json.RawMessage `json:"node"`
 }
 
@@ -6648,6 +6672,7 @@ func (v *GetStarGazersResponse) MarshalJSON() ([]byte, error) {
 func (v *GetStarGazersResponse) __premarshalJSON() (*__premarshalGetStarGazersResponse, error) {
 	var retval __premarshalGetStarGazersResponse
 
+	retval.RateLimit = v.RateLimit
 	{
 
 		dst := &retval.Node
@@ -6766,6 +6791,10 @@ func GetPublicRepos(
 // The query or mutation executed by GetStarGazers.
 const GetStarGazers_Operation = `
 query GetStarGazers ($id: ID!, $cursor: String!) {
+	rateLimit {
+		remaining
+		resetAt
+	}
 	node(id: $id) {
 		__typename
 		... on Repository {

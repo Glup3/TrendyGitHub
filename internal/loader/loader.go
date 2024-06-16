@@ -19,9 +19,11 @@ type PageInfo struct {
 }
 
 type StarPageInfo struct {
-	NextCursor  string
-	TotalStars  int
-	HasNextPage bool
+	RateLimitResetAt   time.Time
+	NextCursor         string
+	TotalStars         int
+	RateLimitRemaining int
+	HasNextPage        bool
 }
 
 type DataLoader interface {

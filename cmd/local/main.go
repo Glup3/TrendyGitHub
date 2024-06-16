@@ -30,7 +30,7 @@ func main() {
 		log.Fatalf("Unable to ping database: %v", err)
 	}
 
-	repoId := int32(223)
+	repoId := int32(1640)
 	githubId, err := database.GetGitHubId(db, ctx, repoId)
 	if err != nil {
 		log.Println(err)
@@ -40,7 +40,6 @@ func main() {
 	cursor := ""
 	var totalDates []time.Time
 
-	// TODO: check if enough rate limit points for loading all stars
 	for {
 		dates, info, err := dataLoader.LoadRepoStarHistoryDates(githubId, cursor)
 		if err != nil {
@@ -53,6 +52,10 @@ func main() {
 		totalDates = append(totalDates, dates...)
 
 		log.Println("loaded page", cursor)
+
+		if cursor == "" && info.TotalStars/100 > info.RateLimitRemaining {
+			log.Fatal("not enough remaining limit points - next reset is at", info.RateLimitResetAt)
+		}
 
 		if !info.HasNextPage {
 			break

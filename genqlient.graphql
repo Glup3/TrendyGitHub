@@ -40,6 +40,11 @@ query GetPublicRepos($query: String!, $limit: Int!, $cursor: String!) {
 }
 
 query GetStarGazers($id: ID!, $cursor: String!) {
+  rateLimit {
+    remaining
+    resetAt
+  }
+
   node(id: $id) {
     ... on Repository {
       stargazers(first: 100, after: $cursor, orderBy: {field: STARRED_AT, direction: DESC}) {
