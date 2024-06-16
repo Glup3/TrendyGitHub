@@ -158,7 +158,7 @@ func UpdateCurrentMaxStarCount(db *Database, ctx context.Context, settingsID int
 func createStarHistorySnapshot(tx pgx.Tx, ctx context.Context) (int64, error) {
 	sql, args, err := sq.Insert("stars_history").
 		Columns("repository_id", "star_count", "created_at").
-		Select(sq.Select("id", "star_count", "NOW()").From("repositories")).
+		Select(sq.Select("id", "star_count", "CURRENT_DATE").From("repositories")).
 		ToSql()
 	if err != nil {
 		return 0, err
