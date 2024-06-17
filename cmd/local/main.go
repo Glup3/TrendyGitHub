@@ -27,10 +27,31 @@ func main() {
 		log.Fatalf("Unable to ping database: %v", err)
 	}
 
-	rows, err := database.CreateSnapshotAndReset(db, ctx, 1)
+	var errors []error
+
+	err = database.RefreshHistoryView(db, ctx, "mv_daily_stars")
 	if err != nil {
-		log.Fatal(err)
+		errors = append(errors, err)
 	}
 
-	log.Println("Created snapshot with repo count", rows)
+	err = database.RefreshHistoryView(db, ctx, "mv_weekly_stars")
+	if err != nil {
+		errors = append(errors, err)
+	}
+
+	err = database.RefreshHistoryView(db, ctx, "mv_monthly_stars")
+	if err != nil {
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		log.Println(errors)
+	}
+
+	// rows, err := database.CreateSnapshotAndReset(db, ctx, 1)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	//
+	// log.Println("Created snapshot with repo count", rows)
 }

@@ -360,3 +360,14 @@ func GetNextMissingHistoryRepo(db *Database, ctx context.Context, maxStarCount i
 
 	return repo, nil
 }
+
+func RefreshHistoryView(db *Database, ctx context.Context, viewName string) error {
+	sqlStr := fmt.Sprintf("REFRESH MATERIALIZED VIEW %s", pgx.Identifier{viewName}.Sanitize())
+
+	_, err := db.pool.Exec(ctx, sqlStr)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
