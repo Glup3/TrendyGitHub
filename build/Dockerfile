@@ -11,6 +11,6 @@ RUN go build -v -o /usr/local/bin/tgh ./cmd/cli
 RUN rm -rf /usr/src/app/*
 
 RUN echo '0 21 * * * /usr/bin/flock -n /tmp/tgh_daily.lock /usr/local/bin/tgh daily >/proc/1/fd/1 2>/proc/1/fd/2' > /etc/crontabs/root \
-    && echo '*/2 0-20,22-23 * * * /usr/bin/flock -n /tmp/tgh_history.lock /usr/local/bin/tgh history >/proc/1/fd/1 2>/proc/1/fd/2' >> /etc/crontabs/root
+    && echo '0 0-20,22-23 * * * /usr/bin/flock -n /tmp/tgh_history.lock /usr/local/bin/tgh history >/proc/1/fd/1 2>/proc/1/fd/2' >> /etc/crontabs/root
 
 CMD ["crond", "-f", "-d", "8"]
