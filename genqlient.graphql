@@ -60,3 +60,14 @@ query GetStarGazers($id: ID!, $cursor: String!) {
     }
   }
 }
+
+query GetRateLimit {
+  rateLimit {
+    limit
+    remaining
+    used
+    cost
+    nodeCount
+    resetAt
+  }
+}

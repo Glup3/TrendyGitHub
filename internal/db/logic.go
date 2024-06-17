@@ -38,6 +38,12 @@ type StarHistoryInput struct {
 	Id        repoId
 }
 
+type MissingRepo struct {
+	GithubId  string
+	StarCount int
+	Id        repoId
+}
+
 const batchSize = 10_000
 
 func LoadSettings(db *Database, ctx context.Context) (Settings, error) {
@@ -329,4 +335,28 @@ func GetNextMissingHistoryIds(db *Database, ctx context.Context) ([]repoId, erro
 	}
 
 	return ids, nil
+}
+
+func GetNextMissingHistoryRepo(db *Database, ctx context.Context, maxStarCount int, excludedIds []repoId) (MissingRepo, error) {
+	var repo MissingRepo
+
+	sql, args, err := sq.StatementBuilder.PlaceholderFormat(sq.Dollar).
+		Select("id", "github_id", "star_count").
+		From("repositories").
+		Where(sq.Eq{"history_missing": true}).
+		Where(sq.LtOrEq{"star_count": maxStarCount}).
+		Where(sq.NotEq{"id": excludedIds}).
+		OrderBy("star_count desc").
+		Limit(1).
+		ToSql()
+	if err != nil {
+		return repo, err
+	}
+
+	err = db.pool.QueryRow(ctx, sql, args...).Scan(&repo.Id, &repo.GithubId, &repo.StarCount)
+	if err != nil {
+		return repo, err
+	}
+
+	return repo, nil
 }

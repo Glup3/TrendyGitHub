@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"log"
+	"math"
 	"sort"
 	"sync"
 	"time"
@@ -31,29 +32,60 @@ func main() {
 		log.Fatalf("Unable to ping database: %v", err)
 	}
 
+	var missingRepos []database.MissingRepo
 	dataLoader := loader.NewAPILoader(ctx, configs.GitHubToken)
 
-	ids, err := database.GetNextMissingHistoryIds(db, ctx)
+	rateLimit, err := dataLoader.GetRateLimit()
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	if rateLimit.Remaining == 0 {
+		log.Print("Rate limit is 0, skipping - next time is", rateLimit.ResetAt)
+	}
+
+	maxStarCount := 25_000
+	remainingUnits := rateLimit.Remaining
+	bufferUnits := 5
+
+	for {
+		excludedIds := make([]int32, len(missingRepos))
+		for i, repo := range missingRepos {
+			excludedIds[i] = repo.Id
+		}
+
+		repo, err := database.GetNextMissingHistoryRepo(db, ctx, maxStarCount, excludedIds)
+		if err != nil {
+			log.Println(err)
+			break
+		}
+
+		estimatedUnits := int(math.Ceil(float64(repo.StarCount)/100)) + bufferUnits
+
+		if estimatedUnits > remainingUnits {
+			break
+		}
+
+		remainingUnits -= estimatedUnits
+		missingRepos = append(missingRepos, repo)
+	}
+
 	var wg sync.WaitGroup
-	const maxConcurrency = 5
+	const maxConcurrency = 3
 
 	semaphore := make(chan struct{}, maxConcurrency)
 
-	for _, id := range ids {
+	for _, repo := range missingRepos {
 		wg.Add(1)
 
 		semaphore <- struct{}{}
 
-		go func(id int32) {
+		go func(repo database.MissingRepo) {
 			defer wg.Done()
 			defer func() { <-semaphore }()
 
-			loadStarHistory(db, ctx, dataLoader, id)
-		}(id)
+			loadStarHistory(db, ctx, dataLoader, repo)
+		}(repo)
 	}
 
 	wg.Wait()
@@ -66,30 +98,23 @@ func main() {
 	// log.Println("Created snapshot with repo count", rows)
 }
 
-func loadStarHistory(db *database.Database, ctx context.Context, dataLoader loader.DataLoader, repoId int32) {
-	githubId, err := database.GetGitHubId(db, ctx, repoId)
-	if err != nil {
-		log.Println(err)
-	}
-
+func loadStarHistory(db *database.Database, ctx context.Context, dataLoader loader.DataLoader, repo database.MissingRepo) {
 	cursor := ""
 	var totalDates []time.Time
-	var remainingLimit int
+	pageCounter := 0
 
 	for {
-		dates, info, err := dataLoader.LoadRepoStarHistoryDates(githubId, cursor)
+		dates, info, err := dataLoader.LoadRepoStarHistoryDates(repo.GithubId, cursor)
 		if err != nil {
-			log.Fatal(repoId, githubId, cursor, err)
+			log.Print("aborting loading star history!", repo.GithubId, pageCounter, err)
 		}
 
 		cursor = info.NextCursor
+		pageCounter++
 		totalDates = append(totalDates, dates...)
-		remainingLimit = info.RateLimitRemaining
 
-		log.Println("loaded page", remainingLimit, cursor)
-
-		if cursor == "" && info.TotalStars/100 > remainingLimit {
-			log.Fatal("not enough remaining limit points - next reset is at", remainingLimit)
+		if pageCounter%10 == 0 {
+			log.Printf("githubId: %s - loaded page %d of %d page", repo.GithubId, pageCounter, info.TotalStars/100)
 		}
 
 		if !info.HasNextPage {
@@ -108,18 +133,18 @@ func loadStarHistory(db *database.Database, ctx context.Context, dataLoader load
 	var inputs []database.StarHistoryInput
 	for key, value := range cumulativeCounts {
 		inputs = append(inputs, database.StarHistoryInput{
-			Id:        int32(repoId),
+			Id:        repo.Id,
 			CreatedAt: key,
 			StarCount: value,
 		})
 	}
 
-	err = database.BatchUpsertStarHistory(db, ctx, inputs)
+	err := database.BatchUpsertStarHistory(db, ctx, inputs)
 	if err != nil {
 		log.Fatal("failed to upsert star history", err)
 	}
 
-	log.Printf("finished upserting star history for repo id %d - remaining limit: %d", repoId, remainingLimit)
+	log.Printf("finished upserting star history for repo id %d", repo.Id)
 }
 
 // normalizeDate normalizes a time.Time to midnight of the same day

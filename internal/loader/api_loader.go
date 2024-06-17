@@ -150,3 +150,21 @@ func (l *APILoader) LoadRepoStarHistoryDates(githubId string, cursor string) ([]
 
 	return dateTimes, pageInfo, nil
 }
+
+func (l *APILoader) GetRateLimit() (*RateLimit, error) {
+	client := GetApiClient(l.apiKey)
+
+	resp, err := generated.GetRateLimit(l.ctx, client)
+	if err != nil {
+		return nil, err
+	}
+
+	rateLimit := &RateLimit{
+		Remaining: resp.RateLimit.Remaining,
+		Used:      resp.RateLimit.Used,
+		Limit:     resp.RateLimit.Limit,
+		ResetAt:   resp.RateLimit.ResetAt,
+	}
+
+	return rateLimit, nil
+}

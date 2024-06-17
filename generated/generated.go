@@ -555,6 +555,52 @@ func (v *GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdge
 	return v.Typename
 }
 
+// GetRateLimitRateLimit includes the requested fields of the GraphQL type RateLimit.
+// The GraphQL type's documentation follows.
+//
+// Represents the client's rate limit.
+type GetRateLimitRateLimit struct {
+	// The maximum number of points the client is permitted to consume in a 60 minute window.
+	Limit int `json:"limit"`
+	// The number of points remaining in the current rate limit window.
+	Remaining int `json:"remaining"`
+	// The number of points used in the current rate limit window.
+	Used int `json:"used"`
+	// The point cost for the current query counting against the rate limit.
+	Cost int `json:"cost"`
+	// The maximum number of nodes this query may return
+	NodeCount int `json:"nodeCount"`
+	// The time at which the current rate limit window resets in UTC epoch seconds.
+	ResetAt time.Time `json:"resetAt"`
+}
+
+// GetLimit returns GetRateLimitRateLimit.Limit, and is useful for accessing the field via an interface.
+func (v *GetRateLimitRateLimit) GetLimit() int { return v.Limit }
+
+// GetRemaining returns GetRateLimitRateLimit.Remaining, and is useful for accessing the field via an interface.
+func (v *GetRateLimitRateLimit) GetRemaining() int { return v.Remaining }
+
+// GetUsed returns GetRateLimitRateLimit.Used, and is useful for accessing the field via an interface.
+func (v *GetRateLimitRateLimit) GetUsed() int { return v.Used }
+
+// GetCost returns GetRateLimitRateLimit.Cost, and is useful for accessing the field via an interface.
+func (v *GetRateLimitRateLimit) GetCost() int { return v.Cost }
+
+// GetNodeCount returns GetRateLimitRateLimit.NodeCount, and is useful for accessing the field via an interface.
+func (v *GetRateLimitRateLimit) GetNodeCount() int { return v.NodeCount }
+
+// GetResetAt returns GetRateLimitRateLimit.ResetAt, and is useful for accessing the field via an interface.
+func (v *GetRateLimitRateLimit) GetResetAt() time.Time { return v.ResetAt }
+
+// GetRateLimitResponse is returned by GetRateLimit on success.
+type GetRateLimitResponse struct {
+	// The client's rate limit information.
+	RateLimit GetRateLimitRateLimit `json:"rateLimit"`
+}
+
+// GetRateLimit returns GetRateLimitResponse.RateLimit, and is useful for accessing the field via an interface.
+func (v *GetRateLimitResponse) GetRateLimit() GetRateLimitRateLimit { return v.RateLimit }
+
 // GetStarGazersNode includes the requested fields of the GraphQL interface Node.
 //
 // GetStarGazersNode is implemented by the following types:
@@ -6777,6 +6823,42 @@ func GetPublicRepos(
 	var err_ error
 
 	var data_ GetPublicReposResponse
+	resp_ := &graphql.Response{Data: &data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return &data_, err_
+}
+
+// The query or mutation executed by GetRateLimit.
+const GetRateLimit_Operation = `
+query GetRateLimit {
+	rateLimit {
+		limit
+		remaining
+		used
+		cost
+		nodeCount
+		resetAt
+	}
+}
+`
+
+func GetRateLimit(
+	ctx_ context.Context,
+	client_ graphql.Client,
+) (*GetRateLimitResponse, error) {
+	req_ := &graphql.Request{
+		OpName: "GetRateLimit",
+		Query:  GetRateLimit_Operation,
+	}
+	var err_ error
+
+	var data_ GetRateLimitResponse
 	resp_ := &graphql.Response{Data: &data_}
 
 	err_ = client_.MakeRequest(
