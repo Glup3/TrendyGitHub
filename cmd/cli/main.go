@@ -122,28 +122,7 @@ func runDaily(db *database.Database, ctx context.Context, githubToken string) {
 		}
 	}
 
-	log.Print("refreshing views...")
-
-	var errors []error
-
-	err := database.RefreshHistoryView(db, ctx, "mv_daily_stars")
-	if err != nil {
-		errors = append(errors, err)
-	}
-
-	err = database.RefreshHistoryView(db, ctx, "mv_weekly_stars")
-	if err != nil {
-		errors = append(errors, err)
-	}
-
-	err = database.RefreshHistoryView(db, ctx, "mv_monthly_stars")
-	if err != nil {
-		errors = append(errors, err)
-	}
-
-	if len(errors) > 0 {
-		log.Println(errors)
-	}
+	refreshViews(db, ctx)
 
 	fmt.Println("Done")
 }
@@ -159,6 +138,8 @@ func runHistory(db *database.Database, ctx context.Context, githubToken string) 
 
 	if rateLimit.Remaining == 0 {
 		log.Print("Rate limit is 0, skipping - next time is", rateLimit.ResetAt)
+	} else {
+		log.Print("running job - fetching missing star histories")
 	}
 
 	maxStarCount := 25_000
@@ -206,6 +187,10 @@ func runHistory(db *database.Database, ctx context.Context, githubToken string) 
 	}
 
 	wg.Wait()
+
+	refreshViews(db, ctx)
+
+	log.Print("done fetching missing star histories")
 }
 
 func loadStarHistory(db *database.Database, ctx context.Context, dataLoader loader.DataLoader, repo database.MissingRepo) {
@@ -282,5 +267,30 @@ func calculateCumulativeStars(cumulativeCounts *map[time.Time]int, starCounts ma
 	for _, key := range keys {
 		cumulativeSum += starCounts[key]
 		(*cumulativeCounts)[key] = cumulativeSum
+	}
+}
+
+func refreshViews(db *database.Database, ctx context.Context) {
+	log.Print("refreshing views...")
+
+	var errors []error
+
+	err := database.RefreshHistoryView(db, ctx, "mv_daily_stars")
+	if err != nil {
+		errors = append(errors, err)
+	}
+
+	err = database.RefreshHistoryView(db, ctx, "mv_weekly_stars")
+	if err != nil {
+		errors = append(errors, err)
+	}
+
+	err = database.RefreshHistoryView(db, ctx, "mv_monthly_stars")
+	if err != nil {
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		log.Println(errors)
 	}
 }
