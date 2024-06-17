@@ -27,6 +27,7 @@ type RepoInput struct {
 	Name            string
 	NameWithOwner   string
 	PrimaryLanguage string
+	Description     string
 	Languages       []string
 	StarCount       int
 	ForkCount       int
@@ -95,6 +96,7 @@ func UpsertRepositories(db *Database, ctx context.Context, repos []RepoInput) ([
 			"fork_count",
 			"languages",
 			"primary_language",
+			"description",
 		)
 
 	for _, repo := range repos {
@@ -106,6 +108,7 @@ func UpsertRepositories(db *Database, ctx context.Context, repos []RepoInput) ([
 			repo.ForkCount,
 			repo.Languages,
 			repo.PrimaryLanguage,
+			repo.Description,
 		)
 	}
 
@@ -116,7 +119,8 @@ func UpsertRepositories(db *Database, ctx context.Context, repos []RepoInput) ([
 				star_count = EXCLUDED.star_count,
 				fork_count = EXCLUDED.fork_count,
         primary_language = EXCLUDED.primary_language,
-				languages = EXCLUDED.languages
+				languages = EXCLUDED.languages,
+        description = EXCLUDED.description
 		`).
 		Suffix("RETURNING id").
 		PlaceholderFormat(sq.Dollar).

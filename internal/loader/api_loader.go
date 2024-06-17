@@ -41,6 +41,7 @@ func (l *APILoader) LoadRepos(maxStarCount int, cursor string) ([]GitHubRepo, *P
 			StarCount:       repo.StargazerCount,
 			ForkCount:       repo.ForkCount,
 			PrimaryLanguage: repo.PrimaryLanguage.Name,
+			Description:     repo.Description,
 			Languages:       mapLanguages(repo.Languages.Edges),
 		}
 	}

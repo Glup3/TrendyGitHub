@@ -13,6 +13,7 @@ func MapGitHubRepoToInput(repo loader.GitHubRepo) database.RepoInput {
 		Languages:       repo.Languages,
 		StarCount:       repo.StarCount,
 		ForkCount:       repo.ForkCount,
+		Description:     repo.Description,
 		PrimaryLanguage: repo.PrimaryLanguage,
 	}
 }
