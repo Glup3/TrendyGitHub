@@ -140,7 +140,7 @@ func runHistory(db *database.Database, ctx context.Context, githubToken string) 
 
 	maxStarCount := 25_000
 	remainingUnits := rateLimit.Remaining
-	bufferUnits := 5
+	bufferUnits := 1
 
 	for {
 		excludedIds := make([]int32, len(missingRepos))
