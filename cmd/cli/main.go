@@ -41,7 +41,7 @@ func main() {
 	case "search":
 		jobs.SearchRepositories(db, ctx, configs.GitHubToken)
 	case "history":
-		jobs.RunHistory(db, ctx, configs.GitHubToken)
+		jobs.FetchNextRepositoryHistory(db, ctx, configs.GitHubToken)
 	default:
 		log.Fatal().Msgf("Invalid mode: %s. Use 'search' or 'history'.\n", mode)
 	}

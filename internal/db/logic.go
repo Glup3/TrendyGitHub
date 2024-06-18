@@ -40,9 +40,10 @@ type StarHistoryInput struct {
 }
 
 type MissingRepo struct {
-	GithubId  string
-	StarCount int
-	Id        repoId
+	GithubId      string
+	NameWithOwner string
+	StarCount     int
+	Id            repoId
 }
 
 const batchSize = 10_000
@@ -346,15 +347,14 @@ func GetNextMissingHistoryIds(db *Database, ctx context.Context) ([]repoId, erro
 	return ids, nil
 }
 
-func GetNextMissingHistoryRepo(db *Database, ctx context.Context, maxStarCount int, excludedIds []repoId) (MissingRepo, error) {
+func GetNextMissingHistoryRepo(db *Database, ctx context.Context, maxStarCount int) (MissingRepo, error) {
 	var repo MissingRepo
 
 	sql, args, err := sq.StatementBuilder.PlaceholderFormat(sq.Dollar).
-		Select("id", "github_id", "star_count").
+		Select("id", "github_id", "star_count", "name_with_owner").
 		From("repositories").
 		Where(sq.Eq{"history_missing": true}).
 		Where(sq.LtOrEq{"star_count": maxStarCount}).
-		Where(sq.NotEq{"id": excludedIds}).
 		OrderBy("star_count desc").
 		Limit(1).
 		ToSql()
@@ -362,7 +362,7 @@ func GetNextMissingHistoryRepo(db *Database, ctx context.Context, maxStarCount i
 		return repo, err
 	}
 
-	err = db.pool.QueryRow(ctx, sql, args...).Scan(&repo.Id, &repo.GithubId, &repo.StarCount)
+	err = db.pool.QueryRow(ctx, sql, args...).Scan(&repo.Id, &repo.GithubId, &repo.StarCount, &repo.NameWithOwner)
 	if err != nil {
 		return repo, err
 	}
@@ -379,4 +379,16 @@ func RefreshHistoryView(db *Database, ctx context.Context, viewName string) erro
 	}
 
 	return nil
+}
+
+func GetTotalRepoCount(db *Database, ctx context.Context) (int, error) {
+	var count int
+	sql, args, err := sq.Select("count(*)").From("repositories").ToSql()
+
+	err = db.pool.QueryRow(ctx, sql, args...).Scan(&count)
+	if err != nil {
+		return 0, err
+	}
+
+	return count, nil
 }

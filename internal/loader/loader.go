@@ -33,9 +33,16 @@ type RateLimit struct {
 	Used      int
 }
 
+type StarHistoryHeader struct {
+	NextPage int
+	PrevPage int
+	LastPage int
+}
+
 type DataLoader interface {
 	LoadRepos(maxStarCount int, cursor string) ([]GitHubRepo, *PageInfo, error)
 	LoadMultipleRepos(maxStarCount int, cursors []string) ([]GitHubRepo, *PageInfo, error)
 	LoadRepoStarHistoryDates(githubId string, cursor string) ([]time.Time, *StarPageInfo, error)
+	LoadRepoStarHistoryPage(repoNameWithOwner string, page int) ([]time.Time, *StarHistoryHeader, error)
 	GetRateLimit() (*RateLimit, error)
 }

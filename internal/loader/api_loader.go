@@ -2,7 +2,12 @@ package loader
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 	"sync"
 	"time"
 
@@ -11,7 +16,7 @@ import (
 
 const (
 	minStarCount = 50
-	perPage      = 100 // TODO: cursors depend on this
+	perPage      = 100 // INFO: cursors depend on page size
 )
 
 type APILoader struct {
@@ -150,6 +155,93 @@ func (l *APILoader) LoadRepoStarHistoryDates(githubId string, cursor string) ([]
 	}
 
 	return dateTimes, pageInfo, nil
+}
+
+type Stargazer struct {
+	StarredAt time.Time `json:"starred_at"`
+}
+
+// page is 1-based
+func (l *APILoader) LoadRepoStarHistoryPage(repoNameWithOwner string, page int) ([]time.Time, *StarHistoryHeader, error) {
+	client := GetRestApiClient(l.apiKey)
+	if client == nil {
+		return nil, nil, fmt.Errorf("failed to get HTTP client")
+	}
+
+	var dateTimes []time.Time
+	var pageInfo StarHistoryHeader
+
+	req, err := http.NewRequest("GET", fmt.Sprintf("https://api.github.com/repos/%s/stargazers?page=%d&per_page=100", repoNameWithOwner, page), nil)
+	if err != nil {
+		return dateTimes, nil, err
+	}
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return dateTimes, nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return dateTimes, nil, fmt.Errorf("failed to fetch stargazers: %s", resp.Status)
+	}
+
+	var rawStargazers []map[string]interface{}
+	if err := json.NewDecoder(resp.Body).Decode(&rawStargazers); err != nil {
+		return dateTimes, nil, err
+	}
+
+	for _, stargazer := range rawStargazers {
+		if starredAtStr, ok := stargazer["starred_at"].(string); ok {
+			if starredAt, err := time.Parse(time.RFC3339, starredAtStr); err == nil {
+				dateTimes = append(dateTimes, starredAt)
+			}
+		}
+	}
+
+	if linkHeader := resp.Header.Get("Link"); linkHeader != "" {
+		pageInfo = parseLinkHeader(linkHeader)
+	}
+
+	return dateTimes, &pageInfo, nil
+}
+
+func parseLinkHeader(linkHeader string) StarHistoryHeader {
+	var pageInfo StarHistoryHeader
+
+	links := strings.Split(linkHeader, ",")
+	for _, link := range links {
+		parts := strings.Split(link, ";")
+		if len(parts) != 2 {
+			continue
+		}
+		urlPart := strings.Trim(parts[0], "<> ")
+		relPart := strings.TrimSpace(parts[1])
+
+		u, err := url.Parse(urlPart)
+		if err != nil {
+			continue
+		}
+
+		page := extractPageFromURL(u)
+		if strings.Contains(relPart, `rel="next"`) {
+			pageInfo.NextPage = page
+		} else if strings.Contains(relPart, `rel="prev"`) {
+			pageInfo.PrevPage = page
+		} else if strings.Contains(relPart, `rel="last"`) {
+			pageInfo.LastPage = page
+		}
+	}
+
+	return pageInfo
+}
+
+// extractPageFromURL extracts the page number from a URL query parameter
+func extractPageFromURL(u *url.URL) int {
+	q := u.Query()
+	pageStr := q.Get("page")
+	page, _ := strconv.Atoi(pageStr)
+	return page
 }
 
 func (l *APILoader) GetRateLimit() (*RateLimit, error) {

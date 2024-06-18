@@ -2,113 +2,129 @@ package jobs
 
 import (
 	"context"
-	"log"
 	"math"
 	"sort"
 	"sync"
 	"time"
 
+	"github.com/rs/zerolog/log"
+
 	database "github.com/glup3/TrendyGitHub/internal/db"
 	"github.com/glup3/TrendyGitHub/internal/loader"
 )
 
-func RunHistory(db *database.Database, ctx context.Context, githubToken string) {
-	var missingRepos []database.MissingRepo
+// 1000 repositories == 1 Unit
+const repoCountToRateLimitUnitRatio = 1000
+const starCountToRateLimitUnitRatio = 100
+const bufferUnits = 3
+
+func FetchNextRepositoryHistory(db *database.Database, ctx context.Context, githubToken string) {
 	dataLoader := loader.NewAPILoader(ctx, githubToken)
+
+	totalRepoCount, err := database.GetTotalRepoCount(db, ctx)
+	if err != nil {
+		log.Fatal().Err(err).Msg("failed fetching total repo count")
+	}
 
 	rateLimit, err := dataLoader.GetRateLimit()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal().Err(err).Msg("failed fetching rate limit")
 	}
 
-	if rateLimit.Remaining == 0 {
-		log.Print("Rate limit is 0, skipping - next time is", rateLimit.ResetAt)
-	} else {
-		log.Print("running job - fetching missing star histories")
+	reservedUnits := int(math.Floor(float64(totalRepoCount) / repoCountToRateLimitUnitRatio))
+	remainingUnits := rateLimit.Remaining - reservedUnits
+
+	if remainingUnits <= 0 {
+		log.Warn().Msg("remaining rate limit is not enough - aborting")
+		return
 	}
 
-	// TODO: optimize maxStarCount to go lower
-	maxStarCount := 135_000
-	remainingUnits := rateLimit.Remaining
-	bufferUnits := 1
+	log.Info().Msg("fetching missing star history")
 
-	for {
-		excludedIds := make([]int32, len(missingRepos))
-		for i, repo := range missingRepos {
-			excludedIds[i] = repo.Id
-		}
+	maxStarCount := remainingUnits*starCountToRateLimitUnitRatio - bufferUnits
 
-		repo, err := database.GetNextMissingHistoryRepo(db, ctx, maxStarCount, excludedIds)
-		if err != nil {
-			log.Println(err)
-			break
-		}
-
-		estimatedUnits := int(math.Ceil(float64(repo.StarCount)/100)) + bufferUnits
-
-		if estimatedUnits > remainingUnits {
-			break
-		}
-
-		remainingUnits -= estimatedUnits
-		missingRepos = append(missingRepos, repo)
+	repo, err := database.GetNextMissingHistoryRepo(db, ctx, maxStarCount)
+	if err != nil {
+		log.Error().Err(err).Msg("failed fetching next missing repo")
 	}
 
-	var wg sync.WaitGroup
-	const maxConcurrency = 3
+	log.Info().Msgf("fetching star history for repo %s", repo.NameWithOwner)
 
-	semaphore := make(chan struct{}, maxConcurrency)
-
-	for _, repo := range missingRepos {
-		wg.Add(1)
-
-		semaphore <- struct{}{}
-
-		go func(repo database.MissingRepo) {
-			defer wg.Done()
-			defer func() { <-semaphore }()
-
-			loadStarHistory(db, ctx, dataLoader, repo)
-		}(repo)
-	}
-
-	wg.Wait()
+	FetchStarHistory(db, ctx, dataLoader, repo)
 
 	RefreshViews(db, ctx)
 
 	log.Print("done fetching missing star histories")
 }
 
-func loadStarHistory(db *database.Database, ctx context.Context, dataLoader loader.DataLoader, repo database.MissingRepo) {
-	cursor := ""
-	var totalDates []time.Time
-	pageCounter := 0
+func FetchStarHistory(db *database.Database, ctx context.Context, dataLoader loader.DataLoader, repo database.MissingRepo) {
+	const maxConcurrentRequests = 80
 
-	for {
-		dates, info, err := dataLoader.LoadRepoStarHistoryDates(repo.GithubId, cursor)
-		if err != nil {
-			log.Print("aborting loading star history!", repo.GithubId, pageCounter, err)
-		}
+	firstPage := 1
+	_, pageInfo, err := dataLoader.LoadRepoStarHistoryPage(repo.NameWithOwner, firstPage)
+	if err != nil {
+		log.Fatal().Err(err).Msg("failed to load first page")
+	}
 
-		cursor = info.NextCursor
-		pageCounter++
-		totalDates = append(totalDates, dates...)
+	if pageInfo == nil {
+		log.Fatal().Msg("failed to get pagination info from first page")
+	}
 
-		if pageCounter%10 == 0 {
-			log.Printf("githubId: %s - loaded page %d of %d page", repo.GithubId, pageCounter, info.TotalStars/100)
-		}
+	totalPages := pageInfo.LastPage
+	if totalPages == 0 {
+		totalPages = 1
+	}
 
-		if !info.HasNextPage {
-			break
+	var wg sync.WaitGroup
+	var mu sync.Mutex
+	timestamps := make([]time.Time, 0)
+
+	pageCh := make(chan int, totalPages)
+	resultCh := make(chan []time.Time, totalPages)
+	errCh := make(chan error, totalPages)
+
+	worker := func() {
+		defer wg.Done()
+		for page := range pageCh {
+			pageTimestamps, _, err := dataLoader.LoadRepoStarHistoryPage(repo.NameWithOwner, page)
+			if err != nil {
+				errCh <- err
+				return
+			}
+			resultCh <- pageTimestamps
 		}
 	}
 
-	log.Println("finished loading, total length", len(totalDates))
+	for i := 0; i < maxConcurrentRequests; i++ {
+		wg.Add(1)
+		go worker()
+	}
+
+	for page := 1; page <= totalPages; page++ {
+		pageCh <- page
+	}
+	close(pageCh)
+
+	go func() {
+		wg.Wait()
+		close(resultCh)
+		close(errCh)
+	}()
+
+	for pageTimestamps := range resultCh {
+		mu.Lock()
+		timestamps = append(timestamps, pageTimestamps...)
+		mu.Unlock()
+	}
+
+	if len(errCh) > 0 {
+		log.Fatal().Err(<-errCh).Msg("error loading star history")
+	}
 
 	starCounts := make(map[time.Time]int)
 	cumulativeCounts := make(map[time.Time]int)
 
-	countStars(&starCounts, totalDates)
+	countStars(&starCounts, timestamps)
 	calculateCumulativeStars(&cumulativeCounts, starCounts)
 
 	var inputs []database.StarHistoryInput
@@ -120,12 +136,12 @@ func loadStarHistory(db *database.Database, ctx context.Context, dataLoader load
 		})
 	}
 
-	err := database.BatchUpsertStarHistory(db, ctx, inputs)
+	err = database.BatchUpsertStarHistory(db, ctx, inputs)
 	if err != nil {
-		log.Fatal("failed to upsert star history", err)
+		log.Fatal().Err(err).Msgf("failed to upsert star history %s", repo.NameWithOwner)
 	}
 
-	log.Printf("finished upserting star history for repo id %d", repo.Id)
+	log.Info().Msgf("finished upserting star history for repo %s", repo.NameWithOwner)
 }
 
 // normalizeDate normalizes a time.Time to midnight of the same day
