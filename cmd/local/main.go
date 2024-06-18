@@ -47,11 +47,4 @@ func main() {
 	if len(errors) > 0 {
 		log.Println(errors)
 	}
-
-	// rows, err := database.CreateSnapshotAndReset(db, ctx, 1)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	//
-	// log.Println("Created snapshot with repo count", rows)
 }

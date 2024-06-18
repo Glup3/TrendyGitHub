@@ -169,6 +169,11 @@ func createStarHistorySnapshot(tx pgx.Tx, ctx context.Context) (int64, error) {
 	sql, args, err := sq.Insert("stars_history").
 		Columns("repository_id", "star_count", "created_at").
 		Select(sq.Select("id", "star_count", "CURRENT_DATE").From("repositories")).
+		Suffix(`
+      ON CONFLICT (repository_id, created_at)
+      DO UPDATE SET
+      star_count = EXCLUDED.star_count
+    `).
 		ToSql()
 	if err != nil {
 		return 0, err

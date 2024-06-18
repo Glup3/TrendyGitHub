@@ -2,13 +2,13 @@ package jobs
 
 import (
 	"context"
-	"log"
 
 	database "github.com/glup3/TrendyGitHub/internal/db"
+	"github.com/rs/zerolog/log"
 )
 
 func RefreshViews(db *database.Database, ctx context.Context) {
-	log.Print("refreshing views...")
+	log.Info().Msg("refreshing views...")
 
 	var errors []error
 
@@ -28,6 +28,8 @@ func RefreshViews(db *database.Database, ctx context.Context) {
 	}
 
 	if len(errors) > 0 {
-		log.Println(errors)
+		log.Error().Errs("errors", errors).Msg("encountered issues refreshing views")
 	}
+
+	log.Info().Msg("done refreshing views")
 }
