@@ -142,7 +142,8 @@ func runHistory(db *database.Database, ctx context.Context, githubToken string) 
 		log.Print("running job - fetching missing star histories")
 	}
 
-	maxStarCount := 25_000
+	// TODO: optimize maxStarCount to go lower
+	maxStarCount := 500_000
 	remainingUnits := rateLimit.Remaining
 	bufferUnits := 1
 
