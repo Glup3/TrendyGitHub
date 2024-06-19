@@ -2,7 +2,6 @@ package jobs
 
 import (
 	"context"
-	"math"
 	"sort"
 	"sync"
 	"time"
@@ -13,9 +12,10 @@ import (
 	"github.com/glup3/TrendyGitHub/internal/loader"
 )
 
-// 1000 repositories == 1 Unit
-const repoCountToRateLimitUnitRatio = 1000
-const bufferUnits = 3
+// 100 repositories == 1 Unit
+const (
+	repoCountToRateLimitUnitRatio = 100
+)
 
 // GitHub REST API limitation: maximum pagination of 400 pages
 func FetchHistoryUnder40kStars(db *database.Database, ctx context.Context, githubToken string) {
@@ -54,12 +54,13 @@ func FetchHistoryUnder40kStars(db *database.Database, ctx context.Context, githu
 func FetchHistory(db *database.Database, ctx context.Context, githubToken string) {
 	dataLoader := loader.NewAPILoader(ctx, githubToken)
 
-	totalRepoCount, err := database.GetTotalRepoCount(db, ctx)
-	if err != nil {
-		log.Fatal().Err(err).Msg("failed fetching total rpepo count")
-	}
-
-	reservedUnits := int(math.Floor(float64(totalRepoCount) / repoCountToRateLimitUnitRatio))
+	// totalRepoCount, err := database.GetTotalRepoCount(db, ctx)
+	// if err != nil {
+	// 	log.Fatal().Err(err).Msg("failed fetching total rpepo count")
+	// }
+	//
+	// reservedUnits := int(math.Floor(float64(totalRepoCount) / repoCountToRateLimitUnitRatio))
+	reservedUnits := 0
 
 	rateLimit, err := dataLoader.GetRateLimit()
 	if err != nil {
@@ -208,7 +209,6 @@ func calculateCumulativeStars(cumulativeCounts *map[time.Time]int, starCounts ma
 }
 
 func aggregateAndInsertHistory(db *database.Database, ctx context.Context, timestamps []time.Time, repo database.MissingRepo) {
-
 	starCounts := make(map[time.Time]int)
 	cumulativeCounts := make(map[time.Time]int)
 
