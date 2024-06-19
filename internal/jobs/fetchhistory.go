@@ -2,7 +2,7 @@ package jobs
 
 import (
 	"context"
-	"math"
+	"fmt"
 	"sort"
 	"sync"
 	"time"
@@ -16,47 +16,71 @@ import (
 // 1000 repositories == 1 Unit
 const repoCountToRateLimitUnitRatio = 1000
 const starCountToRateLimitUnitRatio = 100
+const maxRestPageCount = 400
 const bufferUnits = 3
 
 func FetchNextRepositoryHistory(db *database.Database, ctx context.Context, githubToken string) {
 	dataLoader := loader.NewAPILoader(ctx, githubToken)
 
-	totalRepoCount, err := database.GetTotalRepoCount(db, ctx)
+	repo, err := FetchNextMissingRepository(db, ctx, githubToken, true)
 	if err != nil {
-		log.Fatal().Err(err).Msg("failed fetching total repo count")
-	}
-
-	rateLimit, err := dataLoader.GetRateLimitRest()
-	if err != nil {
-		log.Fatal().Err(err).Msg("failed fetching rate limit")
-	}
-
-	reservedUnits := int(math.Floor(float64(totalRepoCount) / repoCountToRateLimitUnitRatio))
-	remainingUnits := rateLimit.Rate.Remaining - reservedUnits
-
-	log.Info().Msgf("rate limit: %d units remaining", remainingUnits)
-
-	if remainingUnits <= 0 {
-		log.Warn().Msg("remaining rate limit is not enough - aborting")
+		log.Error().Err(err).Msg("fetching repo failed")
 		return
 	}
 
+	log.Info().Msgf("fetching star history for repo %s", repo.NameWithOwner)
+
+	FetchStarHistory(db, ctx, dataLoader, *repo)
+
+	RefreshViews(db, ctx)
+
+	log.Print("done fetching missing star histories")
+}
+
+func FetchNextMissingRepository(db *database.Database, ctx context.Context, githubToken string, useREST bool) (*database.MissingRepo, error) {
+	dataLoader := loader.NewAPILoader(ctx, githubToken)
+	var remainingUnits int
+
+	// totalRepoCount, err := database.GetTotalRepoCount(db, ctx)
+	// if err != nil {
+	// 	return nil, fmt.Errorf("failed fetching total repo count")
+	// }
+
+	if useREST {
+		rateLimitRest, err := dataLoader.GetRateLimitRest()
+		if err != nil {
+			return nil, fmt.Errorf("failed fetching rate limit rest %v", err)
+		}
+		remainingUnits = rateLimitRest.Rate.Remaining
+	} else {
+		rateLimitGraphql, err := dataLoader.GetRateLimit()
+		if err != nil {
+			return nil, fmt.Errorf("failed fetching rate limit graphql %v", err)
+		}
+		remainingUnits = rateLimitGraphql.Remaining
+	}
+
+	// reservedUnits := int(math.Floor(float64(totalRepoCount) / repoCountToRateLimitUnitRatio))
+	// remainingUnits -= reservedUnits
+
+	if remainingUnits <= 0 {
+		return nil, fmt.Errorf("remaining rate limit is not enough (REST %v) - aborting", useREST)
+	}
+
+	log.Info().Msgf("rate limit: %d units remaining (REST %v)", remainingUnits, useREST)
 	log.Info().Msg("fetching missing star history")
 
 	maxStarCount := remainingUnits*starCountToRateLimitUnitRatio - bufferUnits
+	if useREST && maxStarCount > starCountToRateLimitUnitRatio*maxRestPageCount {
+		maxStarCount = starCountToRateLimitUnitRatio * maxRestPageCount
+	}
 
 	repo, err := database.GetNextMissingHistoryRepo(db, ctx, maxStarCount)
 	if err != nil {
 		log.Error().Err(err).Msg("failed fetching next missing repo")
 	}
 
-	log.Info().Msgf("fetching star history for repo %s", repo.NameWithOwner)
-
-	FetchStarHistory(db, ctx, dataLoader, repo)
-
-	RefreshViews(db, ctx)
-
-	log.Print("done fetching missing star histories")
+	return &repo, nil
 }
 
 func FetchStarHistory(db *database.Database, ctx context.Context, dataLoader loader.DataLoader, repo database.MissingRepo) {

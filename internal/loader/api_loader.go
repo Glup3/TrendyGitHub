@@ -164,9 +164,6 @@ type Stargazer struct {
 // page is 1-based
 func (l *APILoader) LoadRepoStarHistoryPage(repoNameWithOwner string, page int) ([]time.Time, *StarHistoryHeader, error) {
 	client := GetRestApiClient(l.apiKey)
-	if client == nil {
-		return nil, nil, fmt.Errorf("failed to get HTTP client")
-	}
 
 	var dateTimes []time.Time
 	var pageInfo StarHistoryHeader
