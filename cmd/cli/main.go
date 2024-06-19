@@ -17,7 +17,7 @@ func main() {
 	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
 
 	if len(os.Args) < 2 {
-		log.Fatal().Msg("Usage: ./tgh [search|history]")
+		log.Fatal().Msg("Usage: ./tgh [search|history|history-40k]")
 	}
 
 	configs, err := config.LoadConfig()
@@ -40,9 +40,11 @@ func main() {
 	switch mode {
 	case "search":
 		jobs.SearchRepositories(db, ctx, configs.GitHubToken)
-	case "history-TODO":
-		jobs.FetchNextRepositoryHistory(db, ctx, configs.GitHubToken)
+	case "history-40k":
+		jobs.FetchHistoryUnder40kStars(db, ctx, configs.GitHubToken)
+	case "history":
+		jobs.FetchHistory(db, ctx, configs.GitHubToken)
 	default:
-		log.Fatal().Msgf("Invalid mode: %s. Use 'search' or 'history'.\n", mode)
+		log.Fatal().Msgf("Invalid mode: %s. Use 'search' or 'history' or 'history-40k'", mode)
 	}
 }

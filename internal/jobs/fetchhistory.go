@@ -2,7 +2,7 @@ package jobs
 
 import (
 	"context"
-	"fmt"
+	"math"
 	"sort"
 	"sync"
 	"time"
@@ -15,72 +15,98 @@ import (
 
 // 1000 repositories == 1 Unit
 const repoCountToRateLimitUnitRatio = 1000
-const starCountToRateLimitUnitRatio = 100
-const maxRestPageCount = 400
 const bufferUnits = 3
 
-func FetchNextRepositoryHistory(db *database.Database, ctx context.Context, githubToken string) {
+// GitHub REST API limitation: maximum pagination of 400 pages
+func FetchHistoryUnder40kStars(db *database.Database, ctx context.Context, githubToken string) {
+	const maxAPILimitStarCount = 40_000
+	const maxAPILimitPages = 400
 	dataLoader := loader.NewAPILoader(ctx, githubToken)
 
-	repo, err := FetchNextMissingRepository(db, ctx, githubToken, true)
+	rateLimit, err := dataLoader.GetRateLimitRest()
 	if err != nil {
-		log.Error().Err(err).Msg("fetching repo failed")
-		return
+		log.Fatal().Err(err).Msg("failed fetching REST API rate limit")
+	}
+
+	if rateLimit.Rate.Remaining <= 0 {
+		log.Fatal().Err(err).Msg("rate limit has been already exhausted")
+	}
+
+	maxStarCount := rateLimit.Rate.Remaining * 400
+	if maxStarCount > maxAPILimitStarCount {
+		maxStarCount = maxAPILimitStarCount
+	}
+
+	repo, err := database.GetNextMissingHistoryRepo(db, ctx, maxStarCount)
+	if err != nil {
+		log.Fatal().Err(err).Msg("failed fetching next missing repo")
 	}
 
 	log.Info().Msgf("fetching star history for repo %s", repo.NameWithOwner)
 
-	FetchStarHistory(db, ctx, dataLoader, *repo)
+	FetchStarHistory(db, ctx, dataLoader, repo)
 
 	RefreshViews(db, ctx)
 
 	log.Print("done fetching missing star histories")
 }
 
-func FetchNextMissingRepository(db *database.Database, ctx context.Context, githubToken string, useREST bool) (*database.MissingRepo, error) {
+func FetchHistory(db *database.Database, ctx context.Context, githubToken string) {
 	dataLoader := loader.NewAPILoader(ctx, githubToken)
-	var remainingUnits int
 
-	// totalRepoCount, err := database.GetTotalRepoCount(db, ctx)
-	// if err != nil {
-	// 	return nil, fmt.Errorf("failed fetching total repo count")
-	// }
-
-	if useREST {
-		rateLimitRest, err := dataLoader.GetRateLimitRest()
-		if err != nil {
-			return nil, fmt.Errorf("failed fetching rate limit rest %v", err)
-		}
-		remainingUnits = rateLimitRest.Rate.Remaining
-	} else {
-		rateLimitGraphql, err := dataLoader.GetRateLimit()
-		if err != nil {
-			return nil, fmt.Errorf("failed fetching rate limit graphql %v", err)
-		}
-		remainingUnits = rateLimitGraphql.Remaining
+	totalRepoCount, err := database.GetTotalRepoCount(db, ctx)
+	if err != nil {
+		log.Fatal().Err(err).Msg("failed fetching total rpepo count")
 	}
 
-	// reservedUnits := int(math.Floor(float64(totalRepoCount) / repoCountToRateLimitUnitRatio))
-	// remainingUnits -= reservedUnits
+	reservedUnits := int(math.Floor(float64(totalRepoCount) / repoCountToRateLimitUnitRatio))
+
+	rateLimit, err := dataLoader.GetRateLimit()
+	if err != nil {
+		log.Fatal().Err(err).Msg("failed fetching GraphQL API rate limit")
+	}
+
+	remainingUnits := rateLimit.Remaining - reservedUnits
 
 	if remainingUnits <= 0 {
-		return nil, fmt.Errorf("remaining rate limit is not enough (REST %v) - aborting", useREST)
+		log.Fatal().Err(err).Msg("rate limit has been already exhausted")
 	}
 
-	log.Info().Msgf("rate limit: %d units remaining (REST %v)", remainingUnits, useREST)
-	log.Info().Msg("fetching missing star history")
-
-	maxStarCount := remainingUnits*starCountToRateLimitUnitRatio - bufferUnits
-	if useREST && maxStarCount > starCountToRateLimitUnitRatio*maxRestPageCount {
-		maxStarCount = starCountToRateLimitUnitRatio * maxRestPageCount
-	}
-
+	maxStarCount := remainingUnits * 100
 	repo, err := database.GetNextMissingHistoryRepo(db, ctx, maxStarCount)
 	if err != nil {
-		log.Error().Err(err).Msg("failed fetching next missing repo")
+		log.Fatal().Err(err).Msg("failed fetching next missing repo")
 	}
 
-	return &repo, nil
+	log.Info().Msgf("fetching star history for repo %s", repo.NameWithOwner)
+
+	cursor := ""
+	var totalDates []time.Time
+	pageCounter := 0
+
+	for {
+		dates, info, err := dataLoader.LoadRepoStarHistoryDates(repo.GithubId, cursor)
+		if err != nil {
+			log.Fatal().Err(err).Msg("aborting loading star history!")
+		}
+
+		cursor = info.NextCursor
+		pageCounter++
+		totalDates = append(totalDates, dates...)
+
+		if pageCounter%10 == 0 {
+			log.Info().Msgf("githubId: %s - loaded page %d of %d page", repo.GithubId, pageCounter, info.TotalStars/100)
+		}
+
+		if !info.HasNextPage {
+			break
+		}
+	}
+
+	aggregateAndInsertHistory(db, ctx, totalDates, repo)
+
+	RefreshViews(db, ctx)
+	log.Print("done fetching missing star histories")
 }
 
 func FetchStarHistory(db *database.Database, ctx context.Context, dataLoader loader.DataLoader, repo database.MissingRepo) {
@@ -150,28 +176,7 @@ func FetchStarHistory(db *database.Database, ctx context.Context, dataLoader loa
 	}
 
 	log.Info().Msgf("total timestamps: %d", len(timestamps))
-
-	starCounts := make(map[time.Time]int)
-	cumulativeCounts := make(map[time.Time]int)
-
-	countStars(&starCounts, timestamps)
-	calculateCumulativeStars(&cumulativeCounts, starCounts)
-
-	var inputs []database.StarHistoryInput
-	for key, value := range cumulativeCounts {
-		inputs = append(inputs, database.StarHistoryInput{
-			Id:        repo.Id,
-			CreatedAt: key,
-			StarCount: value,
-		})
-	}
-
-	err = database.BatchUpsertStarHistory(db, ctx, inputs)
-	if err != nil {
-		log.Fatal().Err(err).Msgf("failed to upsert star history %s", repo.NameWithOwner)
-	}
-
-	log.Info().Msgf("finished upserting star history for repo %s", repo.NameWithOwner)
+	aggregateAndInsertHistory(db, ctx, timestamps, repo)
 }
 
 // normalizeDate normalizes a time.Time to midnight of the same day
@@ -200,4 +205,29 @@ func calculateCumulativeStars(cumulativeCounts *map[time.Time]int, starCounts ma
 		cumulativeSum += starCounts[key]
 		(*cumulativeCounts)[key] = cumulativeSum
 	}
+}
+
+func aggregateAndInsertHistory(db *database.Database, ctx context.Context, timestamps []time.Time, repo database.MissingRepo) {
+
+	starCounts := make(map[time.Time]int)
+	cumulativeCounts := make(map[time.Time]int)
+
+	countStars(&starCounts, timestamps)
+	calculateCumulativeStars(&cumulativeCounts, starCounts)
+
+	var inputs []database.StarHistoryInput
+	for key, value := range cumulativeCounts {
+		inputs = append(inputs, database.StarHistoryInput{
+			Id:        repo.Id,
+			CreatedAt: key,
+			StarCount: value,
+		})
+	}
+
+	err := database.BatchUpsertStarHistory(db, ctx, inputs)
+	if err != nil {
+		log.Fatal().Err(err).Msgf("failed to upsert star history %s", repo.NameWithOwner)
+	}
+
+	log.Info().Msgf("finished upserting star history for repo %s", repo.NameWithOwner)
 }
