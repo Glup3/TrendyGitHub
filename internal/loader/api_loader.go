@@ -261,3 +261,41 @@ func (l *APILoader) GetRateLimit() (*RateLimit, error) {
 
 	return rateLimit, nil
 }
+
+type RateLimitRest struct {
+	Rate struct {
+		Limit     int `json:"limit"`
+		Remaining int `json:"remaining"`
+		Reset     int `json:"reset"`
+	} `json:"rate"`
+}
+
+func (l *APILoader) GetRateLimitRest() (*RateLimitRest, error) {
+	client := GetRestApiClient(l.apiKey)
+	if client == nil {
+		return nil, fmt.Errorf("failed to get HTTP client")
+	}
+
+	req, err := http.NewRequest("GET", "https://api.github.com/rate_limit", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("failed to get rate limit: %s", resp.Status)
+	}
+
+	var rateLimit RateLimitRest
+	err = json.NewDecoder(resp.Body).Decode(&rateLimit)
+	if err != nil {
+		return nil, err
+	}
+
+	return &rateLimit, nil
+}

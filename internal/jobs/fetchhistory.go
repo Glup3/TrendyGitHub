@@ -26,13 +26,15 @@ func FetchNextRepositoryHistory(db *database.Database, ctx context.Context, gith
 		log.Fatal().Err(err).Msg("failed fetching total repo count")
 	}
 
-	rateLimit, err := dataLoader.GetRateLimit()
+	rateLimit, err := dataLoader.GetRateLimitRest()
 	if err != nil {
 		log.Fatal().Err(err).Msg("failed fetching rate limit")
 	}
 
 	reservedUnits := int(math.Floor(float64(totalRepoCount) / repoCountToRateLimitUnitRatio))
-	remainingUnits := rateLimit.Remaining - reservedUnits
+	remainingUnits := rateLimit.Rate.Remaining - reservedUnits
+
+	log.Info().Msgf("rate limit: %d units remaining", remainingUnits)
 
 	if remainingUnits <= 0 {
 		log.Warn().Msg("remaining rate limit is not enough - aborting")
@@ -74,6 +76,8 @@ func FetchStarHistory(db *database.Database, ctx context.Context, dataLoader loa
 	if totalPages == 0 {
 		totalPages = 1
 	}
+
+	log.Info().Msgf("total pages: %d", totalPages)
 
 	var wg sync.WaitGroup
 	var mu sync.Mutex
@@ -120,6 +124,8 @@ func FetchStarHistory(db *database.Database, ctx context.Context, dataLoader loa
 	if len(errCh) > 0 {
 		log.Fatal().Err(<-errCh).Msg("error loading star history")
 	}
+
+	log.Info().Msgf("total timestamps: %d", len(timestamps))
 
 	starCounts := make(map[time.Time]int)
 	cumulativeCounts := make(map[time.Time]int)

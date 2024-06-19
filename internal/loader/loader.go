@@ -45,4 +45,5 @@ type DataLoader interface {
 	LoadRepoStarHistoryDates(githubId string, cursor string) ([]time.Time, *StarPageInfo, error)
 	LoadRepoStarHistoryPage(repoNameWithOwner string, page int) ([]time.Time, *StarHistoryHeader, error)
 	GetRateLimit() (*RateLimit, error)
+	GetRateLimitRest() (*RateLimitRest, error)
 }
