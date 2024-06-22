@@ -3,6 +3,7 @@ package jobs
 import (
 	"context"
 	"sort"
+	"strings"
 	"sync"
 	"time"
 
@@ -96,7 +97,16 @@ func FetchHistory(db *database.Database, ctx context.Context, githubToken string
 		for {
 			dates, info, err := dataLoader.LoadRepoStarHistoryDates(repo.GithubId, cursor)
 			if err != nil {
-				log.Fatal().Err(err).Msg("aborting loading star history!")
+				if strings.Contains(err.Error(), "Could not resolve to a node") {
+					log.Warn().
+						Err(err).
+						Str("repository", repo.NameWithOwner).
+						Int32("id", repo.Id).
+						Msg("skipping repo because it doesn't exist anymore")
+					break
+				} else {
+					log.Fatal().Err(err).Msg("aborting loading star history!")
+				}
 			}
 
 			cursor = info.NextCursor
@@ -130,6 +140,14 @@ func FetchStarHistory(db *database.Database, ctx context.Context, dataLoader loa
 	firstPage := 1
 	_, pageInfo, err := dataLoader.LoadRepoStarHistoryPage(repo.NameWithOwner, firstPage)
 	if err != nil {
+		if strings.Contains(err.Error(), "404") {
+			log.Warn().
+				Err(err).
+				Str("repository", repo.NameWithOwner).
+				Int32("id", repo.Id).
+				Msg("skipping repo because it doesn't exist anymore")
+			return
+		}
 		log.Fatal().Err(err).Msg("failed to load first page")
 	}
 
