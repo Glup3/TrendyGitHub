@@ -353,15 +353,20 @@ func GetNextMissingHistoryIds(db *Database, ctx context.Context) ([]repoId, erro
 	return ids, nil
 }
 
-func GetNextMissingHistoryRepo(db *Database, ctx context.Context, maxStarCount int) (MissingRepo, error) {
+func GetNextMissingHistoryRepo(db *Database, ctx context.Context, maxStarCount int, ascendingOrder bool) (MissingRepo, error) {
 	var repo MissingRepo
+
+	orderDirection := "desc"
+	if ascendingOrder {
+		orderDirection = "asc"
+	}
 
 	sql, args, err := sq.StatementBuilder.PlaceholderFormat(sq.Dollar).
 		Select("id", "github_id", "star_count", "name_with_owner").
 		From("repositories").
 		Where(sq.Eq{"history_missing": true}).
 		Where(sq.LtOrEq{"star_count": maxStarCount}).
-		OrderBy("star_count desc").
+		OrderBy("star_count " + orderDirection).
 		Limit(1).
 		ToSql()
 	if err != nil {

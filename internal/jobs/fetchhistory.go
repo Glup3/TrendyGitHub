@@ -23,88 +23,102 @@ func FetchHistoryUnder40kStars(db *database.Database, ctx context.Context, githu
 	const maxAPILimitPages = 400
 	dataLoader := loader.NewAPILoader(ctx, githubToken)
 
-	rateLimit, err := dataLoader.GetRateLimitRest()
-	if err != nil {
-		log.Fatal().Err(err).Msg("failed fetching REST API rate limit")
+	for {
+		rateLimit, err := dataLoader.GetRateLimitRest()
+		if err != nil {
+			log.Error().Err(err).Msg("failed fetching REST API rate limit")
+			break
+		}
+
+		if rateLimit.Rate.Remaining <= 0 {
+			log.Warn().Int("resetAt", rateLimit.Rate.Reset).Msg("rate limit has been already exhausted")
+			break
+		}
+
+		maxStarCount := rateLimit.Rate.Remaining * 400
+		if maxStarCount > maxAPILimitStarCount {
+			maxStarCount = maxAPILimitStarCount
+		}
+
+		repo, err := database.GetNextMissingHistoryRepo(db, ctx, maxStarCount, true)
+		if err != nil {
+			log.Fatal().Err(err).Msg("failed fetching next missing repo")
+		}
+
+		log.Info().
+			Str("repository", repo.NameWithOwner).
+			Str("githubId", repo.GithubId).
+			Int32("id", repo.Id).
+			Int("remainingLimit", rateLimit.Rate.Remaining).
+			Msg("fetching history for repo")
+
+		FetchStarHistory(db, ctx, dataLoader, repo)
 	}
-
-	if rateLimit.Rate.Remaining <= 0 {
-		log.Fatal().Err(err).Msg("rate limit has been already exhausted")
-	}
-
-	maxStarCount := rateLimit.Rate.Remaining * 400
-	if maxStarCount > maxAPILimitStarCount {
-		maxStarCount = maxAPILimitStarCount
-	}
-
-	repo, err := database.GetNextMissingHistoryRepo(db, ctx, maxStarCount)
-	if err != nil {
-		log.Fatal().Err(err).Msg("failed fetching next missing repo")
-	}
-
-	log.Info().Msgf("fetching star history for repo %s", repo.NameWithOwner)
-
-	FetchStarHistory(db, ctx, dataLoader, repo)
 
 	RefreshViews(db, ctx)
 
-	log.Print("done fetching missing star histories")
+	log.Info().Msg("done fetching missing star histories")
 }
 
 func FetchHistory(db *database.Database, ctx context.Context, githubToken string) {
 	dataLoader := loader.NewAPILoader(ctx, githubToken)
 
-	// totalRepoCount, err := database.GetTotalRepoCount(db, ctx)
-	// if err != nil {
-	// 	log.Fatal().Err(err).Msg("failed fetching total rpepo count")
-	// }
-	//
-	// reservedUnits := int(math.Floor(float64(totalRepoCount) / repoCountToRateLimitUnitRatio))
-	reservedUnits := 0
-
-	rateLimit, err := dataLoader.GetRateLimit()
-	if err != nil {
-		log.Fatal().Err(err).Msg("failed fetching GraphQL API rate limit")
-	}
-
-	remainingUnits := rateLimit.Remaining - reservedUnits
-
-	if remainingUnits <= 0 {
-		log.Fatal().Err(err).Msg("rate limit has been already exhausted")
-	}
-
-	maxStarCount := remainingUnits * 100
-	repo, err := database.GetNextMissingHistoryRepo(db, ctx, maxStarCount)
-	if err != nil {
-		log.Fatal().Err(err).Msg("failed fetching next missing repo")
-	}
-
-	log.Info().Msgf("fetching star history for repo %s", repo.NameWithOwner)
-
-	cursor := ""
-	var totalDates []time.Time
-	pageCounter := 0
-
 	for {
-		dates, info, err := dataLoader.LoadRepoStarHistoryDates(repo.GithubId, cursor)
+		rateLimit, err := dataLoader.GetRateLimit()
 		if err != nil {
-			log.Fatal().Err(err).Msg("aborting loading star history!")
-		}
-
-		cursor = info.NextCursor
-		pageCounter++
-		totalDates = append(totalDates, dates...)
-
-		if pageCounter%10 == 0 {
-			log.Info().Msgf("githubId: %s - loaded page %d of %d page", repo.GithubId, pageCounter, info.TotalStars/100)
-		}
-
-		if !info.HasNextPage {
+			log.Error().Err(err).Msg("failed fetching GraphQL API rate limit")
 			break
 		}
-	}
 
-	AggregateAndInsertHistory(db, ctx, totalDates, repo)
+		if rateLimit.Remaining <= 0 {
+			log.Error().Err(err).Msg("rate limit has been already exhausted")
+			break
+		}
+
+		maxStarCount := rateLimit.Remaining * 100
+		repo, err := database.GetNextMissingHistoryRepo(db, ctx, maxStarCount, false)
+		if err != nil {
+			log.Error().Err(err).Msg("failed fetching next missing repo")
+			break
+		}
+
+		log.Info().
+			Str("repository", repo.NameWithOwner).
+			Str("githubId", repo.GithubId).
+			Int32("id", repo.Id).
+			Int("remainingLimit", rateLimit.Remaining).
+			Msg("fetching history for repo")
+
+		cursor := ""
+		var totalDates []time.Time
+		pageCounter := 0
+
+		for {
+			dates, info, err := dataLoader.LoadRepoStarHistoryDates(repo.GithubId, cursor)
+			if err != nil {
+				log.Fatal().Err(err).Msg("aborting loading star history!")
+			}
+
+			cursor = info.NextCursor
+			pageCounter++
+			totalDates = append(totalDates, dates...)
+
+			if pageCounter%10 == 0 {
+				log.Info().
+					Str("githubId", repo.GithubId).
+					Str("repository", repo.NameWithOwner).
+					Int("page", pageCounter).
+					Int("totalPages", info.TotalStars/100).
+					Msg("fetched page")
+			}
+
+			if !info.HasNextPage {
+				break
+			}
+		}
+
+		AggregateAndInsertHistory(db, ctx, totalDates, repo)
+	}
 
 	RefreshViews(db, ctx)
 	log.Info().Msg("done fetching missing star histories")

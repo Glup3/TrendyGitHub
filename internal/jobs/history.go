@@ -24,11 +24,13 @@ func RepairHistory(db *database.Database, ctx context.Context, githubToken strin
 	for _, repo := range repos {
 		rateLimit, err := dataLoader.GetRateLimit()
 		if err != nil {
-			log.Fatal().Err(err).Msg("failed fetching GraphQL API rate limit")
+			log.Error().Err(err).Msg("failed fetching GraphQL API rate limit")
+			break
 		}
 
 		if rateLimit.Remaining <= 0 {
-			log.Fatal().Err(err).Msg("rate limit has been already exhausted")
+			log.Error().Err(err).Msg("rate limit has been already exhausted")
+			break
 		}
 
 		log.Info().

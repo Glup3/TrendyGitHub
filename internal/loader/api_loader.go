@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	minStarCount = 50
+	minStarCount = 200
 	perPage      = 100 // INFO: cursors depend on page size
 )
 
