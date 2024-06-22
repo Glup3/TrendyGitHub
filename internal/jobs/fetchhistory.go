@@ -104,10 +104,10 @@ func FetchHistory(db *database.Database, ctx context.Context, githubToken string
 		}
 	}
 
-	aggregateAndInsertHistory(db, ctx, totalDates, repo)
+	AggregateAndInsertHistory(db, ctx, totalDates, repo)
 
 	RefreshViews(db, ctx)
-	log.Print("done fetching missing star histories")
+	log.Info().Msg("done fetching missing star histories")
 }
 
 func FetchStarHistory(db *database.Database, ctx context.Context, dataLoader loader.DataLoader, repo database.MissingRepo) {
@@ -177,7 +177,7 @@ func FetchStarHistory(db *database.Database, ctx context.Context, dataLoader loa
 	}
 
 	log.Info().Msgf("total timestamps: %d", len(timestamps))
-	aggregateAndInsertHistory(db, ctx, timestamps, repo)
+	AggregateAndInsertHistory(db, ctx, timestamps, repo)
 }
 
 // normalizeDate normalizes a time.Time to midnight of the same day
@@ -208,7 +208,8 @@ func calculateCumulativeStars(cumulativeCounts *map[time.Time]int, starCounts ma
 	}
 }
 
-func aggregateAndInsertHistory(db *database.Database, ctx context.Context, timestamps []time.Time, repo database.MissingRepo) {
+// TODO: refactor struct to general repo & not missing repo
+func AggregateAndInsertHistory(db *database.Database, ctx context.Context, timestamps []time.Time, repo database.MissingRepo) {
 	starCounts := make(map[time.Time]int)
 	cumulativeCounts := make(map[time.Time]int)
 

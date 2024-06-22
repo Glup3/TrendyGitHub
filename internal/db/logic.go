@@ -46,6 +46,12 @@ type MissingRepo struct {
 	Id            repoId
 }
 
+type PresentRepo struct {
+	GithubId      string
+	NameWithOwner string
+	Id            repoId
+}
+
 const batchSize = 10_000
 
 func LoadSettings(db *Database, ctx context.Context) (Settings, error) {
@@ -391,4 +397,40 @@ func GetTotalRepoCount(db *Database, ctx context.Context) (int, error) {
 	}
 
 	return count, nil
+}
+
+func GetAllPresentHistoryRepos(db *Database, ctx context.Context) ([]PresentRepo, error) {
+	sql, args, err := sq.StatementBuilder.PlaceholderFormat(sq.Dollar).
+		Select("id", "github_id", "name_with_owner").
+		From("repositories").
+		Where(sq.Eq{"history_missing": false}).
+		Where(sq.Lt{"star_count": 1_000_000}).
+		OrderBy("star_count desc").
+		OrderBy("id asc").
+		ToSql()
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := db.pool.Query(ctx, sql, args...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var repos []PresentRepo
+	for rows.Next() {
+		var repo PresentRepo
+		err := rows.Scan(&repo.Id, &repo.GithubId, &repo.NameWithOwner)
+		if err != nil {
+			return repos, err
+		}
+		repos = append(repos, repo)
+	}
+
+	if rows.Err() != nil {
+		return repos, err
+	}
+
+	return repos, nil
 }

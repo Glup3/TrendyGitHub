@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"os"
+	"time"
 
 	config "github.com/glup3/TrendyGitHub/internal"
 	database "github.com/glup3/TrendyGitHub/internal/db"
@@ -44,6 +45,12 @@ func main() {
 		jobs.FetchHistoryUnder40kStars(db, ctx, configs.GitHubToken)
 	case "history":
 		jobs.FetchHistory(db, ctx, configs.GitHubToken)
+	case "repair":
+		date, err := time.Parse(time.DateOnly, "2024-06-15")
+		if err != nil {
+			log.Fatal().Err(err).Msg("formatting date failed")
+		}
+		jobs.RepairHistory(db, ctx, configs.GitHubToken, date)
 	default:
 		log.Fatal().Msgf("Invalid mode: %s. Use 'search' or 'history' or 'history-40k'", mode)
 	}
