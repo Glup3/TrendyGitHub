@@ -439,3 +439,31 @@ func GetAllPresentHistoryRepos(db *Database, ctx context.Context) ([]PresentRepo
 
 	return repos, nil
 }
+
+func DeleteRepository(db *Database, ctx context.Context, id repoId) error {
+	sql, args, err := sq.Delete("stars_history").
+		Where(sq.Eq{"repository_id": id}).
+		ToSql()
+	if err != nil {
+		return err
+	}
+
+	_, err = db.pool.Exec(ctx, sql, args...)
+	if err != nil {
+		return err
+	}
+
+	sql, args, err = sq.Delete("repositories").
+		Where(sq.Eq{"id": id}).
+		ToSql()
+	if err != nil {
+		return err
+	}
+
+	_, err = db.pool.Exec(ctx, sql, args...)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

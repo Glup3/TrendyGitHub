@@ -1,0 +1,16 @@
+ALTER TABLE stars_history
+ADD COLUMN updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+CREATE OR REPLACE FUNCTION update_timestamp()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = NOW();
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_updated_at
+BEFORE INSERT OR UPDATE ON stars_history
+FOR EACH ROW
+EXECUTE FUNCTION update_timestamp();
+

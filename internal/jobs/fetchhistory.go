@@ -103,6 +103,16 @@ func FetchHistory(db *database.Database, ctx context.Context, githubToken string
 						Str("repository", repo.NameWithOwner).
 						Int32("id", repo.Id).
 						Msg("skipping repo because it doesn't exist anymore")
+
+					err = database.DeleteRepository(db, ctx, repo.Id)
+					if err != nil {
+						log.Fatal().
+							Err(err).
+							Int32("id", repo.Id).
+							Str("repository", repo.NameWithOwner).
+							Msg("failed to delete dead repo")
+					}
+
 					break
 				} else {
 					log.Fatal().Err(err).Msg("aborting loading star history!")
@@ -145,7 +155,16 @@ func FetchStarHistory(db *database.Database, ctx context.Context, dataLoader loa
 				Err(err).
 				Str("repository", repo.NameWithOwner).
 				Int32("id", repo.Id).
-				Msg("skipping repo because it doesn't exist anymore")
+				Msg("deleting repo because it doesn't exist anymore")
+
+			err = database.DeleteRepository(db, ctx, repo.Id)
+			if err != nil {
+				log.Fatal().
+					Err(err).
+					Int32("id", repo.Id).
+					Str("repository", repo.NameWithOwner).
+					Msg("failed to delete dead repo")
+			}
 			return
 		}
 		log.Fatal().Err(err).Msg("failed to load first page")
