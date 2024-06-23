@@ -46,7 +46,7 @@ func main() {
 	case "history":
 		jobs.FetchHistory(db, ctx, configs.GitHubToken)
 	case "repair":
-		date, err := time.Parse(time.DateOnly, "2024-06-15")
+		date, err := time.Parse(time.DateOnly, "2024-06-13")
 		if err != nil {
 			log.Fatal().Err(err).Msg("formatting date failed")
 		}

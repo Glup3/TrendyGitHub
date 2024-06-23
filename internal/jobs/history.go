@@ -2,6 +2,7 @@ package jobs
 
 import (
 	"context"
+	"sort"
 	"time"
 
 	database "github.com/glup3/TrendyGitHub/internal/db"
@@ -40,6 +41,7 @@ func RepairHistory(db *database.Database, ctx context.Context, githubToken strin
 			Msg("repairing history for repo")
 
 		var totalDates []time.Time
+		var totalStars int
 		cursor := ""
 
 		for {
@@ -55,6 +57,7 @@ func RepairHistory(db *database.Database, ctx context.Context, githubToken strin
 			}
 
 			cursor = info.NextCursor
+			totalStars = info.TotalStars
 			totalDates = append(totalDates, dates...)
 
 			log.Info().
@@ -71,10 +74,41 @@ func RepairHistory(db *database.Database, ctx context.Context, githubToken strin
 			}
 		}
 
-		AggregateAndInsertHistory(db, ctx, totalDates, database.MissingRepo{
-			NameWithOwner: repo.NameWithOwner,
-			Id:            repo.Id,
+		starCounts := make(map[time.Time]int)
+		cumulativeCounts := make(map[time.Time]int)
+
+		countStars(&starCounts, totalDates)
+
+		var keys []time.Time
+		for date := range starCounts {
+			keys = append(keys, date)
+		}
+
+		sort.Slice(keys, func(i, j int) bool {
+			return keys[i].After(keys[j])
 		})
+
+		cumulativeSum := totalStars
+		for _, key := range keys {
+			cumulativeSum -= starCounts[key]
+			cumulativeCounts[key] = cumulativeSum
+		}
+
+		var inputs []database.StarHistoryInput
+		for key, value := range cumulativeCounts {
+			inputs = append(inputs, database.StarHistoryInput{
+				Id:        repo.Id,
+				CreatedAt: key,
+				StarCount: value,
+			})
+		}
+
+		err = database.BatchUpsertStarHistory(db, ctx, inputs)
+		if err != nil {
+			log.Fatal().Err(err).Msgf("failed to upsert star history %s", repo.NameWithOwner)
+		}
+
+		log.Info().Msgf("finished upserting star history for repo %s", repo.NameWithOwner)
 	}
 
 	RefreshViews(db, ctx)
