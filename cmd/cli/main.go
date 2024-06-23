@@ -40,13 +40,13 @@ func main() {
 	mode := os.Args[1]
 	switch mode {
 	case "search":
-		jobs.SearchRepositories(db, ctx, configs.GitHubToken)
+		jobs.SearchRepositories(db, ctx, configs.GitHubToken2)
 	case "history-40k":
 		jobs.FetchHistoryUnder40kStars(db, ctx, configs.GitHubToken)
 	case "history":
 		jobs.FetchHistory(db, ctx, configs.GitHubToken)
 	case "repair":
-		date, err := time.Parse(time.DateOnly, "2024-06-13")
+		date, err := time.Parse(time.DateOnly, "2024-06-05")
 		if err != nil {
 			log.Fatal().Err(err).Msg("formatting date failed")
 		}

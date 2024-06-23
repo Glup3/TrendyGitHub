@@ -8,8 +8,9 @@ import (
 )
 
 type Config struct {
-	GitHubToken string
-	DatabaseURL string
+	GitHubToken  string
+	GitHubToken2 string
+	DatabaseURL  string
 }
 
 func LoadConfig() (*Config, error) {
@@ -20,13 +21,19 @@ func LoadConfig() (*Config, error) {
 		return nil, fmt.Errorf("GITHUB_TOKEN must be set")
 	}
 
+	gitHubToken2 := os.Getenv("GITHUB_TOKEN")
+	if gitHubToken2 == "" {
+		return nil, fmt.Errorf("GITHUB_TOKEN must be set")
+	}
+
 	databaseURL := os.Getenv("DATABASE_URL")
 	if databaseURL == "" {
 		return nil, fmt.Errorf("DATABASE_URL must be set")
 	}
 
 	return &Config{
-		GitHubToken: gitHubToken,
-		DatabaseURL: databaseURL,
+		GitHubToken:  gitHubToken,
+		GitHubToken2: gitHubToken2,
+		DatabaseURL:  databaseURL,
 	}, nil
 }
