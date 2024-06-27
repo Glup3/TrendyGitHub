@@ -41,7 +41,7 @@ func FetchHistoryUnder40kStars(db *database.Database, ctx context.Context, githu
 			maxStarCount = maxAPILimitStarCount
 		}
 
-		repo, err := database.GetNextMissingHistoryRepo(db, ctx, maxStarCount, false)
+		repo, err := database.GetNextMissingHistoryRepo(db, ctx, maxStarCount, true)
 		if err != nil {
 			log.Fatal().Err(err).Msg("failed fetching next missing repo")
 		}
