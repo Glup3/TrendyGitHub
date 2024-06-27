@@ -443,6 +443,7 @@ func GetAllPresentHistoryRepos(db *Database, ctx context.Context) ([]PresentRepo
 func DeleteRepository(db *Database, ctx context.Context, id repoId) error {
 	sql, args, err := sq.Delete("stars_history").
 		Where(sq.Eq{"repository_id": id}).
+		PlaceholderFormat(sq.Dollar).
 		ToSql()
 	if err != nil {
 		return err
@@ -455,6 +456,7 @@ func DeleteRepository(db *Database, ctx context.Context, id repoId) error {
 
 	sql, args, err = sq.Delete("repositories").
 		Where(sq.Eq{"id": id}).
+		PlaceholderFormat(sq.Dollar).
 		ToSql()
 	if err != nil {
 		return err
