@@ -109,7 +109,8 @@ func FetchHistory(db *database.Database, ctx context.Context, githubToken string
 		for {
 			dates, info, err := dataLoader.LoadRepoStarHistoryDates(repo.GithubId, cursor)
 			if err != nil {
-				if strings.Contains(err.Error(), "Could not resolve to a node") {
+				if strings.Contains(err.Error(), "Could not resolve to a node") ||
+					strings.Contains(err.Error(), "Unavailable For Legal Reasons") {
 					log.Warn().
 						Err(err).
 						Int32("id", repo.Id).
@@ -178,7 +179,8 @@ func FetchStarHistory(db *database.Database, ctx context.Context, dataLoader loa
 
 	page1Timestamps, pageInfo, err := dataLoader.LoadRepoStarHistoryPage(repo.NameWithOwner, 1)
 	if err != nil {
-		if strings.Contains(err.Error(), "404") {
+		if strings.Contains(err.Error(), "404") ||
+			strings.Contains(err.Error(), "451") {
 			log.Warn().
 				Err(err).
 				Str("repository", repo.NameWithOwner).
