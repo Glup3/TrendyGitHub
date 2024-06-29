@@ -23,16 +23,17 @@ func FetchHistoryUnder40kStars(db *database.Database, ctx context.Context, githu
 	const maxAPILimitStarCount = 40_000
 	const maxAPILimitPages = 400
 	dataLoader := loader.NewAPILoader(ctx, githubToken)
+	updatedCount := 0
 
 	for {
 		rateLimit, err := dataLoader.GetRateLimitRest()
 		if err != nil {
-			log.Error().Err(err).Msg("failed fetching REST API rate limit")
+			log.Error().Err(err).Msg("failed fetching rate limit REST")
 			break
 		}
 
 		if rateLimit.Rate.Remaining <= 0 {
-			log.Warn().Int("resetAt", rateLimit.Rate.Reset).Msg("rate limit has been already exhausted")
+			log.Warn().Int("resetAt", rateLimit.Rate.Reset).Msg("REST API rate limit exceeded")
 			break
 		}
 
@@ -43,36 +44,48 @@ func FetchHistoryUnder40kStars(db *database.Database, ctx context.Context, githu
 
 		repo, err := database.GetNextMissingHistoryRepo(db, ctx, maxStarCount, true)
 		if err != nil {
-			log.Fatal().Err(err).Msg("failed fetching next missing repo")
+			log.Error().Err(err).Msg("failed fetching next missing repo")
+			break
 		}
 
 		log.Info().
+			Int32("id", repo.Id).
 			Str("repository", repo.NameWithOwner).
 			Str("githubId", repo.GithubId).
-			Int32("id", repo.Id).
 			Int("remainingLimit", rateLimit.Rate.Remaining).
-			Msg("fetching history for repo")
+			Msg("fetching history for repo REST")
 
-		FetchStarHistory(db, ctx, dataLoader, repo)
+		if err = FetchStarHistory(db, ctx, dataLoader, repo); err != nil {
+			log.Error().
+				Err(err).
+				Int32("id", repo.Id).
+				Str("repository", repo.NameWithOwner).
+				Msg("something happend when fetching REST API star history")
+			break
+		}
+
+		updatedCount++
 	}
 
-	RefreshViews(db, ctx)
-
-	log.Info().Msg("done fetching missing star histories")
+	if updatedCount > 0 {
+		RefreshViews(db, ctx)
+		log.Info().Int("count", updatedCount).Msg("REST: done fetching missing star histories")
+	}
 }
 
 func FetchHistory(db *database.Database, ctx context.Context, githubToken string) {
 	dataLoader := loader.NewAPILoader(ctx, githubToken)
+	updatedCount := 0
 
 	for {
 		rateLimit, err := dataLoader.GetRateLimit()
 		if err != nil {
-			log.Error().Err(err).Msg("failed fetching GraphQL API rate limit")
+			log.Error().Err(err).Msg("failed fetching rate limit GraphQL")
 			break
 		}
 
 		if rateLimit.Remaining <= 0 {
-			log.Error().Err(err).Msg("rate limit has been already exhausted")
+			log.Warn().Time("resetAt", rateLimit.ResetAt).Msg("GraphQL rate limit exceeded")
 			break
 		}
 
@@ -84,11 +97,10 @@ func FetchHistory(db *database.Database, ctx context.Context, githubToken string
 		}
 
 		log.Info().
-			Str("repository", repo.NameWithOwner).
-			Str("githubId", repo.GithubId).
 			Int32("id", repo.Id).
+			Str("repository", repo.NameWithOwner).
 			Int("remainingLimit", rateLimit.Remaining).
-			Msg("fetching history for repo")
+			Msg("fetching history for repo GraphQL")
 
 		cursor := ""
 		var totalDates []time.Time
@@ -100,8 +112,8 @@ func FetchHistory(db *database.Database, ctx context.Context, githubToken string
 				if strings.Contains(err.Error(), "Could not resolve to a node") {
 					log.Warn().
 						Err(err).
-						Str("repository", repo.NameWithOwner).
 						Int32("id", repo.Id).
+						Str("repository", repo.NameWithOwner).
 						Msg("skipping repo because it doesn't exist anymore")
 
 					err = database.DeleteRepository(db, ctx, repo.Id)
@@ -115,7 +127,13 @@ func FetchHistory(db *database.Database, ctx context.Context, githubToken string
 
 					break
 				} else {
-					log.Fatal().Err(err).Msg("aborting loading star history!")
+					log.Error().
+						Err(err).
+						Int32("id", repo.Id).
+						Str("repository", repo.NameWithOwner).
+						Msg("aborting loading star history!")
+
+					break
 				}
 			}
 
@@ -125,7 +143,7 @@ func FetchHistory(db *database.Database, ctx context.Context, githubToken string
 
 			if pageCounter%10 == 0 {
 				log.Info().
-					Str("githubId", repo.GithubId).
+					Int32("id", repo.Id).
 					Str("repository", repo.NameWithOwner).
 					Int("page", pageCounter).
 					Int("totalPages", info.TotalStars/100).
@@ -137,18 +155,28 @@ func FetchHistory(db *database.Database, ctx context.Context, githubToken string
 			}
 		}
 
-		AggregateAndInsertHistory(db, ctx, totalDates, repo)
+		if err = AggregateAndInsertHistory(db, ctx, totalDates, repo); err != nil {
+			log.Error().
+				Err(err).
+				Str("githubId", repo.GithubId).
+				Str("repository", repo.NameWithOwner).
+				Msg("something happend when aggregating star history")
+			break
+		}
+
+		updatedCount++
 	}
 
-	RefreshViews(db, ctx)
-	log.Info().Msg("done fetching missing star histories")
+	if updatedCount > 0 {
+		RefreshViews(db, ctx)
+		log.Info().Int("count", updatedCount).Msg("GraphQL: done fetching missing star histories")
+	}
 }
 
-func FetchStarHistory(db *database.Database, ctx context.Context, dataLoader loader.DataLoader, repo database.MissingRepo) {
-	const maxConcurrentRequests = 80
+func FetchStarHistory(db *database.Database, ctx context.Context, dataLoader loader.DataLoader, repo database.MissingRepo) error {
+	timestamps := make([]time.Time, 0)
 
-	firstPage := 1
-	_, pageInfo, err := dataLoader.LoadRepoStarHistoryPage(repo.NameWithOwner, firstPage)
+	page1Timestamps, pageInfo, err := dataLoader.LoadRepoStarHistoryPage(repo.NameWithOwner, 1)
 	if err != nil {
 		if strings.Contains(err.Error(), "404") {
 			log.Warn().
@@ -159,31 +187,34 @@ func FetchStarHistory(db *database.Database, ctx context.Context, dataLoader loa
 
 			err = database.DeleteRepository(db, ctx, repo.Id)
 			if err != nil {
-				log.Fatal().
+				log.Error().
 					Err(err).
 					Int32("id", repo.Id).
 					Str("repository", repo.NameWithOwner).
 					Msg("failed to delete dead repo")
+				return err
 			}
-			return
+
+			return nil
 		}
-		log.Fatal().Err(err).Msg("failed to load first page")
+
+		log.Error().
+			Err(err).
+			Int32("id", repo.Id).
+			Str("repository", repo.NameWithOwner).
+			Msg("failed to load first page")
+		return err
 	}
 
-	if pageInfo == nil {
-		log.Fatal().Msg("failed to get pagination info from first page")
-	}
+	timestamps = append(timestamps, page1Timestamps...)
 
 	totalPages := pageInfo.LastPage
 	if totalPages == 0 {
-		totalPages = 1
+		return AggregateAndInsertHistory(db, ctx, timestamps, repo)
 	}
-
-	log.Info().Msgf("total pages: %d", totalPages)
 
 	var wg sync.WaitGroup
 	var mu sync.Mutex
-	timestamps := make([]time.Time, 0)
 
 	pageCh := make(chan int, totalPages)
 	resultCh := make(chan []time.Time, totalPages)
@@ -201,12 +232,13 @@ func FetchStarHistory(db *database.Database, ctx context.Context, dataLoader loa
 		}
 	}
 
+	const maxConcurrentRequests = 80
 	for i := 0; i < maxConcurrentRequests; i++ {
 		wg.Add(1)
 		go worker()
 	}
 
-	for page := 1; page <= totalPages; page++ {
+	for page := 2; page <= totalPages; page++ {
 		pageCh <- page
 	}
 	close(pageCh)
@@ -224,11 +256,16 @@ func FetchStarHistory(db *database.Database, ctx context.Context, dataLoader loa
 	}
 
 	if len(errCh) > 0 {
-		log.Fatal().Err(<-errCh).Msg("error loading star history")
+		err := <-errCh
+		log.Error().
+			Err(err).
+			Int32("id", repo.Id).
+			Str("repository", repo.NameWithOwner).
+			Msg("error loading star history")
+		return err
 	}
 
-	log.Info().Msgf("total timestamps: %d", len(timestamps))
-	AggregateAndInsertHistory(db, ctx, timestamps, repo)
+	return AggregateAndInsertHistory(db, ctx, timestamps, repo)
 }
 
 // normalizeDate normalizes a time.Time to midnight of the same day
@@ -260,7 +297,32 @@ func calculateCumulativeStars(cumulativeCounts *map[time.Time]int, starCounts ma
 }
 
 // TODO: refactor struct to general repo & not missing repo
-func AggregateAndInsertHistory(db *database.Database, ctx context.Context, timestamps []time.Time, repo database.MissingRepo) {
+func AggregateAndInsertHistory(db *database.Database, ctx context.Context, timestamps []time.Time, repo database.MissingRepo) error {
+	if len(timestamps) == 0 {
+		log.Warn().
+			Int32("id", repo.Id).
+			Str("repository", repo.NameWithOwner).
+			Msg("no timestamps found, will mark as DONE")
+
+		err := database.MarkRepoAsDone(db, ctx, repo.Id)
+		if err != nil {
+			log.Error().
+				Err(err).
+				Int32("id", repo.Id).
+				Str("repository", repo.NameWithOwner).
+				Msg("unable to mark repo as DONE")
+			return err
+		}
+
+		return nil
+	}
+
+	log.Info().
+		Int32("id", repo.Id).
+		Str("repository", repo.NameWithOwner).
+		Int("timestamps", len(timestamps)).
+		Msgf("aggregating star history")
+
 	starCounts := make(map[time.Time]int)
 	cumulativeCounts := make(map[time.Time]int)
 
@@ -278,8 +340,18 @@ func AggregateAndInsertHistory(db *database.Database, ctx context.Context, times
 
 	err := database.BatchUpsertStarHistory(db, ctx, inputs)
 	if err != nil {
-		log.Fatal().Err(err).Msgf("failed to upsert star history %s", repo.NameWithOwner)
+		log.Error().
+			Err(err).
+			Int32("id", repo.Id).
+			Str("repository", repo.NameWithOwner).
+			Msgf("failed to upsert star history %s", repo.NameWithOwner)
+		return err
 	}
 
-	log.Info().Msgf("finished upserting star history for repo %s", repo.NameWithOwner)
+	log.Info().
+		Int32("id", repo.Id).
+		Str("repository", repo.NameWithOwner).
+		Msgf("finished upserting star history for repo %s", repo.NameWithOwner)
+
+	return nil
 }

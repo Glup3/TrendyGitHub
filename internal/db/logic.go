@@ -328,6 +328,25 @@ func BatchUpsertStarHistory(db *Database, ctx context.Context, inputs []StarHist
 	return nil
 }
 
+func MarkRepoAsDone(db *Database, ctx context.Context, id repoId) error {
+	sql, args, err := sq.StatementBuilder.PlaceholderFormat(sq.Dollar).
+		Update("repositories").
+		Set("history_missing", false).
+		Where(sq.Eq{"id": id}).
+		ToSql()
+
+	if err != nil {
+		return fmt.Errorf("failed to build SQL: %w", err)
+	}
+
+	_, err = db.pool.Exec(ctx, sql, args...)
+	if err != nil {
+		return fmt.Errorf("failed to update repository: %w", err)
+	}
+
+	return nil
+}
+
 func GetNextMissingHistoryIds(db *Database, ctx context.Context) ([]repoId, error) {
 	sql, args, err := sq.StatementBuilder.PlaceholderFormat(sq.Dollar).
 		Select("id").
