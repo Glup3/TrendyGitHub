@@ -52,6 +52,11 @@ type PresentRepo struct {
 	Id            repoId
 }
 
+type LanguageInput struct {
+	Id       string
+	Hexcolor string
+}
+
 const batchSize = 10_000
 
 func LoadSettings(db *Database, ctx context.Context) (Settings, error) {
@@ -479,6 +484,37 @@ func DeleteRepository(db *Database, ctx context.Context, id repoId) error {
 		ToSql()
 	if err != nil {
 		return err
+	}
+
+	_, err = db.pool.Exec(ctx, sql, args...)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func UpsertLanguages(db *Database, ctx context.Context, languages []LanguageInput) error {
+	if len(languages) == 0 {
+		return nil
+	}
+
+	upsertBuilder := sq.Insert("languages").Columns("id", "hexcolor")
+
+	for _, lang := range languages {
+		upsertBuilder = upsertBuilder.Values(lang.Id, lang.Hexcolor)
+	}
+
+	sql, args, err := upsertBuilder.
+		Suffix(`
+			ON CONFLICT (id)
+			DO UPDATE SET hexcolor = EXCLUDED.hexcolor
+		`).
+		Suffix("RETURNING id").
+		PlaceholderFormat(sq.Dollar).
+		ToSql()
+	if err != nil {
+		return fmt.Errorf("error building SQL: %v", err)
 	}
 
 	_, err = db.pool.Exec(ctx, sql, args...)

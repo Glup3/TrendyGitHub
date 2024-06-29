@@ -361,11 +361,18 @@ func (v *GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdge
 type GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryLanguagesLanguageConnectionEdgesLanguageEdgeNodeLanguage struct {
 	// The name of the current language.
 	Name string `json:"name"`
+	// The color defined for the current language.
+	Color string `json:"color"`
 }
 
 // GetName returns GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryLanguagesLanguageConnectionEdgesLanguageEdgeNodeLanguage.Name, and is useful for accessing the field via an interface.
 func (v *GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryLanguagesLanguageConnectionEdgesLanguageEdgeNodeLanguage) GetName() string {
 	return v.Name
+}
+
+// GetColor returns GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryLanguagesLanguageConnectionEdgesLanguageEdgeNodeLanguage.Color, and is useful for accessing the field via an interface.
+func (v *GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryLanguagesLanguageConnectionEdgesLanguageEdgeNodeLanguage) GetColor() string {
+	return v.Color
 }
 
 // GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryPrimaryLanguage includes the requested fields of the GraphQL type Language.
@@ -6794,6 +6801,7 @@ query GetPublicRepos ($query: String!, $limit: Int!, $cursor: String!) {
 						edges {
 							node {
 								name
+								color
 							}
 						}
 					}

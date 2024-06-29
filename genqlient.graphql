@@ -30,6 +30,7 @@ query GetPublicRepos($query: String!, $limit: Int!, $cursor: String!) {
             edges {
               node {
                 name
+                color
               }
             }
           }

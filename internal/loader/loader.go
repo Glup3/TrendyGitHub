@@ -2,13 +2,18 @@ package loader
 
 import "time"
 
+type Language struct {
+	Name  string
+	Color string
+}
+
 type GitHubRepo struct {
 	Id              string
 	Description     string
 	Name            string
 	NameWithOwner   string
 	PrimaryLanguage string
-	Languages       []string
+	Languages       []Language
 	StarCount       int
 	ForkCount       int
 }

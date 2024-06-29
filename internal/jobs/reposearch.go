@@ -83,6 +83,23 @@ func SearchRepositories(db *database.Database, ctx context.Context, githubToken 
 			log.Error().Err(err).Msg("upserting failed - aborting")
 		}
 
+		var languageInputs []database.LanguageInput
+		languageMap := make(map[string]database.LanguageInput)
+
+		for _, repo := range repos {
+			for _, lang := range config.MapToLanguageInput(repo.Languages) {
+				if _, exists := languageMap[lang.Id]; !exists {
+					languageInputs = append(languageInputs, lang)
+					languageMap[lang.Id] = lang
+				}
+			}
+		}
+		if err = database.UpsertLanguages(db, ctx, languageInputs); err != nil {
+			log.Warn().
+				Err(err).
+				Msg("ignore upsert language errors")
+		}
+
 		if rateLimited {
 			log.Info().Msgf("got rate limited - waiting %d seconds", settings.TimeoutSecondsExceeded)
 			time.Sleep(time.Duration(settings.TimeoutSecondsExceeded) * time.Second)

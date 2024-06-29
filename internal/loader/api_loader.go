@@ -45,7 +45,7 @@ func (l *APILoader) LoadRepos(maxStarCount int, cursor string) ([]GitHubRepo, *P
 			NameWithOwner:   repo.NameWithOwner,
 			StarCount:       repo.StargazerCount,
 			ForkCount:       repo.ForkCount,
-			PrimaryLanguage: repo.PrimaryLanguage.Name,
+			PrimaryLanguage: defaultLanguage(repo.PrimaryLanguage.Name),
 			Description:     repo.Description,
 			Languages:       mapLanguages(repo.Languages.Edges),
 		}
@@ -59,12 +59,19 @@ func (l *APILoader) LoadRepos(maxStarCount int, cursor string) ([]GitHubRepo, *P
 	return repos, pageInfo, nil
 }
 
-func mapLanguages(edges []generated.GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryLanguagesLanguageConnectionEdgesLanguageEdge) []string {
-	languages := []string{}
+func defaultLanguage(language string) string {
+	if len(language) > 0 {
+		return language
+	}
+	return "Unknown"
+}
+
+func mapLanguages(edges []generated.GetPublicReposSearchSearchResultItemConnectionEdgesSearchResultItemEdgeNodeRepositoryLanguagesLanguageConnectionEdgesLanguageEdge) []Language {
+	languages := []Language{}
 
 	for _, edge := range edges {
 		if len(edge.Node.Name) > 0 {
-			languages = append(languages, edge.Node.Name)
+			languages = append(languages, Language{edge.Node.Name, edge.Node.Color})
 		}
 	}
 
