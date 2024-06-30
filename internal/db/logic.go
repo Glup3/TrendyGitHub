@@ -407,7 +407,7 @@ func GetNextMissingHistoryRepo(db *Database, ctx context.Context, maxStarCount i
 }
 
 func RefreshHistoryView(db *Database, ctx context.Context, viewName string) error {
-	sqlStr := fmt.Sprintf("REFRESH MATERIALIZED VIEW %s", pgx.Identifier{viewName}.Sanitize())
+	sqlStr := fmt.Sprintf("REFRESH MATERIALIZED VIEW CONCURRENTLY %s", pgx.Identifier{viewName}.Sanitize())
 
 	_, err := db.pool.Exec(ctx, sqlStr)
 	if err != nil {
