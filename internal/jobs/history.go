@@ -49,9 +49,8 @@ func RepairHistory(db *database.Database, ctx context.Context, githubToken strin
 			if err != nil {
 				log.Fatal().
 					Err(err).
-					Str("repository", repo.NameWithOwner).
-					Str("githubId", repo.GithubId).
 					Int32("id", repo.Id).
+					Str("repository", repo.NameWithOwner).
 					Str("cursor", cursor).
 					Msg("aborting loading star history")
 			}

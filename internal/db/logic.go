@@ -301,7 +301,8 @@ func BatchUpsertStarHistory(db *Database, ctx context.Context, inputs []StarHist
 			Suffix(`
         ON CONFLICT (repository_id, created_at)
         DO UPDATE SET
-        star_count = EXCLUDED.star_count
+        star_count = EXCLUDED.star_count,
+        created_at = EXCLUDED.created_at
       `).
 			ToSql()
 		if err != nil {

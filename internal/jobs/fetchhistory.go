@@ -128,13 +128,11 @@ func FetchHistory(db *database.Database, ctx context.Context, githubToken string
 
 					break
 				} else {
-					log.Error().
+					log.Fatal().
 						Err(err).
 						Int32("id", repo.Id).
 						Str("repository", repo.NameWithOwner).
-						Msg("aborting loading star history!")
-
-					break
+						Msg("aborting loading star history GraphQL")
 				}
 			}
 
