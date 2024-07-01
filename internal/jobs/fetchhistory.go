@@ -44,7 +44,11 @@ func FetchHistoryUnder40kStars(db *database.Database, ctx context.Context, githu
 
 		repo, err := database.GetNextMissingHistoryRepo(db, ctx, maxStarCount, true)
 		if err != nil {
-			log.Error().Err(err).Msg("failed fetching next missing repo")
+			log.Warn().
+				Err(err).
+				Int("maxStarCount", maxStarCount).
+				Int("remainingLimit", rateLimit.Rate.Remaining).
+				Msg("failed fetching next missing repo REST")
 			break
 		}
 
@@ -92,7 +96,11 @@ func FetchHistory(db *database.Database, ctx context.Context, githubToken string
 		maxStarCount := rateLimit.Remaining * 100
 		repo, err := database.GetNextMissingHistoryRepo(db, ctx, maxStarCount, false)
 		if err != nil {
-			log.Error().Err(err).Msg("failed fetching next missing repo")
+			log.Warn().
+				Err(err).
+				Int("maxStarCount", maxStarCount).
+				Int("remainingLimit", rateLimit.Remaining).
+				Msg("failed fetching next missing repo GraphQL")
 			break
 		}
 
