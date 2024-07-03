@@ -40,19 +40,6 @@ func NewRepoJob(ctx context.Context, db *database.Database, dataLoader *lo.Loade
 func (j *RepoJob) Search(db *database.Database, ctx context.Context) {
 	unitCount := 0
 
-	defer func() {
-		log.Info().Msg("creating snapshot and resetting")
-
-		rows, err := database.CreateSnapshotAndReset(db, ctx, 1)
-		if err != nil {
-			log.Fatal().Err(err).Msg("failed updating snapshot")
-		}
-
-		log.Info().Msgf("created snapshot for %d repositories", rows)
-
-		RefreshViews(db, ctx)
-	}()
-
 	for {
 		settings, err := database.LoadSettings(db, ctx)
 		if err != nil {

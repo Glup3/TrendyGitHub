@@ -71,7 +71,7 @@ func (r *RepoRepository) UpsertMany(repos []RepoInput) error {
 		ToSql()
 
 	if err != nil {
-		return fmt.Errorf("error building SQL: %v", err)
+		return fmt.Errorf("error building SQL: %w", err)
 	}
 
 	_, err = r.db.Pool.Exec(r.ctx, sql, args...)

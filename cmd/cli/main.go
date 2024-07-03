@@ -41,21 +41,31 @@ func main() {
 	var loader lo.Loader
 	loader = lo.NewAPILoader(ctx, configs.GitHubToken)
 	searchJob := jobs.NewRepoJob(ctx, db, &loader)
+	historyJob := jobs.NewHistoryJob(ctx, db, &loader)
 
 	mode := os.Args[1]
 	switch mode {
 	case "search":
 		searchJob.Search(db, ctx)
+
 	case "history-40k":
 		jobs.FetchHistoryUnder40kStars(db, ctx, configs.GitHubToken)
+
 	case "history":
 		jobs.FetchHistory(db, ctx, configs.GitHubToken)
+
 	case "repair":
 		date, err := time.Parse(time.DateOnly, "2024-06-05")
 		if err != nil {
 			log.Fatal().Err(err).Msg("formatting date failed")
 		}
 		jobs.RepairHistory(db, ctx, configs.GitHubToken, date)
+
+	case "refresh":
+		historyJob.CreateSnapshot()
+		// TODO: reset max star count
+		historyJob.RefreshViews()
+
 	default:
 		log.Fatal().Msgf("Invalid mode: %s. Use 'search' or 'history' or 'history-40k'", mode)
 	}

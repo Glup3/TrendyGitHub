@@ -71,10 +71,7 @@ func FetchHistoryUnder40kStars(db *database.Database, ctx context.Context, githu
 		updatedCount++
 	}
 
-	if updatedCount > 0 {
-		RefreshViews(db, ctx)
-		log.Info().Int("count", updatedCount).Msg("REST: done fetching missing star histories")
-	}
+	log.Info().Int("count", updatedCount).Msg("REST: done fetching missing star histories")
 }
 
 func FetchHistory(db *database.Database, ctx context.Context, githubToken string) {
@@ -174,10 +171,7 @@ func FetchHistory(db *database.Database, ctx context.Context, githubToken string
 		updatedCount++
 	}
 
-	if updatedCount > 0 {
-		RefreshViews(db, ctx)
-		log.Info().Int("count", updatedCount).Msg("GraphQL: done fetching missing star histories")
-	}
+	log.Info().Int("count", updatedCount).Msg("GraphQL: done fetching missing star histories")
 }
 
 func FetchStarHistory(db *database.Database, ctx context.Context, dataLoader loader.Loader, repo database.MissingRepo) error {

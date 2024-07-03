@@ -110,7 +110,5 @@ func RepairHistory(db *database.Database, ctx context.Context, githubToken strin
 		log.Info().Msgf("finished upserting star history for repo %s", repo.NameWithOwner)
 	}
 
-	RefreshViews(db, ctx)
-
 	log.Info().Msg("done repairing history")
 }
