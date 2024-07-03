@@ -12,27 +12,6 @@ import (
 
 type repoId = int32
 
-type Settings struct {
-	ID                     int
-	CurrentMaxStarCount    int
-	MinStarCount           int
-	TimeoutSecondsPrevent  int
-	TimeoutSecondsExceeded int
-	TimeoutMaxUnits        int
-	IsEnabled              bool
-}
-
-type RepoInput struct {
-	GithubId        string
-	Name            string
-	NameWithOwner   string
-	PrimaryLanguage string
-	Description     string
-	Languages       []string
-	StarCount       int
-	ForkCount       int
-}
-
 type StarHistoryInput struct {
 	CreatedAt time.Time
 	StarCount int
@@ -52,74 +31,7 @@ type PresentRepo struct {
 	Id            repoId
 }
 
-type LanguageInput struct {
-	Id       string
-	Hexcolor string
-}
-
 const batchSize = 10_000
-
-func LoadSettings(db *Database, ctx context.Context) (Settings, error) {
-	var settings Settings
-
-	selectBuilder := sq.StatementBuilder.
-		PlaceholderFormat(sq.Dollar).
-		Select(
-			"id",
-			"current_max_star_count",
-			"min_star_count",
-			"timeout_seconds_prevent",
-			"timeout_seconds_exceeded",
-			"timeout_max_units",
-			"enabled",
-		).
-		From("settings").
-		Limit(1)
-
-	sql, args, err := selectBuilder.ToSql()
-	if err != nil {
-		return settings, fmt.Errorf("error building SQL: %v", err)
-	}
-
-	err = db.Pool.QueryRow(ctx, sql, args...).
-		Scan(
-			&settings.ID,
-			&settings.CurrentMaxStarCount,
-			&settings.MinStarCount,
-			&settings.TimeoutSecondsPrevent,
-			&settings.TimeoutSecondsExceeded,
-			&settings.TimeoutMaxUnits,
-			&settings.IsEnabled,
-		)
-	if err != nil {
-		return settings, fmt.Errorf("error loading settings: %v", err)
-	}
-
-	return settings, nil
-}
-
-func UpdateCurrentMaxStarCount(db *Database, ctx context.Context, settingsID int, newMaxStarCount int) error {
-	updateBuilder := sq.StatementBuilder.PlaceholderFormat(sq.Dollar).
-		Update("settings").
-		Set("current_max_star_count", newMaxStarCount).
-		Where(sq.Eq{"id": settingsID})
-
-	sql, args, err := updateBuilder.ToSql()
-	if err != nil {
-		return fmt.Errorf("error building SQL: %v", err)
-	}
-
-	commandTag, err := db.Pool.Exec(ctx, sql, args...)
-	if err != nil {
-		return fmt.Errorf("error updating current max star count in SQL: %v", err)
-	}
-
-	if commandTag.RowsAffected() == 0 {
-		return fmt.Errorf("no rows were updated")
-	}
-
-	return nil
-}
 
 func resetMaxStarCount(tx pgx.Tx, ctx context.Context, settingsId int) error {
 	sql, args, err := sq.StatementBuilder.PlaceholderFormat(sq.Dollar).
@@ -357,37 +269,6 @@ func DeleteRepository(db *Database, ctx context.Context, id repoId) error {
 		ToSql()
 	if err != nil {
 		return err
-	}
-
-	_, err = db.Pool.Exec(ctx, sql, args...)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func UpsertLanguages(db *Database, ctx context.Context, languages []LanguageInput) error {
-	if len(languages) == 0 {
-		return nil
-	}
-
-	upsertBuilder := sq.Insert("languages").Columns("id", "hexcolor")
-
-	for _, lang := range languages {
-		upsertBuilder = upsertBuilder.Values(lang.Id, lang.Hexcolor)
-	}
-
-	sql, args, err := upsertBuilder.
-		Suffix(`
-			ON CONFLICT (id)
-			DO UPDATE SET hexcolor = EXCLUDED.hexcolor
-		`).
-		Suffix("RETURNING id").
-		PlaceholderFormat(sq.Dollar).
-		ToSql()
-	if err != nil {
-		return fmt.Errorf("error building SQL: %v", err)
 	}
 
 	_, err = db.Pool.Exec(ctx, sql, args...)

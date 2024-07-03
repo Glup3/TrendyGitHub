@@ -26,28 +26,30 @@ var pagination_100_based_cursors = [...]string{
 }
 
 type RepoJob struct {
-	loader         *lo.Loader
-	repoRepository *repository.RepoRepository
+	loader             *lo.Loader
+	repoRepository     *repository.RepoRepository
+	settingsRepository *repository.SettingsRepository
 }
 
 func NewRepoJob(ctx context.Context, db *database.Database, dataLoader *lo.Loader) *RepoJob {
 	return &RepoJob{
-		loader:         dataLoader,
-		repoRepository: repository.NewRepoRepository(ctx, db),
+		loader:             dataLoader,
+		repoRepository:     repository.NewRepoRepository(ctx, db),
+		settingsRepository: repository.NewSettingsRepository(ctx, db),
 	}
 }
 
-func (j *RepoJob) Search(db *database.Database, ctx context.Context) {
+func (job *RepoJob) Search() {
 	unitCount := 0
 
 	for {
-		settings, err := database.LoadSettings(db, ctx)
+		settings, err := job.settingsRepository.Load()
 		if err != nil {
-			log.Fatal().Err(err).Msgf("error loading settings - aborting")
+			log.Fatal().Err(err).Msgf("failed loading settings")
 		}
 
 		if !settings.IsEnabled {
-			log.Info().Msg("repository crawling is disabled - aborting")
+			log.Info().Msg("repository crawling is disabled")
 			break
 		}
 
@@ -65,7 +67,7 @@ func (j *RepoJob) Search(db *database.Database, ctx context.Context) {
 		log.Info().Msgf("started fetching stars >= %d", settings.CurrentMaxStarCount)
 
 		rateLimited := false
-		repos, pageInfo, err := (*j.loader).LoadMultipleRepos(settings.CurrentMaxStarCount, pagination_100_based_cursors[:])
+		repos, pageInfo, err := (*job.loader).LoadMultipleRepos(settings.CurrentMaxStarCount, pagination_100_based_cursors[:])
 		if err != nil {
 			if strings.Contains(err.Error(), "secondary") {
 				rateLimited = true
@@ -77,27 +79,14 @@ func (j *RepoJob) Search(db *database.Database, ctx context.Context) {
 		unitCount += pageInfo.UnitCosts
 
 		inputs := config.MapGitHubReposToInputs(repos)
-		err = j.repoRepository.UpsertMany(inputs)
-		// _, err = database.UpsertRepositories(db, ctx, inputs)
+		err = job.repoRepository.UpsertMany(inputs)
 		if err != nil {
 			log.Error().Err(err).Msg("upserting failed - aborting")
 		}
 
-		var languageInputs []database.LanguageInput
-		languageMap := make(map[string]database.LanguageInput)
-
-		for _, repo := range repos {
-			for _, lang := range config.MapToLanguageInput(repo.Languages) {
-				if _, exists := languageMap[lang.Id]; !exists {
-					languageInputs = append(languageInputs, lang)
-					languageMap[lang.Id] = lang
-				}
-			}
-		}
-		if err = database.UpsertLanguages(db, ctx, languageInputs); err != nil {
-			log.Warn().
-				Err(err).
-				Msg("ignore upsert language errors")
+		err = job.repoRepository.UpsertLanguages(mapUniqueLanguages(repos))
+		if err != nil {
+			log.Warn().Err(err).Msg("ignore upsert language errors")
 		}
 
 		if rateLimited {
@@ -112,11 +101,27 @@ func (j *RepoJob) Search(db *database.Database, ctx context.Context) {
 			break
 		}
 
-		err = database.UpdateCurrentMaxStarCount(db, ctx, settings.ID, pageInfo.NextMaxStarCount)
+		err = job.settingsRepository.UpdateStarCountCursor(pageInfo.NextMaxStarCount, settings.ID)
 		if err != nil {
 			log.Fatal().Err(err).Msg("updating max star count failed")
 		}
 	}
 
 	log.Info().Msg("done fetching repositories")
+}
+
+func mapUniqueLanguages(repos []lo.GitHubRepo) []repository.LanguageInput {
+	var languageInputs []repository.LanguageInput
+	languageMap := make(map[string]repository.LanguageInput)
+
+	for _, repo := range repos {
+		for _, lang := range config.MapToLanguageInput(repo.Languages) {
+			if _, exists := languageMap[lang.Id]; !exists {
+				languageInputs = append(languageInputs, lang)
+				languageMap[lang.Id] = lang
+			}
+		}
+	}
+
+	return languageInputs
 }

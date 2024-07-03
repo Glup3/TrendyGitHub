@@ -24,6 +24,11 @@ type RepoInput struct {
 	ForkCount       int
 }
 
+type LanguageInput struct {
+	Id       string
+	Hexcolor string
+}
+
 func NewRepoRepository(ctx context.Context, db *db.Database) *RepoRepository {
 	return &RepoRepository{
 		db:  db,
@@ -70,6 +75,36 @@ func (r *RepoRepository) UpsertMany(repos []RepoInput) error {
 		PlaceholderFormat(sq.Dollar).
 		ToSql()
 
+	if err != nil {
+		return fmt.Errorf("error building SQL: %w", err)
+	}
+
+	_, err = r.db.Pool.Exec(r.ctx, sql, args...)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *RepoRepository) UpsertLanguages(languages []LanguageInput) error {
+	if len(languages) == 0 {
+		return nil
+	}
+
+	query := sq.Insert("languages").Columns("id", "hexcolor")
+
+	for _, lang := range languages {
+		query = query.Values(lang.Id, lang.Hexcolor)
+	}
+
+	sql, args, err := query.
+		Suffix(`
+			ON CONFLICT (id)
+			DO UPDATE SET hexcolor = EXCLUDED.hexcolor
+		`).
+		PlaceholderFormat(sq.Dollar).
+		ToSql()
 	if err != nil {
 		return fmt.Errorf("error building SQL: %w", err)
 	}

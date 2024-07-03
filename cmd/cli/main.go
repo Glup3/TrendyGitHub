@@ -46,7 +46,7 @@ func main() {
 	mode := os.Args[1]
 	switch mode {
 	case "search":
-		searchJob.Search(db, ctx)
+		searchJob.Search()
 
 	case "history-40k":
 		jobs.FetchHistoryUnder40kStars(db, ctx, configs.GitHubToken)
