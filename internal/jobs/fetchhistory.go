@@ -180,7 +180,7 @@ func FetchHistory(db *database.Database, ctx context.Context, githubToken string
 	}
 }
 
-func FetchStarHistory(db *database.Database, ctx context.Context, dataLoader loader.DataLoader, repo database.MissingRepo) error {
+func FetchStarHistory(db *database.Database, ctx context.Context, dataLoader loader.Loader, repo database.MissingRepo) error {
 	timestamps := make([]time.Time, 0)
 
 	page1Timestamps, pageInfo, err := dataLoader.LoadRepoStarHistoryPage(repo.NameWithOwner, 1)

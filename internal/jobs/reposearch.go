@@ -7,7 +7,7 @@ import (
 
 	config "github.com/glup3/TrendyGitHub/internal"
 	database "github.com/glup3/TrendyGitHub/internal/db"
-	"github.com/glup3/TrendyGitHub/internal/loader"
+	lo "github.com/glup3/TrendyGitHub/internal/loader"
 	"github.com/glup3/TrendyGitHub/internal/repository"
 	"github.com/rs/zerolog/log"
 )
@@ -26,17 +26,18 @@ var pagination_100_based_cursors = [...]string{
 }
 
 type RepoJob struct {
+	loader         *lo.Loader
 	repoRepository *repository.RepoRepository
 }
 
-func NewRepoJob(ctx context.Context, db *database.Database) *RepoJob {
+func NewRepoJob(ctx context.Context, db *database.Database, dataLoader *lo.Loader) *RepoJob {
 	return &RepoJob{
+		loader:         dataLoader,
 		repoRepository: repository.NewRepoRepository(ctx, db),
 	}
 }
 
-func (j *RepoJob) Search(db *database.Database, ctx context.Context, githubToken string) {
-	dataLoader := loader.NewAPILoader(ctx, githubToken)
+func (j *RepoJob) Search(db *database.Database, ctx context.Context) {
 	unitCount := 0
 
 	defer func() {
@@ -77,7 +78,7 @@ func (j *RepoJob) Search(db *database.Database, ctx context.Context, githubToken
 		log.Info().Msgf("started fetching stars >= %d", settings.CurrentMaxStarCount)
 
 		rateLimited := false
-		repos, pageInfo, err := dataLoader.LoadMultipleRepos(settings.CurrentMaxStarCount, pagination_100_based_cursors[:])
+		repos, pageInfo, err := (*j.loader).LoadMultipleRepos(settings.CurrentMaxStarCount, pagination_100_based_cursors[:])
 		if err != nil {
 			if strings.Contains(err.Error(), "secondary") {
 				rateLimited = true

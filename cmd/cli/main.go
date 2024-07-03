@@ -8,6 +8,7 @@ import (
 	config "github.com/glup3/TrendyGitHub/internal"
 	database "github.com/glup3/TrendyGitHub/internal/db"
 	"github.com/glup3/TrendyGitHub/internal/jobs"
+	lo "github.com/glup3/TrendyGitHub/internal/loader"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
@@ -37,12 +38,14 @@ func main() {
 		log.Fatal().Err(err).Msg("unable to ping database")
 	}
 
-	searchJob := jobs.NewRepoJob(ctx, db)
+	var loader lo.Loader
+	loader = lo.NewAPILoader(ctx, configs.GitHubToken)
+	searchJob := jobs.NewRepoJob(ctx, db, &loader)
 
 	mode := os.Args[1]
 	switch mode {
 	case "search":
-		searchJob.Search(db, ctx, configs.GitHubToken)
+		searchJob.Search(db, ctx)
 	case "history-40k":
 		jobs.FetchHistoryUnder40kStars(db, ctx, configs.GitHubToken)
 	case "history":
