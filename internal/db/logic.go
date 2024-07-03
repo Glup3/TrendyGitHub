@@ -81,7 +81,7 @@ func LoadSettings(db *Database, ctx context.Context) (Settings, error) {
 		return settings, fmt.Errorf("error building SQL: %v", err)
 	}
 
-	err = db.pool.QueryRow(ctx, sql, args...).
+	err = db.Pool.QueryRow(ctx, sql, args...).
 		Scan(
 			&settings.ID,
 			&settings.CurrentMaxStarCount,
@@ -98,62 +98,6 @@ func LoadSettings(db *Database, ctx context.Context) (Settings, error) {
 	return settings, nil
 }
 
-func UpsertRepositories(db *Database, ctx context.Context, repos []RepoInput) ([]repoId, error) {
-	upsertBuilder := sq.Insert("repositories").
-		Columns(
-			"github_id",
-			"name",
-			"name_with_owner",
-			"star_count",
-			"fork_count",
-			"languages",
-			"primary_language",
-			"description",
-		)
-
-	for _, repo := range repos {
-		upsertBuilder = upsertBuilder.Values(
-			repo.GithubId,
-			repo.Name,
-			repo.NameWithOwner,
-			repo.StarCount,
-			repo.ForkCount,
-			repo.Languages,
-			repo.PrimaryLanguage,
-			repo.Description,
-		)
-	}
-
-	sql, args, err := upsertBuilder.
-		Suffix(`
-			ON CONFLICT (github_id)
-			DO UPDATE SET
-				star_count = EXCLUDED.star_count,
-				fork_count = EXCLUDED.fork_count,
-        primary_language = EXCLUDED.primary_language,
-				languages = EXCLUDED.languages,
-        description = EXCLUDED.description
-		`).
-		Suffix("RETURNING id").
-		PlaceholderFormat(sq.Dollar).
-		ToSql()
-	if err != nil {
-		return nil, fmt.Errorf("error building SQL: %v", err)
-	}
-
-	rows, err := db.pool.Query(ctx, sql, args...)
-	if err != nil {
-		return nil, err
-	}
-
-	ids, err := pgx.CollectRows(rows, pgx.RowTo[repoId])
-	if err != nil {
-		return nil, err
-	}
-
-	return ids, nil
-}
-
 func UpdateCurrentMaxStarCount(db *Database, ctx context.Context, settingsID int, newMaxStarCount int) error {
 	updateBuilder := sq.StatementBuilder.PlaceholderFormat(sq.Dollar).
 		Update("settings").
@@ -165,7 +109,7 @@ func UpdateCurrentMaxStarCount(db *Database, ctx context.Context, settingsID int
 		return fmt.Errorf("error building SQL: %v", err)
 	}
 
-	commandTag, err := db.pool.Exec(ctx, sql, args...)
+	commandTag, err := db.Pool.Exec(ctx, sql, args...)
 	if err != nil {
 		return fmt.Errorf("error updating current max star count in SQL: %v", err)
 	}
@@ -218,7 +162,7 @@ func resetMaxStarCount(tx pgx.Tx, ctx context.Context, settingsId int) error {
 }
 
 func CreateSnapshotAndReset(db *Database, ctx context.Context, settingsId int) (int64, error) {
-	tx, err := db.pool.Begin(ctx)
+	tx, err := db.Pool.Begin(ctx)
 	if err != nil {
 		return 0, fmt.Errorf("failed to begin transaction: %v", err)
 	}
@@ -269,7 +213,7 @@ func GetGitHubId(db *Database, ctx context.Context, id repoId) (string, error) {
 		log.Fatal(err)
 	}
 
-	err = db.pool.QueryRow(ctx, sql, args...).Scan(&githubId)
+	err = db.Pool.QueryRow(ctx, sql, args...).Scan(&githubId)
 	if err != nil {
 		return githubId, err
 	}
@@ -278,7 +222,7 @@ func GetGitHubId(db *Database, ctx context.Context, id repoId) (string, error) {
 }
 
 func BatchUpsertStarHistory(db *Database, ctx context.Context, inputs []StarHistoryInput) error {
-	tx, err := db.pool.Begin(ctx)
+	tx, err := db.Pool.Begin(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to begin transaction: %w", err)
 	}
@@ -345,7 +289,7 @@ func MarkRepoAsDone(db *Database, ctx context.Context, id repoId) error {
 		return fmt.Errorf("failed to build SQL: %w", err)
 	}
 
-	_, err = db.pool.Exec(ctx, sql, args...)
+	_, err = db.Pool.Exec(ctx, sql, args...)
 	if err != nil {
 		return fmt.Errorf("failed to update repository: %w", err)
 	}
@@ -365,7 +309,7 @@ func GetNextMissingHistoryIds(db *Database, ctx context.Context) ([]repoId, erro
 		return nil, err
 	}
 
-	rows, err := db.pool.Query(ctx, sql, args...)
+	rows, err := db.Pool.Query(ctx, sql, args...)
 	if err != nil {
 		return nil, err
 	}
@@ -398,7 +342,7 @@ func GetNextMissingHistoryRepo(db *Database, ctx context.Context, maxStarCount i
 		return repo, err
 	}
 
-	err = db.pool.QueryRow(ctx, sql, args...).Scan(&repo.Id, &repo.GithubId, &repo.StarCount, &repo.NameWithOwner)
+	err = db.Pool.QueryRow(ctx, sql, args...).Scan(&repo.Id, &repo.GithubId, &repo.StarCount, &repo.NameWithOwner)
 	if err != nil {
 		return repo, err
 	}
@@ -409,7 +353,7 @@ func GetNextMissingHistoryRepo(db *Database, ctx context.Context, maxStarCount i
 func RefreshHistoryView(db *Database, ctx context.Context, viewName string) error {
 	sqlStr := fmt.Sprintf("REFRESH MATERIALIZED VIEW CONCURRENTLY %s", pgx.Identifier{viewName}.Sanitize())
 
-	_, err := db.pool.Exec(ctx, sqlStr)
+	_, err := db.Pool.Exec(ctx, sqlStr)
 	if err != nil {
 		return err
 	}
@@ -421,7 +365,7 @@ func GetTotalRepoCount(db *Database, ctx context.Context) (int, error) {
 	var count int
 	sql, args, err := sq.Select("count(*)").From("repositories").ToSql()
 
-	err = db.pool.QueryRow(ctx, sql, args...).Scan(&count)
+	err = db.Pool.QueryRow(ctx, sql, args...).Scan(&count)
 	if err != nil {
 		return 0, err
 	}
@@ -442,7 +386,7 @@ func GetAllPresentHistoryRepos(db *Database, ctx context.Context) ([]PresentRepo
 		return nil, err
 	}
 
-	rows, err := db.pool.Query(ctx, sql, args...)
+	rows, err := db.Pool.Query(ctx, sql, args...)
 	if err != nil {
 		return nil, err
 	}
@@ -474,7 +418,7 @@ func DeleteRepository(db *Database, ctx context.Context, id repoId) error {
 		return err
 	}
 
-	_, err = db.pool.Exec(ctx, sql, args...)
+	_, err = db.Pool.Exec(ctx, sql, args...)
 	if err != nil {
 		return err
 	}
@@ -487,7 +431,7 @@ func DeleteRepository(db *Database, ctx context.Context, id repoId) error {
 		return err
 	}
 
-	_, err = db.pool.Exec(ctx, sql, args...)
+	_, err = db.Pool.Exec(ctx, sql, args...)
 	if err != nil {
 		return err
 	}
@@ -518,7 +462,7 @@ func UpsertLanguages(db *Database, ctx context.Context, languages []LanguageInpu
 		return fmt.Errorf("error building SQL: %v", err)
 	}
 
-	_, err = db.pool.Exec(ctx, sql, args...)
+	_, err = db.Pool.Exec(ctx, sql, args...)
 	if err != nil {
 		return err
 	}

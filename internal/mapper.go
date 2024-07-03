@@ -3,10 +3,11 @@ package config
 import (
 	database "github.com/glup3/TrendyGitHub/internal/db"
 	"github.com/glup3/TrendyGitHub/internal/loader"
+	"github.com/glup3/TrendyGitHub/internal/repository"
 )
 
-func MapGitHubRepoToInput(repo loader.GitHubRepo) database.RepoInput {
-	return database.RepoInput{
+func MapGitHubRepoToInput(repo loader.GitHubRepo) repository.RepoInput {
+	return repository.RepoInput{
 		GithubId:        repo.Id,
 		Name:            repo.Name,
 		NameWithOwner:   repo.NameWithOwner,
@@ -26,8 +27,8 @@ func MapLanguagesToStrings(languages []loader.Language) []string {
 	return s
 }
 
-func MapGitHubReposToInputs(repos []loader.GitHubRepo) []database.RepoInput {
-	inputs := make([]database.RepoInput, len(repos))
+func MapGitHubReposToInputs(repos []loader.GitHubRepo) []repository.RepoInput {
+	inputs := make([]repository.RepoInput, len(repos))
 	for i, repo := range repos {
 		inputs[i] = MapGitHubRepoToInput(repo)
 	}

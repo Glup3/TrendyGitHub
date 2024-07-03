@@ -9,7 +9,7 @@ import (
 )
 
 type Database struct {
-	pool *pgxpool.Pool
+	Pool *pgxpool.Pool
 }
 
 var (
@@ -37,9 +37,9 @@ func NewDatabase(ctx context.Context, connString string) (*Database, error) {
 }
 
 func (db *Database) Ping(ctx context.Context) error {
-	return db.pool.Ping(ctx)
+	return db.Pool.Ping(ctx)
 }
 
 func (db *Database) Close() {
-	db.pool.Close()
+	db.Pool.Close()
 }

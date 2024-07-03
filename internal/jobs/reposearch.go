@@ -8,6 +8,7 @@ import (
 	config "github.com/glup3/TrendyGitHub/internal"
 	database "github.com/glup3/TrendyGitHub/internal/db"
 	"github.com/glup3/TrendyGitHub/internal/loader"
+	"github.com/glup3/TrendyGitHub/internal/repository"
 	"github.com/rs/zerolog/log"
 )
 
@@ -24,7 +25,17 @@ var pagination_100_based_cursors = [...]string{
 	"Y3Vyc29yOjkwMA==",
 }
 
-func SearchRepositories(db *database.Database, ctx context.Context, githubToken string) {
+type RepoJob struct {
+	repoRepository *repository.RepoRepository
+}
+
+func NewRepoJob(ctx context.Context, db *database.Database) *RepoJob {
+	return &RepoJob{
+		repoRepository: repository.NewRepoRepository(ctx, db),
+	}
+}
+
+func (j *RepoJob) Search(db *database.Database, ctx context.Context, githubToken string) {
 	dataLoader := loader.NewAPILoader(ctx, githubToken)
 	unitCount := 0
 
@@ -78,7 +89,8 @@ func SearchRepositories(db *database.Database, ctx context.Context, githubToken 
 		unitCount += pageInfo.UnitCosts
 
 		inputs := config.MapGitHubReposToInputs(repos)
-		_, err = database.UpsertRepositories(db, ctx, inputs)
+		err = j.repoRepository.UpsertMany(inputs)
+		// _, err = database.UpsertRepositories(db, ctx, inputs)
 		if err != nil {
 			log.Error().Err(err).Msg("upserting failed - aborting")
 		}
