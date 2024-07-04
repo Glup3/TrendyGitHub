@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"fmt"
+	"time"
 
 	sq "github.com/Masterminds/squirrel"
 	"github.com/glup3/TrendyGitHub/internal/db"
@@ -14,11 +15,76 @@ type HistoryRepository struct {
 	ctx context.Context
 }
 
-func NewHistoryRepository(db *db.Database, ctx context.Context) *HistoryRepository {
+type StarHistoryInput struct {
+	CreatedAt time.Time
+	StarCount int
+	Id        int
+}
+
+func NewHistoryRepository(ctx context.Context, db *db.Database) *HistoryRepository {
 	return &HistoryRepository{
 		db:  db,
 		ctx: ctx,
 	}
+}
+
+func (r *HistoryRepository) BatchUpsertStarHistory(inputs []StarHistoryInput) error {
+	const batchSize = 10_000
+
+	tx, err := r.db.Pool.Begin(r.ctx)
+	if err != nil {
+		return fmt.Errorf("failed to begin transaction: %w", err)
+	}
+	defer tx.Rollback(r.ctx)
+
+	for start := 0; start < len(inputs); start += batchSize {
+		end := start + batchSize
+		if end > len(inputs) {
+			end = len(inputs)
+		}
+
+		query := sq.Insert("stars_history").Columns("repository_id", "star_count", "created_at")
+
+		for _, input := range inputs[start:end] {
+			query = query.Values(input.Id, input.StarCount, input.CreatedAt)
+		}
+
+		sql, args, err := query.
+			Suffix(`
+        ON CONFLICT (repository_id, created_at)
+        DO UPDATE SET
+        star_count = EXCLUDED.star_count,
+        created_at = EXCLUDED.created_at
+      `).
+			PlaceholderFormat(sq.Dollar).
+			ToSql()
+		if err != nil {
+			return fmt.Errorf("failed to build SQL: %w", err)
+		}
+
+		if _, err := tx.Exec(r.ctx, sql, args...); err != nil {
+			return fmt.Errorf("failed to execute upsert: %w", err)
+		}
+	}
+
+	sql, args, err := sq.StatementBuilder.PlaceholderFormat(sq.Dollar).
+		Update("repositories").
+		Set("history_missing", false).
+		Where(sq.Eq{"id": inputs[0].Id}).
+		ToSql()
+	if err != nil {
+		return fmt.Errorf("failed to build SQL: %w", err)
+	}
+
+	if _, err = tx.Exec(r.ctx, sql, args...); err != nil {
+		return fmt.Errorf("failed to update repository: %w", err)
+	}
+
+	if err := tx.Commit(r.ctx); err != nil {
+		return fmt.Errorf("failed to commit transaction: %w", err)
+	}
+
+	return nil
 }
 
 func (r *HistoryRepository) CreateSnapshot() error {
@@ -56,4 +122,22 @@ func (r *HistoryRepository) RefreshView(view string) error {
 
 	return nil
 
+}
+
+func (r *HistoryRepository) DeleteForRepo(id int) error {
+	sql, args, err := sq.
+		Delete("stars_history").
+		Where(sq.Eq{"repository_id": id}).
+		PlaceholderFormat(sq.Dollar).
+		ToSql()
+	if err != nil {
+		return err
+	}
+
+	_, err = r.db.Pool.Exec(r.ctx, sql, args...)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

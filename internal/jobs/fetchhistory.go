@@ -1,7 +1,6 @@
 package jobs
 
 import (
-	"context"
 	"sort"
 	"strings"
 	"sync"
@@ -9,8 +8,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 
-	database "github.com/glup3/TrendyGitHub/internal/db"
-	"github.com/glup3/TrendyGitHub/internal/loader"
+	"github.com/glup3/TrendyGitHub/internal/repository"
 )
 
 // 100 repositories == 1 Unit
@@ -19,14 +17,13 @@ const (
 )
 
 // GitHub REST API limitation: maximum pagination of 400 pages
-func FetchHistoryUnder40kStars(db *database.Database, ctx context.Context, githubToken string) {
+func (job *HistoryJob) FetchHistoryUnder40kStars() {
 	const maxAPILimitStarCount = 40_000
 	const maxAPILimitPages = 400
-	dataLoader := loader.NewAPILoader(ctx, githubToken)
 	updatedCount := 0
 
 	for {
-		rateLimit, err := dataLoader.GetRateLimitRest()
+		rateLimit, err := (*job.loader).GetRateLimitRest()
 		if err != nil {
 			log.Error().Err(err).Msg("failed fetching rate limit REST")
 			break
@@ -42,7 +39,7 @@ func FetchHistoryUnder40kStars(db *database.Database, ctx context.Context, githu
 			maxStarCount = maxAPILimitStarCount
 		}
 
-		repo, err := database.GetNextMissingHistoryRepo(db, ctx, maxStarCount, true)
+		repo, err := job.repoRepository.FindNextMissing(maxStarCount, repository.OrderAsc)
 		if err != nil {
 			log.Warn().
 				Err(err).
@@ -53,16 +50,17 @@ func FetchHistoryUnder40kStars(db *database.Database, ctx context.Context, githu
 		}
 
 		log.Info().
-			Int32("id", repo.Id).
+			Int("id", repo.Id).
 			Str("repository", repo.NameWithOwner).
 			Str("githubId", repo.GithubId).
 			Int("remainingLimit", rateLimit.Rate.Remaining).
 			Msg("fetching history for repo REST")
 
-		if err = FetchStarHistory(db, ctx, dataLoader, repo); err != nil {
+		err = job.FetchStarHistory(repo)
+		if err != nil {
 			log.Error().
 				Err(err).
-				Int32("id", repo.Id).
+				Int("id", repo.Id).
 				Str("repository", repo.NameWithOwner).
 				Msg("something happend when fetching REST API star history")
 			break
@@ -74,12 +72,11 @@ func FetchHistoryUnder40kStars(db *database.Database, ctx context.Context, githu
 	log.Info().Int("count", updatedCount).Msg("REST: done fetching missing star histories")
 }
 
-func FetchHistory(db *database.Database, ctx context.Context, githubToken string) {
-	dataLoader := loader.NewAPILoader(ctx, githubToken)
+func (job *HistoryJob) FetchHistory() {
 	updatedCount := 0
 
 	for {
-		rateLimit, err := dataLoader.GetRateLimit()
+		rateLimit, err := (*job.loader).GetRateLimit()
 		if err != nil {
 			log.Error().Err(err).Msg("failed fetching rate limit GraphQL")
 			break
@@ -91,7 +88,7 @@ func FetchHistory(db *database.Database, ctx context.Context, githubToken string
 		}
 
 		maxStarCount := rateLimit.Remaining * 100
-		repo, err := database.GetNextMissingHistoryRepo(db, ctx, maxStarCount, false)
+		repo, err := job.repoRepository.FindNextMissing(maxStarCount, repository.OrderDesc)
 		if err != nil {
 			log.Warn().
 				Err(err).
@@ -102,7 +99,7 @@ func FetchHistory(db *database.Database, ctx context.Context, githubToken string
 		}
 
 		log.Info().
-			Int32("id", repo.Id).
+			Int("id", repo.Id).
 			Str("repository", repo.NameWithOwner).
 			Int("remainingLimit", rateLimit.Remaining).
 			Msg("fetching history for repo GraphQL")
@@ -112,21 +109,21 @@ func FetchHistory(db *database.Database, ctx context.Context, githubToken string
 		pageCounter := 0
 
 		for {
-			dates, info, err := dataLoader.LoadRepoStarHistoryDates(repo.GithubId, cursor)
+			dates, info, err := (*job.loader).LoadRepoStarHistoryDates(repo.GithubId, cursor)
 			if err != nil {
 				if strings.Contains(err.Error(), "Could not resolve to a node") ||
 					strings.Contains(err.Error(), "Unavailable For Legal Reasons") {
 					log.Warn().
 						Err(err).
-						Int32("id", repo.Id).
 						Str("repository", repo.NameWithOwner).
-						Msg("skipping repo because it doesn't exist anymore")
+						Int("id", repo.Id).
+						Msg("deleting repo because it doesn't exist anymore")
 
-					err = database.DeleteRepository(db, ctx, repo.Id)
+					err = job.deleteDeadRepo(repo)
 					if err != nil {
 						log.Fatal().
 							Err(err).
-							Int32("id", repo.Id).
+							Int("id", repo.Id).
 							Str("repository", repo.NameWithOwner).
 							Msg("failed to delete dead repo")
 					}
@@ -135,7 +132,7 @@ func FetchHistory(db *database.Database, ctx context.Context, githubToken string
 				} else {
 					log.Fatal().
 						Err(err).
-						Int32("id", repo.Id).
+						Int("id", repo.Id).
 						Str("repository", repo.NameWithOwner).
 						Msg("aborting loading star history GraphQL")
 				}
@@ -147,7 +144,7 @@ func FetchHistory(db *database.Database, ctx context.Context, githubToken string
 
 			if pageCounter%10 == 0 {
 				log.Info().
-					Int32("id", repo.Id).
+					Int("id", repo.Id).
 					Str("repository", repo.NameWithOwner).
 					Int("page", pageCounter).
 					Int("totalPages", info.TotalStars/100).
@@ -159,7 +156,8 @@ func FetchHistory(db *database.Database, ctx context.Context, githubToken string
 			}
 		}
 
-		if err = AggregateAndInsertHistory(db, ctx, totalDates, repo); err != nil {
+		err = job.aggregateAndInsertHistory(totalDates, repo)
+		if err != nil {
 			log.Error().
 				Err(err).
 				Str("githubId", repo.GithubId).
@@ -174,35 +172,23 @@ func FetchHistory(db *database.Database, ctx context.Context, githubToken string
 	log.Info().Int("count", updatedCount).Msg("GraphQL: done fetching missing star histories")
 }
 
-func FetchStarHistory(db *database.Database, ctx context.Context, dataLoader loader.Loader, repo database.MissingRepo) error {
+func (job *HistoryJob) FetchStarHistory(repo repository.Repo) error {
 	timestamps := make([]time.Time, 0)
 
-	page1Timestamps, pageInfo, err := dataLoader.LoadRepoStarHistoryPage(repo.NameWithOwner, 1)
+	page1Timestamps, pageInfo, err := (*job.loader).LoadRepoStarHistoryPage(repo.NameWithOwner, 1)
 	if err != nil {
-		if strings.Contains(err.Error(), "404") ||
-			strings.Contains(err.Error(), "451") {
+		if strings.Contains(err.Error(), "404") || strings.Contains(err.Error(), "451") {
 			log.Warn().
 				Err(err).
 				Str("repository", repo.NameWithOwner).
-				Int32("id", repo.Id).
+				Int("id", repo.Id).
 				Msg("deleting repo because it doesn't exist anymore")
-
-			err = database.DeleteRepository(db, ctx, repo.Id)
-			if err != nil {
-				log.Error().
-					Err(err).
-					Int32("id", repo.Id).
-					Str("repository", repo.NameWithOwner).
-					Msg("failed to delete dead repo")
-				return err
-			}
-
-			return nil
+			return job.deleteDeadRepo(repo)
 		}
 
 		log.Error().
 			Err(err).
-			Int32("id", repo.Id).
+			Int("id", repo.Id).
 			Str("repository", repo.NameWithOwner).
 			Msg("failed to load first page")
 		return err
@@ -212,7 +198,7 @@ func FetchStarHistory(db *database.Database, ctx context.Context, dataLoader loa
 
 	totalPages := pageInfo.LastPage
 	if totalPages == 0 {
-		return AggregateAndInsertHistory(db, ctx, timestamps, repo)
+		return job.aggregateAndInsertHistory(timestamps, repo)
 	}
 
 	var wg sync.WaitGroup
@@ -225,7 +211,7 @@ func FetchStarHistory(db *database.Database, ctx context.Context, dataLoader loa
 	worker := func() {
 		defer wg.Done()
 		for page := range pageCh {
-			pageTimestamps, _, err := dataLoader.LoadRepoStarHistoryPage(repo.NameWithOwner, page)
+			pageTimestamps, _, err := (*job.loader).LoadRepoStarHistoryPage(repo.NameWithOwner, page)
 			if err != nil {
 				errCh <- err
 				return
@@ -261,13 +247,13 @@ func FetchStarHistory(db *database.Database, ctx context.Context, dataLoader loa
 		err := <-errCh
 		log.Error().
 			Err(err).
-			Int32("id", repo.Id).
+			Int("id", repo.Id).
 			Str("repository", repo.NameWithOwner).
 			Msg("error loading star history")
 		return err
 	}
 
-	return AggregateAndInsertHistory(db, ctx, timestamps, repo)
+	return job.aggregateAndInsertHistory(timestamps, repo)
 }
 
 // normalizeDate normalizes a time.Time to midnight of the same day
@@ -298,19 +284,18 @@ func calculateCumulativeStars(cumulativeCounts *map[time.Time]int, starCounts ma
 	}
 }
 
-// TODO: refactor struct to general repo & not missing repo
-func AggregateAndInsertHistory(db *database.Database, ctx context.Context, timestamps []time.Time, repo database.MissingRepo) error {
+func (job *HistoryJob) aggregateAndInsertHistory(timestamps []time.Time, repo repository.Repo) error {
 	if len(timestamps) == 0 {
 		log.Warn().
-			Int32("id", repo.Id).
+			Int("id", repo.Id).
 			Str("repository", repo.NameWithOwner).
 			Msg("no timestamps found, will mark as DONE")
 
-		err := database.MarkRepoAsDone(db, ctx, repo.Id)
+		err := job.repoRepository.MarkAsDone(repo.Id)
 		if err != nil {
 			log.Error().
 				Err(err).
-				Int32("id", repo.Id).
+				Int("id", repo.Id).
 				Str("repository", repo.NameWithOwner).
 				Msg("unable to mark repo as DONE")
 			return err
@@ -320,7 +305,7 @@ func AggregateAndInsertHistory(db *database.Database, ctx context.Context, times
 	}
 
 	log.Info().
-		Int32("id", repo.Id).
+		Int("id", repo.Id).
 		Str("repository", repo.NameWithOwner).
 		Int("timestamps", len(timestamps)).
 		Msgf("aggregating star history")
@@ -331,29 +316,53 @@ func AggregateAndInsertHistory(db *database.Database, ctx context.Context, times
 	countStars(&starCounts, timestamps)
 	calculateCumulativeStars(&cumulativeCounts, starCounts)
 
-	var inputs []database.StarHistoryInput
+	var inputs []repository.StarHistoryInput
 	for key, value := range cumulativeCounts {
-		inputs = append(inputs, database.StarHistoryInput{
+		inputs = append(inputs, repository.StarHistoryInput{
 			Id:        repo.Id,
 			CreatedAt: key,
 			StarCount: value,
 		})
 	}
 
-	err := database.BatchUpsertStarHistory(db, ctx, inputs)
+	err := job.historyRepository.BatchUpsertStarHistory(inputs)
 	if err != nil {
 		log.Error().
 			Err(err).
-			Int32("id", repo.Id).
+			Int("id", repo.Id).
 			Str("repository", repo.NameWithOwner).
 			Msgf("failed to upsert star history %s", repo.NameWithOwner)
 		return err
 	}
 
 	log.Info().
-		Int32("id", repo.Id).
+		Int("id", repo.Id).
 		Str("repository", repo.NameWithOwner).
 		Msgf("finished upserting star history for repo %s", repo.NameWithOwner)
+
+	return nil
+}
+
+func (job *HistoryJob) deleteDeadRepo(repo repository.Repo) error {
+	err := job.historyRepository.DeleteForRepo(repo.Id)
+	if err != nil {
+		log.Error().
+			Err(err).
+			Int("id", repo.Id).
+			Str("repository", repo.NameWithOwner).
+			Msg("failed to delete dead repo star history")
+		return err
+	}
+
+	err = job.repoRepository.Delete(repo.Id)
+	if err != nil {
+		log.Error().
+			Err(err).
+			Int("id", repo.Id).
+			Str("repository", repo.NameWithOwner).
+			Msg("failed to delete dead repo")
+		return err
+	}
 
 	return nil
 }

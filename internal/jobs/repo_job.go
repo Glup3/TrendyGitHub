@@ -110,6 +110,8 @@ func (job *RepoJob) Search() {
 	log.Info().Msg("done fetching repositories")
 }
 
+func (job *RepoJob) ResetStarCountCursor(settingsID int) {}
+
 func mapUniqueLanguages(repos []lo.GitHubRepo) []repository.LanguageInput {
 	var languageInputs []repository.LanguageInput
 	languageMap := make(map[string]repository.LanguageInput)

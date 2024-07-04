@@ -1,7 +1,6 @@
 package config
 
 import (
-	database "github.com/glup3/TrendyGitHub/internal/db"
 	"github.com/glup3/TrendyGitHub/internal/loader"
 	"github.com/glup3/TrendyGitHub/internal/repository"
 )
@@ -35,10 +34,10 @@ func MapGitHubReposToInputs(repos []loader.GitHubRepo) []repository.RepoInput {
 	return inputs
 }
 
-func MapToLanguageInput(languages []loader.Language) []database.LanguageInput {
-	inputs := make([]database.LanguageInput, len(languages))
+func MapToLanguageInput(languages []loader.Language) []repository.LanguageInput {
+	inputs := make([]repository.LanguageInput, len(languages))
 	for i, lang := range languages {
-		inputs[i] = database.LanguageInput{
+		inputs[i] = repository.LanguageInput{
 			Id:       lang.Name,
 			Hexcolor: lang.Color,
 		}

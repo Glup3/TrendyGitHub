@@ -89,3 +89,22 @@ func (r *SettingsRepository) UpdateStarCountCursor(newCount int, settingsID int)
 	return nil
 
 }
+
+func (r *SettingsRepository) ResetStarCountCursor(settingsID int) error {
+	sql, args, err := sq.
+		Update("settings").
+		Set("current_max_star_count", 1_000_000).
+		Where(sq.Eq{"id": settingsID}).
+		PlaceholderFormat(sq.Dollar).
+		ToSql()
+	if err != nil {
+		return err
+	}
+
+	_, err = r.db.Pool.Exec(r.ctx, sql, args...)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

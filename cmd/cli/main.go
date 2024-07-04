@@ -49,21 +49,21 @@ func main() {
 		searchJob.Search()
 
 	case "history-40k":
-		jobs.FetchHistoryUnder40kStars(db, ctx, configs.GitHubToken)
+		historyJob.FetchHistoryUnder40kStars()
 
 	case "history":
-		jobs.FetchHistory(db, ctx, configs.GitHubToken)
+		historyJob.FetchHistory()
 
 	case "repair":
 		date, err := time.Parse(time.DateOnly, "2024-06-05")
 		if err != nil {
 			log.Fatal().Err(err).Msg("formatting date failed")
 		}
-		jobs.RepairHistory(db, ctx, configs.GitHubToken, date)
+		historyJob.RepairHistory(date)
 
 	case "refresh":
 		historyJob.CreateSnapshot()
-		// TODO: reset max star count
+		searchJob.ResetStarCountCursor(1)
 		historyJob.RefreshViews()
 
 	default:
