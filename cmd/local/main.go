@@ -26,25 +26,4 @@ func main() {
 	if err != nil {
 		log.Fatalf("Unable to ping database: %v", err)
 	}
-
-	var errors []error
-
-	err = database.RefreshHistoryView(db, ctx, "mv_daily_stars")
-	if err != nil {
-		errors = append(errors, err)
-	}
-
-	err = database.RefreshHistoryView(db, ctx, "mv_weekly_stars")
-	if err != nil {
-		errors = append(errors, err)
-	}
-
-	err = database.RefreshHistoryView(db, ctx, "mv_monthly_stars")
-	if err != nil {
-		errors = append(errors, err)
-	}
-
-	if len(errors) > 0 {
-		log.Println(errors)
-	}
 }
