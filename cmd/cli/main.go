@@ -49,7 +49,6 @@ func main() {
 		repoJob.Search()
 		historyJob.CreateSnapshot()
 		repoJob.ResetStarCountCursor(1)
-		historyJob.RefreshViews()
 
 	case "history-40k":
 		historyJob.FetchHistoryUnder40kStars()
@@ -63,6 +62,9 @@ func main() {
 			log.Fatal().Err(err).Msg("formatting date failed")
 		}
 		historyJob.RepairHistory(date)
+
+	case "refresh":
+		historyJob.RefreshViews()
 
 	default:
 		log.Fatal().Msgf("Invalid mode: %s. Use 'search' or 'history' or 'history-40k'", mode)
