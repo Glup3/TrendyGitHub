@@ -256,18 +256,6 @@ func (job *HistoryJob) FetchStarHistory(repo repository.Repo) error {
 	return job.aggregateAndInsertHistory(timestamps, repo)
 }
 
-// normalizeDate normalizes a time.Time to midnight of the same day
-func normalizeDate(t time.Time) time.Time {
-	return t.Truncate(24 * time.Hour)
-}
-
-func countStars(starCounts *map[time.Time]int, dateTimes []time.Time) {
-	for _, dateTime := range dateTimes {
-		normalizedDate := normalizeDate(dateTime)
-		(*starCounts)[normalizedDate]++
-	}
-}
-
 func calculateCumulativeStars(cumulativeCounts *map[time.Time]int, starCounts map[time.Time]int) {
 	var keys []time.Time
 	for date := range starCounts {
@@ -310,10 +298,9 @@ func (job *HistoryJob) aggregateAndInsertHistory(timestamps []time.Time, repo re
 		Int("timestamps", len(timestamps)).
 		Msgf("aggregating star history")
 
-	starCounts := make(map[time.Time]int)
+	starCounts := aggregateStars(timestamps)
 	cumulativeCounts := make(map[time.Time]int)
 
-	countStars(&starCounts, timestamps)
 	calculateCumulativeStars(&cumulativeCounts, starCounts)
 
 	var inputs []repository.StarHistoryInput

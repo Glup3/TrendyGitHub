@@ -122,10 +122,8 @@ func (job *HistoryJob) RepairHistory(untilDate time.Time) {
 			}
 		}
 
-		starCounts := make(map[time.Time]int)
+		starCounts := aggregateStars(totalDates)
 		cumulativeCounts := make(map[time.Time]int)
-
-		countStars(&starCounts, totalDates)
 
 		var keys []time.Time
 		for date := range starCounts {
