@@ -110,7 +110,13 @@ func (job *RepoJob) Search() {
 	log.Info().Msg("done fetching repositories")
 }
 
-func (job *RepoJob) ResetStarCountCursor(settingsID int) {}
+func (job *RepoJob) ResetStarCountCursor(settingsID int) {
+	err := job.settingsRepository.ResetStarCountCursor(settingsID)
+	if err != nil {
+		log.Fatal().Err(err).Msg("failed resetting star count cursor")
+	}
+	log.Info().Msg("finished resetting star count cursor")
+}
 
 func mapUniqueLanguages(repos []lo.GitHubRepo) []repository.LanguageInput {
 	var languageInputs []repository.LanguageInput
