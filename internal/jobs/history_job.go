@@ -122,6 +122,7 @@ func (job *HistoryJob) RepairHistory(untilDate time.Time) {
 			}
 		}
 
+		// TODO: refactor this whole repair job
 		starCounts := aggregateStars(totalDates)
 		cumulativeCounts := make(map[time.Time]int)
 

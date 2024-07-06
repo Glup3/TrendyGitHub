@@ -1,7 +1,7 @@
 package jobs
 
 import (
-	"sort"
+	"fmt"
 	"strings"
 	"sync"
 	"time"
@@ -256,22 +256,6 @@ func (job *HistoryJob) FetchStarHistory(repo repository.Repo) error {
 	return job.aggregateAndInsertHistory(timestamps, repo)
 }
 
-func calculateCumulativeStars(cumulativeCounts *map[time.Time]int, starCounts map[time.Time]int) {
-	var keys []time.Time
-	for date := range starCounts {
-		keys = append(keys, date)
-	}
-	sort.Slice(keys, func(i, j int) bool {
-		return keys[i].Before(keys[j])
-	})
-
-	cumulativeSum := 0
-	for _, key := range keys {
-		cumulativeSum += starCounts[key]
-		(*cumulativeCounts)[key] = cumulativeSum
-	}
-}
-
 func (job *HistoryJob) aggregateAndInsertHistory(timestamps []time.Time, repo repository.Repo) error {
 	if len(timestamps) == 0 {
 		log.Warn().
@@ -281,12 +265,7 @@ func (job *HistoryJob) aggregateAndInsertHistory(timestamps []time.Time, repo re
 
 		err := job.repoRepository.MarkAsDone(repo.Id)
 		if err != nil {
-			log.Error().
-				Err(err).
-				Int("id", repo.Id).
-				Str("repository", repo.NameWithOwner).
-				Msg("unable to mark repo as DONE")
-			return err
+			return fmt.Errorf("unable to mark repo as DONE %w", err)
 		}
 
 		return nil
@@ -299,9 +278,7 @@ func (job *HistoryJob) aggregateAndInsertHistory(timestamps []time.Time, repo re
 		Msgf("aggregating star history")
 
 	starCounts := aggregateStars(timestamps)
-	cumulativeCounts := make(map[time.Time]int)
-
-	calculateCumulativeStars(&cumulativeCounts, starCounts)
+	cumulativeCounts := accumulateStars(starCounts, 0)
 
 	var inputs []repository.StarHistoryInput
 	for key, value := range cumulativeCounts {

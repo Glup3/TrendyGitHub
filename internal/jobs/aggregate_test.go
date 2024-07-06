@@ -75,3 +75,95 @@ func TestAggregateStars(t *testing.T) {
 		})
 	}
 }
+
+func TestAccumulateStars(t *testing.T) {
+	newDate := func(year int, month time.Month, day int) time.Time {
+		return time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
+	}
+
+	tests := []struct {
+		name           string
+		starsByDate    map[time.Time]int
+		baseStarCount  int
+		expectedResult map[time.Time]int
+	}{
+		{
+			name:           "Empty map",
+			starsByDate:    map[time.Time]int{},
+			baseStarCount:  0,
+			expectedResult: map[time.Time]int{},
+		},
+		{
+			name: "Single date",
+			starsByDate: map[time.Time]int{
+				newDate(2024, 7, 1): 5,
+			},
+			baseStarCount: 0,
+			expectedResult: map[time.Time]int{
+				newDate(2024, 7, 1): 5,
+			},
+		},
+		{
+			name: "Multiple dates",
+			starsByDate: map[time.Time]int{
+				newDate(2024, 7, 1): 10,
+				newDate(2024, 7, 2): 20,
+				newDate(2024, 7, 3): 30,
+			},
+			baseStarCount: 0,
+			expectedResult: map[time.Time]int{
+				newDate(2024, 7, 1): 10,
+				newDate(2024, 7, 2): 30,
+				newDate(2024, 7, 3): 60,
+			},
+		},
+		{
+			name: "Dates out of order",
+			starsByDate: map[time.Time]int{
+				newDate(2024, 7, 2): 20,
+				newDate(2024, 7, 1): 10,
+				newDate(2024, 7, 3): 30,
+			},
+			baseStarCount: 0,
+			expectedResult: map[time.Time]int{
+				newDate(2024, 7, 1): 10,
+				newDate(2024, 7, 2): 30,
+				newDate(2024, 7, 3): 60,
+			},
+		},
+		{
+			name: "Non-zero base star count",
+			starsByDate: map[time.Time]int{
+				newDate(2024, 7, 1): 10,
+				newDate(2024, 7, 2): 20,
+				newDate(2024, 7, 3): 30,
+			},
+			baseStarCount: 5,
+			expectedResult: map[time.Time]int{
+				newDate(2024, 7, 1): 15,
+				newDate(2024, 7, 2): 35,
+				newDate(2024, 7, 3): 65,
+			},
+		},
+		{
+			name: "Multiple stars on the same day",
+			starsByDate: map[time.Time]int{
+				newDate(2024, 7, 1): 5,
+				newDate(2024, 7, 1): 10,
+			},
+			baseStarCount: 0,
+			expectedResult: map[time.Time]int{
+				newDate(2024, 7, 1): 10,
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := accumulateStars(tt.starsByDate, tt.baseStarCount)
+			if !reflect.DeepEqual(result, tt.expectedResult) {
+				t.Errorf("got %v, want %v", result, tt.expectedResult)
+			}
+		})
+	}
+}
