@@ -40,13 +40,16 @@ func main() {
 
 	var loader lo.Loader
 	loader = lo.NewAPILoader(ctx, configs.GitHubToken)
-	searchJob := jobs.NewRepoJob(ctx, db, &loader)
+	repoJob := jobs.NewRepoJob(ctx, db, &loader)
 	historyJob := jobs.NewHistoryJob(ctx, db, &loader)
 
 	mode := os.Args[1]
 	switch mode {
 	case "search":
-		searchJob.Search()
+		repoJob.Search()
+		historyJob.CreateSnapshot()
+		repoJob.ResetStarCountCursor(1)
+		historyJob.RefreshViews()
 
 	case "history-40k":
 		historyJob.FetchHistoryUnder40kStars()
@@ -60,11 +63,6 @@ func main() {
 			log.Fatal().Err(err).Msg("formatting date failed")
 		}
 		historyJob.RepairHistory(date)
-
-	case "refresh":
-		historyJob.CreateSnapshot()
-		searchJob.ResetStarCountCursor(1)
-		historyJob.RefreshViews()
 
 	default:
 		log.Fatal().Msgf("Invalid mode: %s. Use 'search' or 'history' or 'history-40k'", mode)
