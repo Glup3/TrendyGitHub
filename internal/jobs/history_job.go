@@ -54,7 +54,7 @@ func (j *HistoryJob) RefreshViews() {
 		}
 
 		elapsed := time.Since(start)
-		log.Info().Msgf("refresh daily view took %s", elapsed)
+		log.Info().Msgf("refreshing %s took %s", view, elapsed)
 	}
 
 	log.Info().Msgf("refreshing views took %s", time.Since(start))
