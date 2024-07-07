@@ -2,6 +2,7 @@ package jobs
 
 import (
 	"context"
+	"fmt"
 	"math"
 	"time"
 
@@ -70,71 +71,74 @@ func (job *HistoryJob) Repair40k() {
 	}
 
 	for _, repo := range repos {
-		rl, err := job.api.GetRateLimit()
-		if err != nil {
-			log.Error().Err(err).Str("job", "repair").Msg("failed fetching rate limits")
-			break
-		}
-		if rl.RemainingRest <= 0 {
-			log.Info().Str("job", "repair").Int("resetAt", rl.ResetRest).Msgf("next REST rate limit reset at %d", rl.ResetRest)
-		}
-
-		log.Info().
-			Int("id", repo.Id).
-			Str("repository", repo.NameWithOwner).
-			Msgf("repairing history for repo %s", repo.NameWithOwner)
-
-		var totalTimes []time.Time
-		lastPage := int(math.Ceil(float64(repo.StarCount / 100.0)))
-
-	Pages:
-		for page := lastPage; page >= 0; page-- {
-			times, err := job.api.GetStarHistory(repo.NameWithOwner, page)
-			if err != nil {
-				log.Fatal().
-					Err(err).
-					Int("id", repo.Id).
-					Str("repository", repo.NameWithOwner).
-					Int("page", page).
-					Msg("abort repairing star history")
-			}
-
-			for _, time := range times {
-				if time.Before(repo.UntilDate) {
-					break Pages
-				}
-
-				totalTimes = append(totalTimes, time)
-			}
-		}
-
-		baseStarCount := 0
-		starsByDate := aggregateStars(totalTimes)
-		cumulativeCounts := accumulateStars(starsByDate, baseStarCount)
-
-		var inputs []repository.StarHistoryInput
-		for date, count := range cumulativeCounts {
-			inputs = append(inputs, repository.StarHistoryInput{
-				Id:        repo.Id,
-				StarCount: count,
-				CreatedAt: date,
-			})
-		}
-
-		err = job.historyRepository.BatchUpsertStarHistory(inputs)
+		err := job.Repair(repo)
 		if err != nil {
 			log.Fatal().
 				Err(err).
 				Int("id", repo.Id).
 				Str("repository", repo.NameWithOwner).
-				Msgf("failed to repair star history for %s", repo.NameWithOwner)
+				Msgf("repairing star history failed %s", repo.NameWithOwner)
 		}
-
-		log.Info().
-			Int("id", repo.Id).
-			Str("repository", repo.NameWithOwner).
-			Msgf("repaired star history for %s", repo.NameWithOwner)
 	}
 
 	log.Info().Msg("done repairing history")
+}
+
+func (job *HistoryJob) Repair(repo repository.BrokenRepo) error {
+	rl, err := job.api.GetRateLimit()
+	if err != nil {
+		return err
+	}
+	if rl.RemainingRest <= 0 {
+		return fmt.Errorf("next REST rate limit reset at %d", rl.ResetRest)
+	}
+
+	log.Info().
+		Int("id", repo.Id).
+		Str("repository", repo.NameWithOwner).
+		Msgf("repairing history for repo %s", repo.NameWithOwner)
+
+	var totalTimes []time.Time
+	lastPage := int(math.Ceil(float64(repo.StarCount / 100.0)))
+
+Pages:
+	for page := lastPage; page >= 1; page-- {
+		times, err := job.api.GetStarHistory(repo.NameWithOwner, page)
+		if err != nil {
+			return err
+		}
+
+		for _, time := range times {
+			if time.Before(repo.UntilDate) {
+				break Pages
+			}
+
+			totalTimes = append(totalTimes, time)
+		}
+	}
+
+	baseStarCount := 0
+	starsByDate := aggregateStars(totalTimes)
+	cumulativeCounts := accumulateStars(starsByDate, baseStarCount)
+
+	var inputs []repository.StarHistoryInput
+	for date, count := range cumulativeCounts {
+		inputs = append(inputs, repository.StarHistoryInput{
+			Id:        repo.Id,
+			StarCount: count,
+			CreatedAt: date,
+		})
+	}
+
+	err = job.historyRepository.BatchUpsertStarHistory(inputs)
+	if err != nil {
+		return err
+	}
+
+	log.Info().
+		Int("id", repo.Id).
+		Str("repository", repo.NameWithOwner).
+		Msgf("repaired star history for %s", repo.NameWithOwner)
+
+	return nil
 }

@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"os"
-	"time"
 
 	config "github.com/glup3/TrendyGitHub/internal"
 	database "github.com/glup3/TrendyGitHub/internal/db"
@@ -58,7 +57,7 @@ func main() {
 	case "history":
 		historyJob.FetchHistory()
 
-	case "repair":
+	case "repair-40k":
 		historyJob.Repair40k()
 
 	case "refresh":
