@@ -7,6 +7,7 @@ import (
 
 	sq "github.com/Masterminds/squirrel"
 	"github.com/glup3/TrendyGitHub/internal/db"
+	"github.com/jackc/pgx/v5"
 )
 
 const (
@@ -226,6 +227,9 @@ func (r *RepoRepository) GetStarCount(id int, date time.Time) (int, error) {
 
 	err = r.db.Pool.QueryRow(r.ctx, sql, args...).Scan(&starCount)
 	if err != nil {
+		if err == pgx.ErrNoRows {
+			return starCount, nil
+		}
 		return starCount, err
 	}
 
