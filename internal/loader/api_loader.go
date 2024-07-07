@@ -164,10 +164,6 @@ func (l *APILoader) LoadRepoStarHistoryDates(githubId string, cursor string) ([]
 	return dateTimes, pageInfo, nil
 }
 
-type Stargazer struct {
-	StarredAt time.Time `json:"starred_at"`
-}
-
 // page is 1-based
 func (l *APILoader) LoadRepoStarHistoryPage(repoNameWithOwner string, page int) ([]time.Time, *StarHistoryHeader, error) {
 	client := GetRestApiClient(l.apiKey)

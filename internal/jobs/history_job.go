@@ -2,10 +2,11 @@ package jobs
 
 import (
 	"context"
-	"sort"
+	"math"
 	"time"
 
 	database "github.com/glup3/TrendyGitHub/internal/db"
+	"github.com/glup3/TrendyGitHub/internal/github"
 	lo "github.com/glup3/TrendyGitHub/internal/loader"
 	"github.com/glup3/TrendyGitHub/internal/repository"
 	"github.com/rs/zerolog/log"
@@ -15,13 +16,15 @@ type HistoryJob struct {
 	loader            *lo.Loader
 	repoRepository    *repository.RepoRepository
 	historyRepository *repository.HistoryRepository
+	api               *github.GithubClient
 }
 
-func NewHistoryJob(ctx context.Context, db *database.Database, dataLoader *lo.Loader) *HistoryJob {
+func NewHistoryJob(ctx context.Context, db *database.Database, dataLoader *lo.Loader, githubClient *github.GithubClient) *HistoryJob {
 	return &HistoryJob{
 		loader:            dataLoader,
 		historyRepository: repository.NewHistoryRepository(ctx, db),
 		repoRepository:    repository.NewRepoRepository(ctx, db),
+		api:               githubClient,
 	}
 }
 
@@ -60,102 +63,77 @@ func (j *HistoryJob) RefreshViews() {
 	log.Info().Msgf("refreshing views took %s", time.Since(start))
 }
 
-func (job *HistoryJob) RepairHistory(untilDate time.Time) {
-
-	repos, err := job.repoRepository.GetAllPresentHistoryRepos()
+func (job *HistoryJob) Repair40k(untilDate time.Time) {
+	repos, err := job.historyRepository.GetBrokenRepos(40_000)
 	if err != nil {
 		log.Fatal().Err(err).Msg("failed fetching repos")
 	}
 
-	if len(repos) == 0 {
-		log.Info().Msg("no repos to repair history for")
-	}
-
 	for _, repo := range repos {
-		rateLimit, err := (*job.loader).GetRateLimit()
+		rl, err := job.api.GetRateLimit()
 		if err != nil {
-			log.Error().Err(err).Msg("failed fetching GraphQL API rate limit")
+			log.Error().Err(err).Str("job", "repair").Msg("failed fetching rate limits")
 			break
 		}
-
-		if rateLimit.Remaining <= 0 {
-			log.Error().Err(err).Msg("rate limit has been already exhausted")
-			break
+		if rl.RemainingRest <= 0 {
+			log.Info().Str("job", "repair").Int("resetAt", rl.ResetRest).Msgf("next REST rate limit reset at %d", rl.ResetRest)
 		}
 
 		log.Info().
-			Str("repository", repo.NameWithOwner).
-			Str("githubId", repo.GithubId).
 			Int("id", repo.Id).
-			Msg("repairing history for repo")
+			Str("repository", repo.NameWithOwner).
+			Msgf("repairing history for repo %s", repo.NameWithOwner)
 
-		var totalDates []time.Time
-		var totalStars int
-		cursor := ""
+		var totalTimes []time.Time
+		lastPage := int(math.Ceil(float64(repo.StarCount / 100.0)))
 
-		for {
-			dates, info, err := (*job.loader).LoadRepoStarHistoryDates(repo.GithubId, cursor)
+	Pages:
+		for page := lastPage; page >= 0; page-- {
+			times, err := job.api.GetStarHistory(repo.NameWithOwner, page)
 			if err != nil {
 				log.Fatal().
 					Err(err).
 					Int("id", repo.Id).
 					Str("repository", repo.NameWithOwner).
-					Str("cursor", cursor).
-					Msg("aborting loading star history")
+					Int("page", page).
+					Msg("abort repairing star history")
 			}
 
-			cursor = info.NextCursor
-			totalStars = info.TotalStars
-			totalDates = append(totalDates, dates...)
+			for _, time := range times {
+				if time.Before(untilDate) {
+					break Pages
+				}
 
-			log.Info().
-				Int("remainingLimit", info.RateLimitRemaining).
-				Str("repository", repo.NameWithOwner).
-				Msg("remaining rate limit")
-
-			if dates[len(dates)-1].Before(untilDate) {
-				break
-			}
-
-			if !info.HasNextPage {
-				break
+				totalTimes = append(totalTimes, time)
 			}
 		}
 
-		// TODO: refactor this whole repair job
-		starCounts := aggregateStars(totalDates)
-		cumulativeCounts := make(map[time.Time]int)
-
-		var keys []time.Time
-		for date := range starCounts {
-			keys = append(keys, date)
-		}
-
-		sort.Slice(keys, func(i, j int) bool {
-			return keys[i].After(keys[j])
-		})
-
-		cumulativeSum := totalStars
-		for _, key := range keys {
-			cumulativeSum -= starCounts[key]
-			cumulativeCounts[key] = cumulativeSum
-		}
+		baseStarCount := 0
+		starsByDate := aggregateStars(totalTimes)
+		cumulativeCounts := accumulateStars(starsByDate, baseStarCount)
 
 		var inputs []repository.StarHistoryInput
-		for key, value := range cumulativeCounts {
+		for date, count := range cumulativeCounts {
 			inputs = append(inputs, repository.StarHistoryInput{
 				Id:        repo.Id,
-				CreatedAt: key,
-				StarCount: value,
+				StarCount: count,
+				CreatedAt: date,
 			})
 		}
 
 		err = job.historyRepository.BatchUpsertStarHistory(inputs)
 		if err != nil {
-			log.Fatal().Err(err).Msgf("failed to upsert star history %s", repo.NameWithOwner)
+			log.Fatal().
+				Err(err).
+				Int("id", repo.Id).
+				Str("repository", repo.NameWithOwner).
+				Msgf("failed to repair star history for %s", repo.NameWithOwner)
 		}
 
-		log.Info().Msgf("finished upserting star history for repo %s", repo.NameWithOwner)
+		log.Info().
+			Int("id", repo.Id).
+			Str("repository", repo.NameWithOwner).
+			Msgf("repaired star history for %s", repo.NameWithOwner)
 	}
 
 	log.Info().Msg("done repairing history")

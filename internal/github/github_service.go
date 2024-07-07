@@ -2,7 +2,9 @@ package github
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"time"
 )
 
 type RateLimit struct {
@@ -28,6 +30,10 @@ type rateLimit struct {
 		Remaining int `json:"remaining"`
 		Reset     int `json:"reset"`
 	} `json:"rate"`
+}
+
+type stargazer struct {
+	StarredAt time.Time `json:"starred_at"`
 }
 
 func (client GithubClient) GetRateLimit() (RateLimit, error) {
@@ -58,4 +64,36 @@ func (client GithubClient) GetRateLimit() (RateLimit, error) {
 		ResetRest:        rl.Rate.Reset,
 		ResetGraphql:     rl.Resources.Graphql.Reset,
 	}, nil
+}
+
+func (client GithubClient) GetStarHistory(repoFullName string, page int) ([]time.Time, error) {
+	var times []time.Time
+
+	url := fmt.Sprintf("%s/repos/%s/stargazers?page=%d&per_page=100", apiUrl, repoFullName, page)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return times, err
+	}
+
+	resp, err := client.rest.Do(req)
+	if err != nil {
+		return times, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return times, err
+	}
+
+	var stargazers []stargazer
+	err = json.NewDecoder(resp.Body).Decode(&stargazers)
+	if err != nil {
+		return times, err
+	}
+
+	for _, stargazer := range stargazers {
+		times = append(times, stargazer.StarredAt)
+	}
+
+	return times, nil
 }

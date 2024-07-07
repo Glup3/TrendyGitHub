@@ -7,6 +7,7 @@ import (
 
 	config "github.com/glup3/TrendyGitHub/internal"
 	database "github.com/glup3/TrendyGitHub/internal/db"
+	"github.com/glup3/TrendyGitHub/internal/github"
 	"github.com/glup3/TrendyGitHub/internal/jobs"
 	lo "github.com/glup3/TrendyGitHub/internal/loader"
 	"github.com/rs/zerolog"
@@ -40,8 +41,9 @@ func main() {
 
 	var loader lo.Loader
 	loader = lo.NewAPILoader(ctx, configs.GitHubToken)
+	githubClient := github.NewClient(configs.GitHubToken)
 	repoJob := jobs.NewRepoJob(ctx, db, &loader)
-	historyJob := jobs.NewHistoryJob(ctx, db, &loader)
+	historyJob := jobs.NewHistoryJob(ctx, db, &loader, githubClient)
 
 	mode := os.Args[1]
 	switch mode {
@@ -61,7 +63,7 @@ func main() {
 		if err != nil {
 			log.Fatal().Err(err).Msg("formatting date failed")
 		}
-		historyJob.RepairHistory(date)
+		historyJob.Repair40k(date)
 
 	case "refresh":
 		historyJob.RefreshViews()
