@@ -141,3 +141,38 @@ func (r *HistoryRepository) DeleteForRepo(id int) error {
 
 	return nil
 }
+
+func (r *HistoryRepository) GetBrokenRepos(maxStarCount int) ([]BrokenRepo, error) {
+	sql, args, err := sq.
+		Select("r.id", "r.star_count", "h.until_date", "r.name_with_owner").
+		From("history_repairs h").
+		Join("repositories r on r.id = h.repository_id").
+		Where(sq.LtOrEq{"r.star_count": maxStarCount}).
+		PlaceholderFormat(sq.Dollar).
+		ToSql()
+	if err != nil {
+		return nil, fmt.Errorf("building SQL: %w", err)
+	}
+
+	rows, err := r.db.Pool.Query(r.ctx, sql, args...)
+	if err != nil {
+		return nil, fmt.Errorf("querying rows: %w", err)
+	}
+	defer rows.Close()
+
+	var repos []BrokenRepo
+	for rows.Next() {
+		var repo BrokenRepo
+		err := rows.Scan(&repo.Id, &repo.StarCount, &repo.UntilDate, &repo.NameWithOwner)
+		if err != nil {
+			return repos, err
+		}
+		repos = append(repos, repo)
+	}
+
+	if rows.Err() != nil {
+		return repos, err
+	}
+
+	return repos, nil
+}

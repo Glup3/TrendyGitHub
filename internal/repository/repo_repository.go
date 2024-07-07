@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"fmt"
+	"time"
 
 	sq "github.com/Masterminds/squirrel"
 	"github.com/glup3/TrendyGitHub/internal/db"
@@ -23,6 +24,13 @@ type Repo struct {
 	NameWithOwner string
 	StarCount     int
 	Id            int
+}
+
+type BrokenRepo struct {
+	Id            int
+	StarCount     int
+	UntilDate     time.Time
+	NameWithOwner string
 }
 
 type RepoInput struct {
@@ -198,40 +206,4 @@ func (r *RepoRepository) MarkAsDone(id int) error {
 	}
 
 	return nil
-}
-
-func (r *RepoRepository) GetAllPresentHistoryRepos() ([]Repo, error) {
-	sql, args, err := sq.StatementBuilder.PlaceholderFormat(sq.Dollar).
-		Select("id", "github_id", "name_with_owner").
-		From("repositories").
-		Where(sq.Eq{"history_missing": false}).
-		Where(sq.Lt{"star_count": 1_000_000}).
-		OrderBy("star_count desc").
-		OrderBy("id asc").
-		ToSql()
-	if err != nil {
-		return nil, err
-	}
-
-	rows, err := r.db.Pool.Query(r.ctx, sql, args...)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	var repos []Repo
-	for rows.Next() {
-		var repo Repo
-		err := rows.Scan(&repo.Id, &repo.GithubId, &repo.NameWithOwner)
-		if err != nil {
-			return repos, err
-		}
-		repos = append(repos, repo)
-	}
-
-	if rows.Err() != nil {
-		return repos, err
-	}
-
-	return repos, nil
 }

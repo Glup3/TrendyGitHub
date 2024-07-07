@@ -6,11 +6,11 @@ import (
 )
 
 type RateLimit struct {
-	remainingRest    int
-	remainingGraphql int
+	RemainingRest    int
+	RemainingGraphql int
 
-	resetRest    int
-	resetGraphql int
+	ResetRest    int
+	ResetGraphql int
 }
 
 type rateLimit struct {
@@ -30,7 +30,7 @@ type rateLimit struct {
 	} `json:"rate"`
 }
 
-func (client githubClient) GetRateLimit() (RateLimit, error) {
+func (client GithubClient) GetRateLimit() (RateLimit, error) {
 	req, err := http.NewRequest("GET", apiUrl+"/rate_limit", nil)
 	if err != nil {
 		return RateLimit{}, err
@@ -53,9 +53,9 @@ func (client githubClient) GetRateLimit() (RateLimit, error) {
 	}
 
 	return RateLimit{
-		remainingRest:    rl.Rate.Remaining,
-		remainingGraphql: rl.Resources.Graphql.Remaining,
-		resetRest:        rl.Rate.Reset,
-		resetGraphql:     rl.Resources.Graphql.Reset,
+		RemainingRest:    rl.Rate.Remaining,
+		RemainingGraphql: rl.Resources.Graphql.Remaining,
+		ResetRest:        rl.Rate.Reset,
+		ResetGraphql:     rl.Resources.Graphql.Reset,
 	}, nil
 }
