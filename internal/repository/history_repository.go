@@ -28,8 +28,12 @@ func NewHistoryRepository(ctx context.Context, db *db.Database) *HistoryReposito
 	}
 }
 
-func (r *HistoryRepository) BatchUpsertStarHistory(inputs []StarHistoryInput) error {
+func (r *HistoryRepository) BatchUpsert(inputs []StarHistoryInput) error {
 	const batchSize = 10_000
+
+	if len(inputs) == 0 {
+		return fmt.Errorf("empty inputs")
+	}
 
 	tx, err := r.db.Pool.Begin(r.ctx)
 	if err != nil {

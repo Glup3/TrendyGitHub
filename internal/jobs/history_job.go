@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math"
+	"sort"
 	"time"
 
 	database "github.com/glup3/TrendyGitHub/internal/db"
@@ -108,8 +109,12 @@ Pages:
 			return err
 		}
 
+		sort.Slice(times, func(i, j int) bool {
+			return times[i].Before(times[j])
+		})
+
 		for _, time := range times {
-			if time.Before(repo.UntilDate) {
+			if time.After(repo.UntilDate) {
 				break Pages
 			}
 
@@ -117,10 +122,13 @@ Pages:
 		}
 	}
 
-	baseStarCount := 0
+	baseStarCount, err := job.repoRepository.GetStarCount(repo.Id, repo.UntilDate.Add(-24*time.Hour))
+	if err != nil {
+		return err
+	}
+
 	starsByDate := aggregateStars(totalTimes)
 	cumulativeCounts := accumulateStars(starsByDate, baseStarCount)
-
 	var inputs []repository.StarHistoryInput
 	for date, count := range cumulativeCounts {
 		inputs = append(inputs, repository.StarHistoryInput{
@@ -130,7 +138,7 @@ Pages:
 		})
 	}
 
-	err = job.historyRepository.BatchUpsertStarHistory(inputs)
+	err = job.historyRepository.BatchUpsert(inputs)
 	if err != nil {
 		return err
 	}

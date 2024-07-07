@@ -207,3 +207,25 @@ func (r *RepoRepository) MarkAsDone(id int) error {
 
 	return nil
 }
+
+func (r *RepoRepository) GetStarCount(id int, date time.Time) (int, error) {
+	var starCount int
+
+	sql, args, err := sq.
+		Select("star_count").
+		From("stars_history").
+		Where(sq.Eq{"repository_id": id}).
+		Where(sq.Eq{"created_at": date}).
+		PlaceholderFormat(sq.Dollar).
+		ToSql()
+	if err != nil {
+		return starCount, fmt.Errorf("failed to build SQL: %w", err)
+	}
+
+	err = r.db.Pool.QueryRow(r.ctx, sql, args...).Scan(&starCount)
+	if err != nil {
+		return starCount, err
+	}
+
+	return starCount, nil
+}

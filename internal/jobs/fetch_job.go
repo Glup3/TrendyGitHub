@@ -289,7 +289,7 @@ func (job *HistoryJob) aggregateAndInsertHistory(timestamps []time.Time, repo re
 		})
 	}
 
-	err := job.historyRepository.BatchUpsertStarHistory(inputs)
+	err := job.historyRepository.BatchUpsert(inputs)
 	if err != nil {
 		log.Error().
 			Err(err).
