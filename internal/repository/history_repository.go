@@ -180,3 +180,21 @@ func (r *HistoryRepository) GetBrokenRepos(maxStarCount int) ([]BrokenRepo, erro
 
 	return repos, nil
 }
+
+func (r *HistoryRepository) RemoveBrokenRepo(id int) error {
+	sql, args, err := sq.
+		Delete("history_repairs").
+		Where(sq.Eq{"repository_id": id}).
+		PlaceholderFormat(sq.Dollar).
+		ToSql()
+	if err != nil {
+		return fmt.Errorf("building SQL: %w", err)
+	}
+
+	_, err = r.db.Pool.Exec(r.ctx, sql, args...)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

@@ -97,10 +97,11 @@ func (job *HistoryJob) Repair(repo repository.BrokenRepo) error {
 	log.Info().
 		Int("id", repo.Id).
 		Str("repository", repo.NameWithOwner).
+		Int("remaining", rl.RemainingRest).
 		Msgf("repairing history for repo %s", repo.NameWithOwner)
 
 	var totalTimes []time.Time
-	lastPage := int(math.Ceil(float64(repo.StarCount / 100.0)))
+	lastPage := int(math.Ceil(float64(repo.StarCount) / 100.0))
 
 Pages:
 	for page := lastPage; page >= 1; page-- {
@@ -114,7 +115,7 @@ Pages:
 		})
 
 		for _, time := range times {
-			if time.After(repo.UntilDate) {
+			if time.Before(repo.UntilDate) {
 				break Pages
 			}
 
@@ -122,23 +123,30 @@ Pages:
 		}
 	}
 
-	baseStarCount, err := job.repoRepository.GetStarCount(repo.Id, repo.UntilDate.Add(-24*time.Hour))
-	if err != nil {
-		return err
+	if len(totalTimes) > 0 {
+		baseStarCount, err := job.repoRepository.GetStarCount(repo.Id, repo.UntilDate.Add(-24*time.Hour))
+		if err != nil {
+			return err
+		}
+
+		starsByDate := aggregateStars(totalTimes)
+		cumulativeCounts := accumulateStars(starsByDate, baseStarCount)
+		var inputs []repository.StarHistoryInput
+		for date, count := range cumulativeCounts {
+			inputs = append(inputs, repository.StarHistoryInput{
+				Id:        repo.Id,
+				StarCount: count,
+				CreatedAt: date,
+			})
+		}
+
+		err = job.historyRepository.BatchUpsert(inputs)
+		if err != nil {
+			return err
+		}
 	}
 
-	starsByDate := aggregateStars(totalTimes)
-	cumulativeCounts := accumulateStars(starsByDate, baseStarCount)
-	var inputs []repository.StarHistoryInput
-	for date, count := range cumulativeCounts {
-		inputs = append(inputs, repository.StarHistoryInput{
-			Id:        repo.Id,
-			StarCount: count,
-			CreatedAt: date,
-		})
-	}
-
-	err = job.historyRepository.BatchUpsert(inputs)
+	err = job.historyRepository.RemoveBrokenRepo(repo.Id)
 	if err != nil {
 		return err
 	}
