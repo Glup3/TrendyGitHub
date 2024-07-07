@@ -63,7 +63,7 @@ func (j *HistoryJob) RefreshViews() {
 	log.Info().Msgf("refreshing views took %s", time.Since(start))
 }
 
-func (job *HistoryJob) Repair40k(untilDate time.Time) {
+func (job *HistoryJob) Repair40k() {
 	repos, err := job.historyRepository.GetBrokenRepos(40_000)
 	if err != nil {
 		log.Fatal().Err(err).Msg("failed fetching repos")
@@ -100,7 +100,7 @@ func (job *HistoryJob) Repair40k(untilDate time.Time) {
 			}
 
 			for _, time := range times {
-				if time.Before(untilDate) {
+				if time.Before(repo.UntilDate) {
 					break Pages
 				}
 

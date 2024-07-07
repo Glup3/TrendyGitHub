@@ -59,11 +59,7 @@ func main() {
 		historyJob.FetchHistory()
 
 	case "repair":
-		date, err := time.Parse(time.DateOnly, "2024-06-05")
-		if err != nil {
-			log.Fatal().Err(err).Msg("formatting date failed")
-		}
-		historyJob.Repair40k(date)
+		historyJob.Repair40k()
 
 	case "refresh":
 		historyJob.RefreshViews()
