@@ -75,5 +75,33 @@ func TestHistoryRepository(t *testing.T) {
 		if starCount != 210 {
 			t.Fatalf("Expected %d to equal 210", starCount)
 		}
+
+		sql, args, err = sq.
+			Update("repositories").
+			Set("star_count", 500).
+			Where(sq.Eq{"id": repoId}).
+			PlaceholderFormat(sq.Dollar).
+			ToSql()
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		_, err = pool.Exec(ctx, sql, args...)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		err = hRepo.CreateSnapshot()
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		starCount, err = rRepo.GetStarCount(repoId, time.Now())
+		if err != nil {
+			t.Fatal(err)
+		}
+		if starCount != 500 {
+			t.Fatalf("Expected %d to equal 500", starCount)
+		}
 	})
 }
