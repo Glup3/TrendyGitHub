@@ -49,7 +49,6 @@ func main() {
 	case "search":
 		repoJob.Search()
 		historyJob.CreateSnapshot()
-		repoJob.ResetStarCountCursor(1)
 
 	case "history-40k":
 		historyJob.FetchHistoryUnder40kStars()
@@ -59,6 +58,9 @@ func main() {
 
 	case "repair-40k":
 		historyJob.Repair40k()
+
+	case "reset":
+		repoJob.ResetStarCountCursor(1)
 
 	case "refresh":
 		historyJob.RefreshViews()
