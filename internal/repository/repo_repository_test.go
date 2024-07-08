@@ -1,11 +1,10 @@
-package repository_test
+package repository
 
 import (
 	"context"
 	"testing"
 
 	database "github.com/glup3/TrendyGitHub/internal/db"
-	"github.com/glup3/TrendyGitHub/internal/repository"
 	"github.com/glup3/TrendyGitHub/internal/testutil"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -29,9 +28,9 @@ func TestRepoRepository(t *testing.T) {
 		}
 		defer pool.Close()
 
-		r := repository.NewRepoRepository(ctx, &database.Database{Pool: pool})
+		r := NewRepoRepository(ctx, &database.Database{Pool: pool})
 
-		repo, err := r.FindNextMissing(1_000_000, repository.OrderAsc)
+		repo, err := r.FindNextMissing(1_000_000, OrderAsc)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -53,9 +52,9 @@ func TestRepoRepository(t *testing.T) {
 		}
 		defer pool.Close()
 
-		r := repository.NewRepoRepository(ctx, &database.Database{Pool: pool})
+		r := NewRepoRepository(ctx, &database.Database{Pool: pool})
 
-		repo, err := r.FindNextMissing(1_000_000, repository.OrderDesc)
+		repo, err := r.FindNextMissing(1_000_000, OrderDesc)
 		if err != nil {
 			t.Fatal(err)
 		}
