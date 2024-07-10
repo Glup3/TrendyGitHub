@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/glup3/TrendyGitHub/generated"
 )
 
 type RateLimit struct {
@@ -66,6 +68,7 @@ func (client GithubClient) GetRateLimit() (RateLimit, error) {
 	}, nil
 }
 
+// only works for repositories with less than 40k stars because of the hardlimit of max. 400 pages
 func (client GithubClient) GetStarHistory(repoFullName string, page int) ([]time.Time, error) {
 	var times []time.Time
 
@@ -96,4 +99,26 @@ func (client GithubClient) GetStarHistory(repoFullName string, page int) ([]time
 	}
 
 	return times, nil
+}
+
+// uses the graphql api to bypass the 40k stars limit of the REST api
+func (client GithubClient) GetStarHistoryV2(nodeId string, cursor string) ([]time.Time, string, error) {
+	nextCursor := "END"
+	times := make([]time.Time, 100)
+
+	resp, err := generated.GetStarGazers(client.ctx, client.graphql, nodeId, cursor)
+	if err != nil {
+		return times, nextCursor, err
+	}
+
+	repo, _ := resp.Node.(*generated.GetStarGazersNodeRepository)
+	for i, stargazer := range repo.Stargazers.Edges {
+		times[i] = stargazer.StarredAt
+	}
+
+	if repo.Stargazers.PageInfo.HasNextPage {
+		nextCursor = repo.Stargazers.PageInfo.EndCursor
+	}
+
+	return times, nextCursor, nil
 }

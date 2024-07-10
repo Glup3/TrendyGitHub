@@ -40,7 +40,7 @@ func main() {
 
 	var loader lo.Loader
 	loader = lo.NewAPILoader(ctx, configs.GitHubToken)
-	githubClient := github.NewClient(configs.GitHubToken)
+	githubClient := github.NewClient(ctx, configs.GitHubToken)
 	repoJob := jobs.NewRepoJob(ctx, db, &loader)
 	historyJob := jobs.NewHistoryJob(ctx, db, &loader, githubClient)
 

@@ -68,11 +68,31 @@ func (j *HistoryJob) RefreshViews() {
 func (job *HistoryJob) Repair40k() {
 	repos, err := job.historyRepository.GetBrokenRepos(40_000)
 	if err != nil {
-		log.Fatal().Err(err).Msg("failed fetching repos")
+		log.Fatal().Err(err).Msg("failed fetching repos 40k")
 	}
 
 	for _, repo := range repos {
 		err := job.repair40k(repo)
+		if err != nil {
+			log.Fatal().
+				Err(err).
+				Int("id", repo.Id).
+				Str("repository", repo.NameWithOwner).
+				Msgf("repairing star history 40k failed %s", repo.NameWithOwner)
+		}
+	}
+
+	log.Info().Msg("done repairing history 40k")
+}
+
+func (job *HistoryJob) Repair() {
+	repos, err := job.historyRepository.GetBrokenRepos(1_000_000)
+	if err != nil {
+		log.Fatal().Err(err).Msg("failed fetching repos")
+	}
+
+	for _, repo := range repos {
+		err := job.repair(repo)
 		if err != nil {
 			log.Fatal().
 				Err(err).
@@ -98,7 +118,7 @@ func (job *HistoryJob) repair40k(repo repository.BrokenRepo) error {
 		Int("id", repo.Id).
 		Str("repository", repo.NameWithOwner).
 		Int("remaining", rl.RemainingRest).
-		Msgf("repairing history for repo %s", repo.NameWithOwner)
+		Msgf("repairing history 40k for repo %s", repo.NameWithOwner)
 
 	var totalTimes []time.Time
 	lastPage := int(math.Ceil(float64(repo.StarCount) / 100.0))
@@ -124,23 +144,63 @@ Pages:
 	}
 
 	if len(totalTimes) > 0 {
-		baseStarCount, err := job.repoRepository.GetStarCount(repo.Id, repo.UntilDate.Add(-24*time.Hour))
+		err := job.updateAccumulatedStars(repo, totalTimes)
+		if err != nil {
+			return err
+		}
+	}
+
+	err = job.historyRepository.RemoveBrokenRepo(repo.Id)
+	if err != nil {
+		return err
+	}
+
+	log.Info().
+		Int("id", repo.Id).
+		Str("repository", repo.NameWithOwner).
+		Msgf("repaired star history 40k for %s", repo.NameWithOwner)
+
+	return nil
+}
+
+func (job *HistoryJob) repair(repo repository.BrokenRepo) error {
+	rl, err := job.api.GetRateLimit()
+	if err != nil {
+		return err
+	}
+	if rl.RemainingGraphql <= 0 {
+		return fmt.Errorf("next Graphql rate limit reset at %d", rl.ResetGraphql)
+	}
+
+	log.Info().
+		Int("id", repo.Id).
+		Str("repository", repo.NameWithOwner).
+		Int("remaining", rl.RemainingGraphql).
+		Msgf("repairing history for repo %s", repo.NameWithOwner)
+
+	var totalTimes []time.Time
+	cursor := ""
+
+Cursors:
+	for cursor != "END" {
+		times, nextCursor, err := job.api.GetStarHistoryV2(repo.GithubId, cursor)
 		if err != nil {
 			return err
 		}
 
-		starsByDate := aggregateStars(totalTimes)
-		cumulativeCounts := accumulateStars(starsByDate, baseStarCount)
-		var inputs []repository.StarHistoryInput
-		for date, count := range cumulativeCounts {
-			inputs = append(inputs, repository.StarHistoryInput{
-				Id:        repo.Id,
-				StarCount: count,
-				CreatedAt: date,
-			})
-		}
+		cursor = nextCursor
 
-		err = job.historyRepository.BatchUpsert(inputs)
+		for _, time := range times {
+			if time.Before(repo.UntilDate) {
+				break Cursors
+			}
+
+			totalTimes = append(totalTimes, time)
+		}
+	}
+
+	if len(totalTimes) > 0 {
+		err := job.updateAccumulatedStars(repo, totalTimes)
 		if err != nil {
 			return err
 		}
@@ -155,6 +215,35 @@ Pages:
 		Int("id", repo.Id).
 		Str("repository", repo.NameWithOwner).
 		Msgf("repaired star history for %s", repo.NameWithOwner)
+
+	return nil
+}
+
+func (job *HistoryJob) updateAccumulatedStars(repo repository.BrokenRepo, times []time.Time) error {
+	if len(times) == 0 {
+		return nil
+	}
+
+	baseStarCount, err := job.repoRepository.GetStarCount(repo.Id, repo.UntilDate.Add(-24*time.Hour))
+	if err != nil {
+		return err
+	}
+
+	starsByDate := aggregateStars(times)
+	cumulativeCounts := accumulateStars(starsByDate, baseStarCount)
+	var inputs []repository.StarHistoryInput
+	for date, count := range cumulativeCounts {
+		inputs = append(inputs, repository.StarHistoryInput{
+			Id:        repo.Id,
+			StarCount: count,
+			CreatedAt: date,
+		})
+	}
+
+	err = job.historyRepository.BatchUpsert(inputs)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

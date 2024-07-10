@@ -6,6 +6,8 @@ import (
 
 	config "github.com/glup3/TrendyGitHub/internal"
 	database "github.com/glup3/TrendyGitHub/internal/db"
+	"github.com/glup3/TrendyGitHub/internal/github"
+	"github.com/glup3/TrendyGitHub/internal/jobs"
 )
 
 func main() {
@@ -26,4 +28,9 @@ func main() {
 	if err != nil {
 		log.Fatalf("Unable to ping database: %v", err)
 	}
+
+	client := github.NewClient(ctx, configs.GitHubToken)
+
+	historyJob := jobs.NewHistoryJob(ctx, db, nil, client)
+	historyJob.Repair()
 }

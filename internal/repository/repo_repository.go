@@ -29,6 +29,7 @@ type Repo struct {
 
 type BrokenRepo struct {
 	UntilDate     time.Time
+	GithubId      string
 	NameWithOwner string
 	Id            int
 	StarCount     int

@@ -1,6 +1,7 @@
 package github
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/Khan/genqlient/graphql"
@@ -11,6 +12,7 @@ const apiUrl = "https://api.github.com"
 type GithubClient struct {
 	rest    http.Client
 	graphql graphql.Client
+	ctx     context.Context
 }
 
 type authedTransport struct {
@@ -19,7 +21,7 @@ type authedTransport struct {
 	acceptHeader string
 }
 
-func NewClient(apiKey string) *GithubClient {
+func NewClient(ctx context.Context, apiKey string) *GithubClient {
 	httpClient := http.Client{
 		Transport: &authedTransport{
 			apiKey:       apiKey,
@@ -31,6 +33,7 @@ func NewClient(apiKey string) *GithubClient {
 	gqlClient := graphql.NewClient(apiUrl+"/graphql", &httpClient)
 
 	return &GithubClient{
+		ctx:     ctx,
 		rest:    httpClient,
 		graphql: gqlClient,
 	}

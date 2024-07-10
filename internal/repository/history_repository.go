@@ -103,7 +103,6 @@ func (r *HistoryRepository) CreateSnapshot() error {
       star_count = EXCLUDED.star_count
     `).
 		ToSql()
-
 	if err != nil {
 		return fmt.Errorf("error building SQL: %w", err)
 	}
@@ -125,7 +124,6 @@ func (r *HistoryRepository) RefreshView(view string) error {
 	}
 
 	return nil
-
 }
 
 func (r *HistoryRepository) DeleteForRepo(id int) error {
@@ -148,7 +146,7 @@ func (r *HistoryRepository) DeleteForRepo(id int) error {
 
 func (r *HistoryRepository) GetBrokenRepos(maxStarCount int) ([]BrokenRepo, error) {
 	sql, args, err := sq.
-		Select("r.id", "r.star_count", "h.until_date", "r.name_with_owner").
+		Select("r.id", "r.github_id", "r.star_count", "h.until_date", "r.name_with_owner").
 		From("history_repairs h").
 		Join("repositories r on r.id = h.repository_id").
 		Where(sq.LtOrEq{"r.star_count": maxStarCount}).
@@ -167,7 +165,7 @@ func (r *HistoryRepository) GetBrokenRepos(maxStarCount int) ([]BrokenRepo, erro
 	var repos []BrokenRepo
 	for rows.Next() {
 		var repo BrokenRepo
-		err := rows.Scan(&repo.Id, &repo.StarCount, &repo.UntilDate, &repo.NameWithOwner)
+		err := rows.Scan(&repo.Id, &repo.GithubId, &repo.StarCount, &repo.UntilDate, &repo.NameWithOwner)
 		if err != nil {
 			return repos, err
 		}
