@@ -72,7 +72,7 @@ func (job *HistoryJob) Repair40k() {
 	}
 
 	for _, repo := range repos {
-		err := job.Repair(repo)
+		err := job.repair40k(repo)
 		if err != nil {
 			log.Fatal().
 				Err(err).
@@ -85,7 +85,7 @@ func (job *HistoryJob) Repair40k() {
 	log.Info().Msg("done repairing history")
 }
 
-func (job *HistoryJob) Repair(repo repository.BrokenRepo) error {
+func (job *HistoryJob) repair40k(repo repository.BrokenRepo) error {
 	rl, err := job.api.GetRateLimit()
 	if err != nil {
 		return err

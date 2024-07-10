@@ -8,9 +8,9 @@ import (
 
 func TestAggregateStars(t *testing.T) {
 	tests := []struct {
+		expected map[time.Time]int
 		name     string
 		input    []time.Time
-		expected map[time.Time]int
 	}{
 		{
 			name:     "Empty input",
@@ -82,10 +82,10 @@ func TestAccumulateStars(t *testing.T) {
 	}
 
 	tests := []struct {
-		name           string
 		starsByDate    map[time.Time]int
-		baseStarCount  int
 		expectedResult map[time.Time]int
+		name           string
+		baseStarCount  int
 	}{
 		{
 			name:           "Empty map",

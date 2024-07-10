@@ -28,10 +28,10 @@ type Repo struct {
 }
 
 type BrokenRepo struct {
-	Id            int
-	StarCount     int
 	UntilDate     time.Time
 	NameWithOwner string
+	Id            int
+	StarCount     int
 }
 
 type RepoInput struct {
@@ -97,7 +97,6 @@ func (r *RepoRepository) UpsertMany(repos []RepoInput) error {
 		`).
 		PlaceholderFormat(sq.Dollar).
 		ToSql()
-
 	if err != nil {
 		return fmt.Errorf("error building SQL: %w", err)
 	}
@@ -126,7 +125,6 @@ func (r *RepoRepository) FindNextMissing(maxStarCount int, order SortOrder) (Rep
 		Limit(1).
 		PlaceholderFormat(sq.Dollar).
 		ToSql()
-
 	if err != nil {
 		return repo, err
 	}
@@ -157,7 +155,6 @@ func (r *RepoRepository) UpsertLanguages(languages []LanguageInput) error {
 		`).
 		PlaceholderFormat(sq.Dollar).
 		ToSql()
-
 	if err != nil {
 		return fmt.Errorf("error building SQL: %w", err)
 	}
@@ -176,7 +173,6 @@ func (r *RepoRepository) Delete(id int) error {
 		Where(sq.Eq{"id": id}).
 		PlaceholderFormat(sq.Dollar).
 		ToSql()
-
 	if err != nil {
 		return fmt.Errorf("failed to build SQL: %w", err)
 	}
@@ -196,7 +192,6 @@ func (r *RepoRepository) MarkAsDone(id int) error {
 		Where(sq.Eq{"id": id}).
 		PlaceholderFormat(sq.Dollar).
 		ToSql()
-
 	if err != nil {
 		return fmt.Errorf("failed to build SQL: %w", err)
 	}
