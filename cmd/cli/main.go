@@ -56,6 +56,9 @@ func main() {
 	case "history":
 		historyJob.FetchHistory()
 
+	case "repair":
+		historyJob.Repair()
+
 	case "repair-40k":
 		historyJob.Repair40k()
 
