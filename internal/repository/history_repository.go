@@ -116,7 +116,7 @@ func (r *HistoryRepository) CreateSnapshot() error {
 }
 
 func (r *HistoryRepository) RefreshView(view string) error {
-	sqlStr := fmt.Sprintf("REFRESH MATERIALIZED VIEW CONCURRENTLY %s", pgx.Identifier{view}.Sanitize())
+	sqlStr := fmt.Sprintf("REFRESH MATERIALIZED VIEW %s", pgx.Identifier{view}.Sanitize())
 
 	_, err := r.db.Pool.Exec(r.ctx, sqlStr)
 	if err != nil {
