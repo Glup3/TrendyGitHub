@@ -47,7 +47,7 @@ func (r *HistoryRepository) BatchUpsert(inputs []StarHistoryInput) error {
 			end = len(inputs)
 		}
 
-		query := sq.Insert("stars_history").Columns("repository_id", "star_count", "created_at")
+		query := sq.Insert("stars_history_hyper").Columns("repository_id", "star_count", "date")
 
 		for _, input := range inputs[start:end] {
 			query = query.Values(input.Id, input.StarCount, input.CreatedAt)
@@ -55,10 +55,10 @@ func (r *HistoryRepository) BatchUpsert(inputs []StarHistoryInput) error {
 
 		sql, args, err := query.
 			Suffix(`
-        ON CONFLICT (repository_id, created_at)
+        ON CONFLICT (repository_id, date)
         DO UPDATE SET
         star_count = EXCLUDED.star_count,
-        created_at = EXCLUDED.created_at
+        created_at = EXCLUDED.date
       `).
 			PlaceholderFormat(sq.Dollar).
 			ToSql()
@@ -92,13 +92,13 @@ func (r *HistoryRepository) BatchUpsert(inputs []StarHistoryInput) error {
 }
 
 func (r *HistoryRepository) CreateSnapshot() error {
-	sql, args, err := sq.Insert("stars_history").
-		Columns("repository_id", "star_count", "created_at").
+	sql, args, err := sq.Insert("stars_history_hyper").
+		Columns("repository_id", "star_count", "date").
 		Select(
 			sq.Select("id", "star_count", "CURRENT_DATE").From("repositories"),
 		).
 		Suffix(`
-      ON CONFLICT (repository_id, created_at)
+      ON CONFLICT (repository_id, date)
       DO UPDATE SET
       star_count = EXCLUDED.star_count
     `).
@@ -128,7 +128,7 @@ func (r *HistoryRepository) RefreshView(view string) error {
 
 func (r *HistoryRepository) DeleteForRepo(id int) error {
 	sql, args, err := sq.
-		Delete("stars_history").
+		Delete("stars_history_hyper").
 		Where(sq.Eq{"repository_id": id}).
 		PlaceholderFormat(sq.Dollar).
 		ToSql()

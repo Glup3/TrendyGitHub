@@ -210,10 +210,10 @@ func (r *RepoRepository) GetStarCount(id int, date time.Time) (int, error) {
 
 	sql, args, err := sq.
 		Select("star_count").
-		From("stars_history").
+		From("stars_history_hyper").
 		Where(sq.Eq{"repository_id": id}).
-		Where(sq.LtOrEq{"created_at": date}).
-		OrderBy("created_at desc").
+		Where(sq.LtOrEq{"date": date}).
+		OrderBy("date desc").
 		Limit(1).
 		PlaceholderFormat(sq.Dollar).
 		ToSql()
