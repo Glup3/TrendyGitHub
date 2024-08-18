@@ -236,7 +236,7 @@ func (job *HistoryJob) updateAccumulatedStars(repo repository.BrokenRepo, times 
 		inputs = append(inputs, repository.StarHistoryInput{
 			Id:        repo.Id,
 			StarCount: count,
-			CreatedAt: date,
+			Date:      date,
 		})
 	}
 

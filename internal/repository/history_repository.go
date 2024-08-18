@@ -16,7 +16,7 @@ type HistoryRepository struct {
 }
 
 type StarHistoryInput struct {
-	CreatedAt time.Time
+	Date      time.Time
 	StarCount int
 	Id        int
 }
@@ -50,7 +50,7 @@ func (r *HistoryRepository) BatchUpsert(inputs []StarHistoryInput) error {
 		query := sq.Insert("stars_history_hyper").Columns("repository_id", "star_count", "date")
 
 		for _, input := range inputs[start:end] {
-			query = query.Values(input.Id, input.StarCount, input.CreatedAt)
+			query = query.Values(input.Id, input.StarCount, input.Date)
 		}
 
 		sql, args, err := query.
@@ -58,7 +58,7 @@ func (r *HistoryRepository) BatchUpsert(inputs []StarHistoryInput) error {
         ON CONFLICT (repository_id, date)
         DO UPDATE SET
         star_count = EXCLUDED.star_count,
-        created_at = EXCLUDED.date
+        date = EXCLUDED.date
       `).
 			PlaceholderFormat(sq.Dollar).
 			ToSql()

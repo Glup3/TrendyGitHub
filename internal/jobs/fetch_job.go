@@ -284,7 +284,7 @@ func (job *HistoryJob) aggregateAndInsertHistory(timestamps []time.Time, repo re
 	for key, value := range cumulativeCounts {
 		inputs = append(inputs, repository.StarHistoryInput{
 			Id:        repo.Id,
-			CreatedAt: key,
+			Date:      key,
 			StarCount: value,
 		})
 	}
