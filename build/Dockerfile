@@ -14,7 +14,7 @@ RUN echo '0-20 * * * * /usr/bin/flock -n /tmp/tgh_daily.lock /usr/local/bin/tgh 
   # && echo '*/2 0-14,17-23 * * * /usr/bin/flock -n /tmp/tgh_history.lock /usr/local/bin/tgh history >/proc/1/fd/1 2>/proc/1/fd/2' >> /etc/crontabs/root \
   && echo '0 * * * * /usr/bin/flock -n /tmp/tgh_history_40k.lock /usr/local/bin/tgh history-40k >/proc/1/fd/1 2>/proc/1/fd/2' >> /etc/crontabs/root \
   && echo '*/5 * * * * /usr/bin/flock -n /tmp/tgh_repair_40k.lock /usr/local/bin/tgh repair-40k >/proc/1/fd/1 2>/proc/1/fd/2' >> /etc/crontabs/root \
-  && echo '59 * * * * /usr/bin/flock -n /tmp/tgh_reset.lock /usr/local/bin/tgh reset >/proc/1/fd/1 2>/proc/1/fd/2' >> /etc/crontabs/root
-  # && echo '0 * * * * /usr/bin/flock -n /tmp/tgh_views_refresh.lock /usr/local/bin/tgh refresh >/proc/1/fd/1 2>/proc/1/fd/2' >> /etc/crontabs/root
+  && echo '59 * * * * /usr/bin/flock -n /tmp/tgh_reset.lock /usr/local/bin/tgh reset >/proc/1/fd/1 2>/proc/1/fd/2' >> /etc/crontabs/root \
+  && echo '0 * * * * /usr/bin/flock -n /tmp/tgh_views_refresh.lock /usr/local/bin/tgh refresh >/proc/1/fd/1 2>/proc/1/fd/2' >> /etc/crontabs/root
 
 CMD ["crond", "-f", "-d", "8"]
